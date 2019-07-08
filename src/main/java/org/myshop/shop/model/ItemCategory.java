@@ -1,11 +1,10 @@
 package org.myshop.shop.model;
 
-public class Item {
+public class ItemCategory {
 	
 	private String id = "";
 	private String name = "";
 	private String description = "";
-	private ItemCategory category;
 	
 	public String getId() {
 		return id;
@@ -24,11 +23,5 @@ public class Item {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public ItemCategory getCategory() {
-		return category;
-	}
-	public void setCategory(ItemCategory category) {
-		this.category = category;
 	}
 }
