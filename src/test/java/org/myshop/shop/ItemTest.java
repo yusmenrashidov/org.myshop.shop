@@ -16,5 +16,7 @@ public class ItemTest {
 		assertNotNull(item.getName());
 		assertNotNull(item.getDescription());
 		assertNull(item.getCategory());
+		assertNotNull(item.getPurchasePrice());
+		assertNotNull(item.getSalesPrice());
 	}
 }
