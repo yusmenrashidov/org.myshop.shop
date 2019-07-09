@@ -2,10 +2,11 @@ package org.myshop.shop.model;
 
 public class Item {
 	
-	private String id = "";
-	private String name = "";
-	private String description = "";
-	private ItemCategory category;
+	private String id;
+	private String name;
+	private String description;
+	private ProductGroup productGroup;
+	private ItemCategory itemCategory;
 	
 	public String getId() {
 		return id;
@@ -25,10 +26,17 @@ public class Item {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public ItemCategory getCategory() {
-		return category;
+	public ProductGroup getProductGroup() {
+		return productGroup;
 	}
-	public void setCategory(ItemCategory category) {
-		this.category = category;
+	public void setProductGroup(ProductGroup productGroup) {
+		this.productGroup = productGroup;
 	}
+	public ItemCategory getItemCategory() {
+		return itemCategory;
+	}
+	public void setItemCategory(ItemCategory itemCategory) {
+		this.itemCategory = itemCategory;
+	}
+
 }
