@@ -5,7 +5,7 @@ import java.util.Date;
 public class PurchaseOrder {
 
 	private String id=" ";
-	private int number;
+	private String number=" ";
 	private Date created;
 	
 	public String getId() {
@@ -14,10 +14,10 @@ public class PurchaseOrder {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public int getNumber() {
+	public String getNumber() {
 		return number;
 	}
-	public void setNumber(int number) {
+	public void setNumber(String number) {
 		this.number = number;
 	}
 	public Date getCreated() {
