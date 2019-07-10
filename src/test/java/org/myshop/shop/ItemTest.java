@@ -17,9 +17,7 @@ public class ItemTest {
 		assertNotNull(item.getName());
 		assertNotNull(item.getDescription());
 		assertNull(item.getItemCategory());
-		assertTrue(item.getPurchasePrice()==0);
-		assertTrue(item.getSalesPrice()==0);
-		
+		assertEquals(0f, item.getSalesPrice(), 0);
 		assertEquals(0f, item.getSalesPrice(), 0);
 	}
 }
