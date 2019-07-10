@@ -4,7 +4,6 @@ import java.util.Date;
 public class SalesOrder {
 
 	private String id="";
-	private int lineNumber;
 	private Date created;
 	private Customer customer;
 	
@@ -13,12 +12,6 @@ public class SalesOrder {
 	}
 	public void setId(String id) {
 		this.id = id;
-	}
-	public int getLineNumber() {
-		return lineNumber;
-	}
-	public void setLineNumber(int lineNumber) {
-		this.lineNumber = lineNumber;
 	}
 	public Date getCreated() {
 		return created;
