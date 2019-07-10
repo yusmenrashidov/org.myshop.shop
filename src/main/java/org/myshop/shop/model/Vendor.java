@@ -1,23 +1,9 @@
 package org.myshop.shop.model;
 
-public class Vendor {
+public class Vendor extends Partner{
 
-	private String id=" ";
-	private String name =" ";
-	
-	public String getId() {
-		return id;
+	public Vendor() {
+		super();
 	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	
 	
 }
