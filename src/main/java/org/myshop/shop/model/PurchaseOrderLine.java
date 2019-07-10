@@ -3,7 +3,7 @@ package org.myshop.shop.model;
 public class PurchaseOrderLine {
 	
 	private String id="";
-	private String lineNumber="";
+	private int lineNumber;
 	private Item item;
 	private int quantity;
 	private float price;
@@ -15,10 +15,10 @@ public class PurchaseOrderLine {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getLineNumber() {
+	public int getLineNumber() {
 		return lineNumber;
 	}
-	public void setLineNumber(String lineNumber) {
+	public void setLineNumber(int lineNumber) {
 		this.lineNumber = lineNumber;
 	}
 	public Item getItem() {
