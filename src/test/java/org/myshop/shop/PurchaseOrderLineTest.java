@@ -16,9 +16,9 @@ public class PurchaseOrderLineTest {
 		assertNotNull(purchaseOrderLine.getId());
 		assertEquals(0d, purchaseOrderLine.getLineNumber(), 0);
 		assertNull(purchaseOrderLine.getItem());
-		assertEquals(0f, purchaseOrderLine.getAmmount(), 0);
+		assertEquals(0d, purchaseOrderLine.getAmmount(), 0);
 		assertEquals(0f, purchaseOrderLine.getPrice(), 0);
-		assertEquals(0f, purchaseOrderLine.getQuantity(), 0);
+		assertEquals(0d, purchaseOrderLine.getQuantity(), 0);
 	}
 	
 }
