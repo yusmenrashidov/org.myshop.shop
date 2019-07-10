@@ -1,5 +1,6 @@
 package org.myshop.shop;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -18,5 +19,7 @@ public class ItemTest {
 		assertNull(item.getItemCategory());
 		assertTrue(item.getPurchasePrice()==0);
 		assertTrue(item.getSalesPrice()==0);
+		
+		assertEquals(0f, item.getSalesPrice(), 0);
 	}
 }
