@@ -7,6 +7,8 @@ public class Item {
 	private String description="";
 	private ProductGroup productGroup;
 	private ItemCategory itemCategory;
+	private float purchasePrice;
+	private float salesPrice;
 	
 	public String getId() {
 		return id;
@@ -37,6 +39,18 @@ public class Item {
 	}
 	public void setItemCategory(ItemCategory itemCategory) {
 		this.itemCategory = itemCategory;
+	}
+	public float getPurchasePrice() {
+		return purchasePrice;
+	}
+	public void setPurchasePrice(float purchasePrice) {
+		this.purchasePrice = purchasePrice;
+	}
+	public float getSalesPrice() {
+		return salesPrice;
+	}
+	public void setSalesPrice(float salesPrice) {
+		this.salesPrice = salesPrice;
 	}
 
 }
