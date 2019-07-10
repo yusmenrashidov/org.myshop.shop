@@ -8,15 +8,15 @@ import static org.junit.Assert.assertNull;
 
 public class SalesOrderTest {
 
-	@SuppressWarnings("deprecation")
+	
 	@Test
-	public void prurchaseOrderFieldsNotNull() {
+	public void testSalesOrderField() {
 		SalesOrder salesOrder = new SalesOrder();
 		
 		assertNotNull(salesOrder.getId());
 		assertNull(salesOrder.getCreated());
 		assertNull(salesOrder.getCustomer());
-		assertEquals(0d, salesOrder.getLineNumber());
+		assertEquals(0d, salesOrder.getLineNumber(), 0);
 	
 	}
 }
