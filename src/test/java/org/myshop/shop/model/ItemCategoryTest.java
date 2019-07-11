@@ -1,4 +1,4 @@
-package org.myshop.shop;
+package org.myshop.shop.model;
 
 import static org.junit.Assert.assertNotNull;
 

@@ -1,4 +1,4 @@
-package org.myshop.shop;
+package org.myshop.shop.model;
 
 import org.junit.Test;
 import org.myshop.shop.model.PurchaseOrder;
