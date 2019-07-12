@@ -1,5 +1,6 @@
 package org.myshop.shop.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
@@ -11,9 +12,13 @@ public class PostedPurchaseOrderTest {
 	public void PostedPurchaseOrderFieldsNotNull() {
 		PostedPurchaseOrder purchaseOrder = new PostedPurchaseOrder();
 		
-		assertNotNull(purchaseOrder.getId());
-		assertNotNull(purchaseOrder.getNumber());
-		assertNull(purchaseOrder.getCreated());
+		assertNotNull("Id shoud not be null on new PostedPurchaseOrder", purchaseOrder.getId());
+		assertEquals("Id shoudl be empty on new PostedPurchaseOrder", "", purchaseOrder.getId());
+		
+		assertNotNull("Number should not be null on new PostedPurchaseOrder", purchaseOrder.getNumber());
+		assertEquals("Number should be empty on new PostedPurchaseOrder", "", purchaseOrder.getNumber());
+		
+		assertNull("Date created should be null on new PostedPurchaseOrder", purchaseOrder.getCreated());
 	
 	}
 	
