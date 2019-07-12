@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class PurchaseOrder {
 
-	private String id=" ";
-	private String number=" ";
+	private String id = " ";
+	private String number = " ";
 	private Date created;
 	
 	public String getId() {
