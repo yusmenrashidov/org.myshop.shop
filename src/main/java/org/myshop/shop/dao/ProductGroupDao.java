@@ -11,7 +11,7 @@ public interface ProductGroupDao {
 	public List<ProductGroup> getProductGroupsByCategory(ItemCategory category);
 	public List<ProductGroup> getProductGroupsByDescription(String description);
 	public ProductGroup getProductGroup(String id);
-	public void editProductGroup(String id);
+	public void editProductGroup(ProductGroup productGroup);
 	public void deleteProductGroup(String id);
 	
 }

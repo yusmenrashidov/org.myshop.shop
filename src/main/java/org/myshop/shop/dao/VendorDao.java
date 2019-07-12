@@ -11,7 +11,7 @@ public interface VendorDao {
 	public List<Vendor> getVendorsByItemCategory(ItemCategory category);
 	public Vendor getVendor(String id);
 	public Vendor getVendorByName(String name);
-	public void editVendor(String id);
+	public void editVendor(Vendor vendor);
 	public void deleteVendor(String id);
 
 }

@@ -10,7 +10,7 @@ public interface PostedPurchaseOrderDao {
 		public List<PostedPurchaseOrder> getPostedPurchaseOrders();
 		public List<PostedPurchaseOrder> getPostedPurchaseOrdersByDate(Date date);
 		public PostedPurchaseOrder getPostedPurchaseOrder(String id);
-		public void editPostedPurchaseOrder(String id);
+		public void editPostedPurchaseOrder(PostedPurchaseOrder order);
 		public void deletePostedPurchaseOrder(String id);
 }
 

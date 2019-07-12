@@ -10,7 +10,7 @@ public interface SalesOrderLineDao {
 	public List<SalesOrderLine> getSalesOrderLines();
 	public List<SalesOrderLine> getSalesOrderLinesByItem(Item imtem);
 	public SalesOrderLine getSalesOrderLine(String id);
-	public void editSalesOrderLine(String id);
+	public void editSalesOrderLine(SalesOrderLine line);
 	public void deleteSalesOrderLine(String id);
 	
 }

@@ -11,6 +11,6 @@ public interface CustomerDao {
 	public List<Customer> getCustomersByItem(Item item);
 	public Customer getCustomer(String id);
 	public Customer getCustomerByName(String name);
-	public void editCustomer(String id);
+	public void editCustomer(Customer customer);
 	public void deleteCustomer(String id);
 }
