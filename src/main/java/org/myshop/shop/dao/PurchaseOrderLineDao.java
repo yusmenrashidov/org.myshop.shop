@@ -9,7 +9,7 @@ public interface PurchaseOrderLineDao {
 	public void addPurchaseOrderLine(PurchaseOrderLine line);
 	public List<PurchaseOrderLine> getPurchaseOrderLines();
 	public List<PurchaseOrderLine> getPurchaseOrderLinesByItem(Item item);
-	public PurchaseOrderLine getPurchaseOrderLine(PurchaseOrderLine line);
-	
-	
+	public PurchaseOrderLine getPurchaseOrderLine(String id);
+	public void editPurchaseOrderLine(String id);
+	public void deletePurchaseOrderLine(String id);
 }

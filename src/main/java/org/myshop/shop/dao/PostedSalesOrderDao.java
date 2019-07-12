@@ -11,6 +11,7 @@ public interface PostedSalesOrderDao {
 	public List<PostedSalesOrder> getPostedPurchaseOrders();
 	public List<PostedSalesOrder> getPostedPurchaseOrdersByDate(Date date);
 	public PostedSalesOrder getPostedPurchaseOrder(String id);
-
+	public void editPostedSalesOrder(String id);
+	public void deletePostedSalesOrder(String id);
 	
 }
