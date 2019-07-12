@@ -13,12 +13,18 @@ public class PurchaseOrderLineTest {
 		
 		PurchaseOrderLine purchaseOrderLine = new PurchaseOrderLine();
 		
-		assertNotNull(purchaseOrderLine.getId());
-		assertEquals(0d, purchaseOrderLine.getLineNumber(), 0);
-		assertNull(purchaseOrderLine.getItem());
-		assertEquals(0d, purchaseOrderLine.getAmmount(), 0);
-		assertEquals(0f, purchaseOrderLine.getPrice(), 0);
-		assertEquals(0d, purchaseOrderLine.getQuantity(), 0);
+		assertNotNull("Id should not be null on new PurchaseOrderLine", purchaseOrderLine.getId());
+		assertEquals("Id should be empty on new PurchaseOrderLine", "", purchaseOrderLine.getId());
+		
+		assertEquals("Line number should be zero on new PurchaseOrderLine", 0d, purchaseOrderLine.getLineNumber(), 0);
+		
+		assertNull("Item should be null on new PurchaseOrderLine", purchaseOrderLine.getItem());
+		
+		assertEquals("Ammount should be zero on new PurchaseOrderLine", 0d, purchaseOrderLine.getAmmount(), 0);
+		
+		assertEquals("Price should be zero on new PurchaseOrderLine", 0f, purchaseOrderLine.getPrice(), 0);
+		
+		assertEquals("Quantity should be zero on new PurchaseOrderLine", 0d, purchaseOrderLine.getQuantity(), 0);
 	}
 	
 }
