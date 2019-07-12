@@ -8,7 +8,9 @@ public interface CustomerDao {
 
 	public void addCustomer(Customer customer);
 	public List<Customer> getCustomers();
-	public Customer getCustomer(String id);
 	public List<Customer> getCustomersByItem(Item item);
-	public void editCustomer(Customer customer);
+	public Customer getCustomer(String id);
+	public Customer getCustomerByName(String name);
+	public void editCustomer(String id);
+	public void deleteCustomer(String id);
 }

@@ -12,6 +12,8 @@ public interface ItemDao {
 	public List<Item> getItemsByProductGroup(ProductGroup productGroup);
 	public List<Item> getItemsByItemCategory(ItemCategory category);
 	public Item getItem(String id);
+	public void editItem(String id);
+	public void deleteItem(String id);
 	
 
 }

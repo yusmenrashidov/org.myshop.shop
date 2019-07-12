@@ -8,8 +8,10 @@ public interface VendorDao {
 
 	public void addVenor(Vendor vendor);
 	public List<Vendor> getVendors();
-	public Vendor getVendor(Vendor vendor);
 	public List<Vendor> getVendorsByItemCategory(ItemCategory category);
-	public void editVendor(Vendor vendor);
+	public Vendor getVendor(String id);
+	public Vendor getVendorByName(String name);
+	public void editVendor(String id);
+	public void deleteVendor(String id);
 
 }

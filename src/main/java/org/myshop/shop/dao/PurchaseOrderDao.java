@@ -10,5 +10,7 @@ public interface PurchaseOrderDao {
 	public PurchaseOrder getPurchaseOrder(String id);
 	public List<PurchaseOrder> getPurchaseOrdersByDate(Date date);
 	public List<PurchaseOrder> getPurchaseOrders();
+	public void editPurchaseOrder(String id);
+	public void deletePurchaseOrder(String id);
 	
 }

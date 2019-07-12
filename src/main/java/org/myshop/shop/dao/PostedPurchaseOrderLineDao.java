@@ -9,6 +9,8 @@ public interface PostedPurchaseOrderLineDao {
 	public void addPostedPurchaseOrderLine(PostedPurchaseOrderLine line);
 	public List<PostedPurchaseOrderLine> getPurchaseOrderLines();
 	public List<PostedPurchaseOrderLine> getPurchaseOrderLinesByItem(Item item);
-	public PostedPurchaseOrderLine getPurchaseOrderLine(PostedPurchaseOrderLine line);
+	public PostedPurchaseOrderLine getPurchaseOrderLine(String id);
+	public void editPosterPurchaseOrderLine(String id);
+	public void deletePostedPurchaseOrderLine(String id);
 	
 }
