@@ -11,6 +11,6 @@ public interface PostedSalesOrderLineDao {
 	public List<PostedSalesOrderLine> getSalesOrderLines();
 	public List<PostedSalesOrderLine> getSalesOrderLinesByItem(Item imtem);
 	public PostedSalesOrderLine getSalesOrderLine(String id);
-	public void editSalesOrderLine(String id);
+	public void editSalesOrderLine(PostedSalesOrderLine line);
 	public void deleteSalesOrderLine(String id);
 }

@@ -10,7 +10,7 @@ public interface SalesOrderDao {
 	public List<SalesOrder> getSalesOrders();
 	public List<SalesOrder> getSalesOrderByDate(Date date);
 	public SalesOrder getSalesOrder(String id);
-	public void editSalesOrder(String id);
+	public void editSalesOrder(SalesOrder order);
 	public void deleteSalesOrder(String id);
 	
 }
