@@ -2,9 +2,9 @@ package org.myshop.shop.model;
 
 public class Item {
 	
-	private String id="";
-	private String name="";
-	private String description="";
+	private String id = "";
+	private String name = "";
+	private String description = "";
 	private ProductGroup productGroup;
 	private ItemCategory itemCategory;
 	private float purchasePrice;

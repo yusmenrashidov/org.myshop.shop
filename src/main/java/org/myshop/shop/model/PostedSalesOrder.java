@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class PostedSalesOrder {
 	
-	private String id="";
+	private String id = "";
 	private Date created;
 	private Customer customer;
 	

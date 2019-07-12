@@ -1,7 +1,7 @@
 package org.myshop.shop.model;
 
 public class PostedSalesOrderLine {
-	private String id=" ";
+	private String id = " ";
 	private int lineNumber;
 	private Item item;
 	private int quantity;
