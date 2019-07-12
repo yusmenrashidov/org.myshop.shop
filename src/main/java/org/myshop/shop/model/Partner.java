@@ -2,8 +2,8 @@ package org.myshop.shop.model;
 
 public class Partner {
 	
-	private String id = " ";
-	private String name = " ";
+	private String id = "";
+	private String name = "";
 	
 	public Partner() {}
 	
