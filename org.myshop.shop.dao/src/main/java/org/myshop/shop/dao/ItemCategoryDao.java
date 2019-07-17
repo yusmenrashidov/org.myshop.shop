@@ -5,10 +5,13 @@ import java.util.List;
 
 public interface ItemCategoryDao {
 
-	public void addItemCategory(ItemCategory itemCategory);
-	public List<ItemCategory> getCategories();
-	public ItemCategory getCategory(String id);
-	public void editCategory(ItemCategory  category);
-	public void deleteCategory(String id);
+	public void create(ItemCategory category);
 	
+	public List<ItemCategory> read();
+	
+	public ItemCategory get(String id);
+	
+	public ItemCategory update(ItemCategory category);
+	
+	public void delete(ItemCategory category);
 }
