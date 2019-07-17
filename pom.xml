@@ -16,7 +16,7 @@
 	<modules>
 		<module>org.myshop.shop.model</module>
         <module>org.myshop.shop.dao</module>
-    <module>org.myshop.shop.daoImplJDBC</module>
+    <module>org.myshop.shop.dao.jdbc</module>
   </modules>
 	
 </project>

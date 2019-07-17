@@ -1,4 +1,4 @@
-package org.org.myshop.shop.daoImplJDBC;
+package org.org.myshop.shop.dao.jdbc;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
