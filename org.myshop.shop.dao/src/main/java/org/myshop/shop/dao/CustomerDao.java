@@ -6,11 +6,13 @@ import org.myshop.shop.model.Item;
 
 public interface CustomerDao {
 
-	public void addCustomer(Customer customer);
-	public List<Customer> getCustomers();
-	public List<Customer> getCustomersByItem(Item item);
-	public Customer getCustomer(String id);
-	public Customer getCustomerByName(String name);
-	public void editCustomer(Customer customer);
-	public void deleteCustomer(String id);
+	public void create(Customer customer);
+	
+	public List<Customer> read();
+	
+	public Customer get(String id);
+	
+	public Customer update(Customer customer);
+	
+	public void delete(Customer customer);
 }

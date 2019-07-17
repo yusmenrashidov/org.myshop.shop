@@ -1,16 +1,19 @@
 package org.myshop.shop.dao;
 
-import java.util.Date;
 import java.util.List;
 import org.myshop.shop.model.PostedPurchaseOrder;
 
 public interface PostedPurchaseOrderDao {
 	
-		public void addPostedPurchaseOrder(PostedPurchaseOrder order);
-		public List<PostedPurchaseOrder> getPostedPurchaseOrders();
-		public List<PostedPurchaseOrder> getPostedPurchaseOrdersByDate(Date date);
-		public PostedPurchaseOrder getPostedPurchaseOrder(String id);
-		public void editPostedPurchaseOrder(PostedPurchaseOrder order);
-		public void deletePostedPurchaseOrder(String id);
+	public void create(PostedPurchaseOrder order);
+	
+	public List<PostedPurchaseOrder> read();
+	
+	public PostedPurchaseOrder get(String id);
+	
+	public PostedPurchaseOrder update(PostedPurchaseOrder order);
+	
+	public void delete(PostedPurchaseOrder order);
+	
 }
 

@@ -1,16 +1,17 @@
 package org.myshop.shop.dao;
 
 import java.util.List;
-import org.myshop.shop.model.Item;
 import org.myshop.shop.model.SalesOrderLine;
 
 public interface SalesOrderLineDao {
 
-	public void addSalesOrderLine(SalesOrderLine line);
-	public List<SalesOrderLine> getSalesOrderLines();
-	public List<SalesOrderLine> getSalesOrderLinesByItem(Item imtem);
-	public SalesOrderLine getSalesOrderLine(String id);
-	public void editSalesOrderLine(SalesOrderLine line);
-	public void deleteSalesOrderLine(String id);
+	public void create(SalesOrderLine line);
 	
+	public List<SalesOrderLine> read();
+	
+	public SalesOrderLine get(String id);
+	
+	public SalesOrderLine update(SalesOrderLine line);
+	
+	public void delete(SalesOrderLine line);
 }
