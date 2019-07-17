@@ -4,24 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.myshop</groupId>
 	<artifactId>org.myshop.shop</artifactId>
-	<packaging>jar</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>org.myshop.shop</name>
 	<url>http://maven.apache.org</url>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
-		
-		   <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.11</version>
-</dependency>
-		
-	</dependencies>
+
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>org.myshop.shop.model</module>
+	</modules>
 </project>
