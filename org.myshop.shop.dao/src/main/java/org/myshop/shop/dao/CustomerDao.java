@@ -1,8 +1,8 @@
 package org.myshop.shop.dao;
 
 import java.util.List;
+
 import org.myshop.shop.model.Customer;
-import org.myshop.shop.model.Item;
 
 public interface CustomerDao {
 
