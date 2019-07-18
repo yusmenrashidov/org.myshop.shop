@@ -1,4 +1,4 @@
-package org.org.myshop.shop.dao.jdbc;
+package org.myshop.shop.dao.jdbc;
 
 /**
  * Hello world!
