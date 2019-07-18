@@ -14,7 +14,7 @@ import org.myshop.shop.model.Item;
 public class JdbcItemDao implements ItemDao {
 
     private Connection sqlConnection;
-    
+   
     public JdbcItemDao(Connection sqlConnection) {
         this.sqlConnection = sqlConnection;
     }
@@ -33,7 +33,7 @@ public class JdbcItemDao implements ItemDao {
             
             stmt.executeUpdate();
         } catch (SQLException e) {
-            //TODO Improve exception handling
+          
             e.printStackTrace();
         }
     }
@@ -41,13 +41,14 @@ public class JdbcItemDao implements ItemDao {
     public List<Item> read() {
         	
     	List<Item>list = new ArrayList<Item>();
+    	Item item = new Item();
     	
     	try {
 			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM item");
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next()) {
-				Item item = new Item();
+				
 				item.setId(rs.getString("id"));
 				item.setName(rs.getString("name"));
 				
@@ -73,7 +74,7 @@ public class JdbcItemDao implements ItemDao {
 			ResultSet rs = stmt.executeQuery();
 			
 			item.setId(rs.getString("id"));
-			item.setName("name");
+			item.setName(rs.getString("name"));
 			
     	} catch (SQLException e) {
 			
