@@ -2,7 +2,7 @@ package org.myshop.shop.model;
 
 public class ProductGroup {
 
-	private String id;
+	private String id = "";
 	private String description;
 	private ItemCategory itemCategory;
 	
