@@ -97,7 +97,7 @@ public class JdbcVendorDao implements VendorDao {
 		stmt.executeUpdate();
 	
 		}catch(SQLException e) {
-			e.printStackTrace();
+				e.printStackTrace();
 		}
 	}
 }
