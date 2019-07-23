@@ -16,7 +16,7 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 
 	private Connection sqlConnection;
 	
-	private final String CREATE_QUERY = "INSERT INTO productGroup VALUES(?, ?, ?";
+	private final String CREATE_QUERY = "INSERT INTO productGroup VALUES(?, ?, ?)";
 	private final String READ_QUERY = "SELECT * FROM productGroup";
 	private final String GET_QUERY = "SELECT * FROM productGroup WHERE id = ?";
 	private final String UPDATE_QUERY = "UPDATE productGroup SET id = ?, description = ?, itemCategory_id = ? WHERE id = ?";
