@@ -14,6 +14,12 @@ import org.myshop.shop.model.Item;
 public class JdbcItemDao implements ItemDao {
 
     private Connection sqlConnection;
+    
+    private final String CREATE_QUERY = "INSERT INTO item VALUES (?,?,?,?,?,?,?)";
+    private final String READ_QUERY = "SELECT * FROM item";
+    private final String GET_QUERY = "SELECT * FROM item WHERE id = ?";
+    private final String UPDATE_QUERY = "UPDATE item SET id = ?, name = ?, description = ?, productGroup_id = ?, itemCategory_id = ?, purchasePrice = ?, salesPrice = ? WHERE id = ?";
+    private final String DELETE_QUERY = "DELETE FROM item WHERE id = ?";
    
     public JdbcItemDao(Connection sqlConnection) {
         this.sqlConnection = sqlConnection;
@@ -21,7 +27,7 @@ public class JdbcItemDao implements ItemDao {
 
     public void create(Item item) {
         try {
-            PreparedStatement stmt = sqlConnection.prepareStatement("INSERT INTO item VALUES (?,?,?,?,?,?,?)");
+            PreparedStatement stmt = sqlConnection.prepareStatement(CREATE_QUERY);
             
             stmt.setString(1, item.getId());
             stmt.setString(2, item.getName());
@@ -44,7 +50,7 @@ public class JdbcItemDao implements ItemDao {
     	Item item = new Item();
     	
     	try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM item");
+			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next()) {
@@ -68,7 +74,7 @@ public class JdbcItemDao implements ItemDao {
     	Item item = new Item();
     	
     	try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM item WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
 			stmt.setString(1, id);
 			
 			ResultSet rs = stmt.executeQuery();
@@ -85,13 +91,9 @@ public class JdbcItemDao implements ItemDao {
     }
 
     public Item update(Item item) {
-
-    	String querry = "UPDATE item SET id = ?, name = ?, description = ?, productGroup_id = ?, "
-    			+ "itemCategory_id = ?, purchasePrice = ?, salesPrice = ? WHERE id = ?";
-    	
-    	
+  	
     	try {
-			PreparedStatement stmt = sqlConnection.prepareStatement(querry);
+			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			
 			stmt.setString(1, item.getId());
 			stmt.setString(2, item.getName());
@@ -116,7 +118,7 @@ public class JdbcItemDao implements ItemDao {
     	
 
     	try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("DELETE FROM item WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			
 			stmt.setString(1, item.getId());
     	

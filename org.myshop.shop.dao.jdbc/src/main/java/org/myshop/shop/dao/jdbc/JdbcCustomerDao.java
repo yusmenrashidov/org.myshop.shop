@@ -16,6 +16,12 @@ public class JdbcCustomerDao implements CustomerDao {
 
 	private Connection sqlConnection;
 	
+	private final String CREATE_QUERY = "INSERT INTO customer VALUES(?, ?)";
+	private final String READ_QUERY = "SELECT * FROM customer";
+	private final String GET_QUERY = "SELECT * FROM customer WHERE id = ?";
+	private final String UPDATE_QUERY = "UPDATE customer SET id = ?, name = ? WHERE id = ?";
+	private final String DELETE_QUERY = "DELETE FROM customer WHERE id = ?";
+	
 	public JdbcCustomerDao(Connection sqlConnection) {
 		this.sqlConnection = sqlConnection;
 	}
@@ -23,7 +29,7 @@ public class JdbcCustomerDao implements CustomerDao {
 	public void create(Customer customer) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("INSERT INTO customer VALUES(?, ?)");
+			PreparedStatement stmt = sqlConnection.prepareStatement(CREATE_QUERY);
 
 			stmt.setString(1, customer.getId());
 			stmt.setString(2, customer.getName());
@@ -41,7 +47,7 @@ public class JdbcCustomerDao implements CustomerDao {
 		List<Customer> list = new ArrayList<Customer>();
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM customer");
+			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
 			ResultSet rs = stmt.executeQuery();
 		
 			while(rs.next()) {
@@ -61,7 +67,7 @@ public class JdbcCustomerDao implements CustomerDao {
 		Customer customer = new Customer();
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM customer WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
 			
 			stmt.setString(1, id);
 			
@@ -79,11 +85,11 @@ public class JdbcCustomerDao implements CustomerDao {
 
 	public Customer update(Customer customer) {
 		
-		String querry = "UPDATE customer SET id = ?, name = ? WHERE id = ?";
+		
 		
 		try {
 		
-			PreparedStatement stmt = sqlConnection.prepareStatement(querry);
+			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			
 			stmt.setString(1, customer.getId());
 			stmt.setString(2,  customer.getName());
@@ -100,7 +106,7 @@ public class JdbcCustomerDao implements CustomerDao {
 	public void delete(Customer customer) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("DELETE FROM customer WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			stmt.setString(1, customer.getId());
 			
 			stmt.executeUpdate();
