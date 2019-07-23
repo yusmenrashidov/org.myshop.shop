@@ -15,6 +15,12 @@ public class JdbcVendorDao implements VendorDao {
 
 	private Connection sqlConnection;
 	
+	private final String CREATE_QUERY = "INSERT INTO vendor VALUES(?, ?)";
+	private final String READ_QUERY = "SELECT * FROM vendor";
+	private final String GET_QUERY = "SELECT * FROM vendor WHERE id = ?";
+	private final String UPDATE_QUERY = "UPDATE vendor SET id = ?, name = ? WHERE id = ?";
+	private final String DELETE_QUERY = "DELETE FROM vendor WHERE id = ?";
+	
 	public JdbcVendorDao(Connection sqlConnection) {
 		this.sqlConnection = sqlConnection;
 	}
@@ -22,7 +28,7 @@ public class JdbcVendorDao implements VendorDao {
 	public void create(Vendor vendor) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("INSERT INTO vendor VALUES(?, ?)");
+			PreparedStatement stmt = sqlConnection.prepareStatement(CREATE_QUERY);
 			stmt.setString(1, vendor.getId());
 			stmt.setString(2, vendor.getName());
 			
@@ -39,7 +45,7 @@ public class JdbcVendorDao implements VendorDao {
 		List<Vendor>list = new ArrayList<Vendor>();
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM vendor");
+			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next()) 
@@ -57,7 +63,7 @@ public class JdbcVendorDao implements VendorDao {
 		
 		Vendor vendor = new Vendor();
 			try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM vendor WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
 			stmt.setString(1, id);
 			
 			ResultSet rs = stmt.executeQuery();
@@ -74,7 +80,7 @@ public class JdbcVendorDao implements VendorDao {
 	public Vendor update(Vendor vendor) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("UPDATE vendor SET id = ?, name = ? WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			
 			stmt.setString(1, vendor.getId());
 			stmt.setString(2, vendor.getName());
@@ -91,7 +97,7 @@ public class JdbcVendorDao implements VendorDao {
 	public void delete(Vendor vendor) {
 		
 		try{
-		PreparedStatement stmt = sqlConnection.prepareStatement("DELETE FROM vendor WHERE id = ?");
+		PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 		stmt.setString(1, vendor.getName());
 		
 		stmt.executeUpdate();

@@ -16,6 +16,12 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 
 	private Connection sqlConnection;
 	
+	private final String CREATE_QUERY = "INSERT INTO productGroup VALUES(?, ?, ?";
+	private final String READ_QUERY = "SELECT * FROM productGroup";
+	private final String GET_QUERY = "SELECT * FROM productGroup WHERE id = ?";
+	private final String UPDATE_QUERY = "UPDATE productGroup SET id = ?, description = ?, itemCategory_id = ? WHERE id = ?";
+	private final String DELETE_QUERY = "DELETE FROM productGroup WHERE id = ?";
+	
 	public JdbcProductGroupDao(Connection sqlConnection) {
 		
 		this.sqlConnection = sqlConnection;
@@ -24,7 +30,7 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 	public void create(ProductGroup productGroup) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("INSERT INTO productGroup VALUES(?, ?, ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(CREATE_QUERY);
 			
 			stmt.setString(1, productGroup.getId());
 			stmt.setString(2, productGroup.getDescription());
@@ -43,7 +49,7 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 		List <ProductGroup> list = new ArrayList<ProductGroup>();
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM productGroup");
+			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
 		
 			ResultSet rs = stmt.executeQuery();
 			
@@ -66,7 +72,7 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 		JdbcItemCategoryDao dao = new JdbcItemCategoryDao(sqlConnection);
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM productGroup WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
 			stmt.setString(1, id);
 			
 			ResultSet rs = stmt.executeQuery();
@@ -86,8 +92,7 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 	public ProductGroup update(ProductGroup productGroup) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("UPDATE productGroup SET id = ?, description = ?,"
-					+ " itemCategory_id = ? WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 				
 			stmt.setString(1, productGroup.getId());
 			stmt.setString(2, productGroup.getDescription());
@@ -106,7 +111,7 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 	public void delete(ProductGroup productGroup) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("DELETE FROM productGroup WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			stmt.setString(1, productGroup.getId());
 			
 			stmt.executeUpdate();

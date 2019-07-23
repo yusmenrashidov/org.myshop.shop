@@ -15,6 +15,12 @@ public class JdbcItemCategoryDao implements ItemCategoryDao{
 
 	private Connection sqlConnection;
 	
+	private final String CREATE_QUERY = "INSERT INTO itemCategory VALUES(?, ?, ?";
+	private final String READ_QUERY = "SELECT * FROM itemCategory";
+	private final String GET_QUERY = "UPDATE itemCategory SET id = ?, name = ?, description = ? WHERE id = ?";
+	private final String UPDATE_QUERY = "UPDATE itemCategory SET id = ?, name = ?, description = ? WHERE id = ?";
+	private final String DELETE_QUERY = "DELETE FROM itemCategory WHERE id = ?";
+	
 	public JdbcItemCategoryDao(Connection sqlConnection) {
 		 
 		this.sqlConnection = sqlConnection;
@@ -24,7 +30,7 @@ public class JdbcItemCategoryDao implements ItemCategoryDao{
 	public void create(ItemCategory category) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("INSERT INTO itemCategory VALUES(?, ?, ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(CREATE_QUERY);
 			
 			stmt.setString(1, category.getId());
 			stmt.setString(2, category.getName());
@@ -43,7 +49,7 @@ public class JdbcItemCategoryDao implements ItemCategoryDao{
 		List<ItemCategory> list = new ArrayList<ItemCategory>();
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM itemCategory");
+			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
 		
 			ResultSet rs = stmt.executeQuery();
 			
@@ -64,7 +70,7 @@ public class JdbcItemCategoryDao implements ItemCategoryDao{
 		ItemCategory itemCategory = new ItemCategory();
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("SELECT * FROM itemCategory WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
 			
 			stmt.setString(1, id);
 			
@@ -84,12 +90,13 @@ public class JdbcItemCategoryDao implements ItemCategoryDao{
 	public ItemCategory update(ItemCategory category) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("UPDATE itemCategory SET id = ?, name = ?, description = ? WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			stmt.setString(1, category.getId());
 			stmt.setString(2, category.getName());
 			stmt.setString(3, category.getDescription());
 			stmt.setString(4, category.getId());
-		
+			
+			stmt.executeUpdate();
 		} catch (SQLException e) {
 			return null;
 		}
@@ -100,7 +107,7 @@ public class JdbcItemCategoryDao implements ItemCategoryDao{
 	public void delete(ItemCategory category) {
 		
 		try {
-			PreparedStatement stmt = sqlConnection.prepareStatement("DELETE FROM itemCategory WHERE id = ?");
+			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			stmt.setString(1, category.getId());
 			
 			stmt.executeQuery();
