@@ -15,7 +15,7 @@ public class JdbcItemCategoryDao implements ItemCategoryDao{
 
 	private Connection sqlConnection;
 	
-	protected static final String CREATE_QUERY = "INSERT INTO itemCategory VALUES(?, ?, ?";
+	protected static final String CREATE_QUERY = "INSERT INTO itemCategory VALUES(?, ?, ?)";
 	protected static final String READ_QUERY = "SELECT * FROM itemCategory";
 	protected static final String GET_QUERY = "UPDATE itemCategory SET id = ?, name = ?, description = ? WHERE id = ?";
 	protected static final String UPDATE_QUERY = "UPDATE itemCategory SET id = ?, name = ?, description = ? WHERE id = ?";
