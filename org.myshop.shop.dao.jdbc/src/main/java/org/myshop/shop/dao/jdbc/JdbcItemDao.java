@@ -65,8 +65,7 @@ public class JdbcItemDao implements ItemDao {
 			return null;
 		}
     	
-   
-        return list;
+    	return list;
     }
 
     public Item get(String id) {
@@ -91,7 +90,6 @@ public class JdbcItemDao implements ItemDao {
     }
 
     public Item update(Item item) {
-  	
     	try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			
@@ -116,11 +114,12 @@ public class JdbcItemDao implements ItemDao {
 
     public void delete(Item item) {
     	
-
     	try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			
 			stmt.setString(1, item.getId());
+			
+			stmt.executeUpdate();
     	
     	} catch (SQLException e) {
 			
