@@ -26,6 +26,11 @@ public class JdbcItemDaoTest {
     private static final String TEST_ITEM_NAME = "test_item_name";
     private static final String TEST_ITEM_DESCRIPTION = "test_item_description";
     
+    private static final String CREATE_QUERY = "INSERT INTO item VALUES (?,?,?,?,?,?,?)";
+    private static final String READ_QUERY = "SELECT * FROM item";
+    private static final String GET_QUERY = "SELECT * FROM item WHERE id = ?";
+    private static final String UPDATE_QUERY = "UPDATE item SET id = ?, name = ?, description = ?, productGroup_id = ?, itemCategory_id = ?, purchasePrice = ?, salesPrice = ? WHERE id = ?";
+    private static final String DELETE_QUERY = "DELETE FROM item WHERE id = ?";
     
     @Mock
     private Connection sqlConnectionMock;
@@ -72,7 +77,7 @@ public class JdbcItemDaoTest {
     public void testCreate() throws SQLException {
         itemDao.create(itemMock);
         
-        verify(sqlConnectionMock).prepareStatement(anyString());
+        verify(sqlConnectionMock).prepareStatement(CREATE_QUERY);
         verify(preparedStatementMock).setString(1, TEST_ITEM_ID);
         verify(preparedStatementMock).setString(2, TEST_ITEM_NAME);
         verify(preparedStatementMock).setString(3, TEST_ITEM_DESCRIPTION);
@@ -87,7 +92,7 @@ public class JdbcItemDaoTest {
     public void testRead() throws SQLException{
     	itemDao.read();
     	
-    	verify(sqlConnectionMock).prepareStatement(anyString());
+    	verify(sqlConnectionMock).prepareStatement(READ_QUERY);
     	verify(preparedStatementMock).executeQuery();
     	verify(rsMock).next();
     	
@@ -98,7 +103,7 @@ public class JdbcItemDaoTest {
     public void testGet() throws SQLException{
     	itemDao.get(TEST_ITEM_ID);
     	
-    	verify(sqlConnectionMock).prepareStatement(anyString());
+    	verify(sqlConnectionMock).prepareStatement(GET_QUERY);
     	verify(preparedStatementMock).setString(1, TEST_ITEM_ID);
     	verify(preparedStatementMock).executeQuery();
      }
@@ -107,7 +112,7 @@ public class JdbcItemDaoTest {
     public void testUpdate() throws SQLException{
     	itemDao.update(itemMock);
     	
-    	verify(sqlConnectionMock).prepareStatement(anyString());
+    	verify(sqlConnectionMock).prepareStatement(UPDATE_QUERY);
     	verify(preparedStatementMock).setString(1, itemMock.getId());
     	verify(preparedStatementMock).setString(2, itemMock.getName());
     	verify(preparedStatementMock).setString(3, itemMock.getDescription());
@@ -123,7 +128,7 @@ public class JdbcItemDaoTest {
     public void testDelete() throws SQLException{
     	itemDao.delete(itemMock);
     	
-    	verify(sqlConnectionMock).prepareStatement(anyString());
+    	verify(sqlConnectionMock).prepareStatement(DELETE_QUERY);
     	verify(preparedStatementMock).setString(1, itemMock.getId());
     	verify(preparedStatementMock).executeUpdate();
     	
