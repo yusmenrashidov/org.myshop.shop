@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
+import org.myshop.shop.model.ProductGroup;
 
 public class JdbcItemDao implements ItemDao {
 
@@ -47,7 +48,11 @@ public class JdbcItemDao implements ItemDao {
     public List<Item> read() {
         	
     	List<Item>list = new ArrayList<Item>();
+    	
     	Item item = new Item();
+    	
+    	JdbcProductGroupDao productGroupDao = new JdbcProductGroupDao(sqlConnection);
+    	JdbcItemCategoryDao itemCategoryDao = new JdbcItemCategoryDao(sqlConnection);
     	
     	try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
@@ -57,7 +62,11 @@ public class JdbcItemDao implements ItemDao {
 				
 				item.setId(rs.getString("id"));
 				item.setName(rs.getString("name"));
-				
+				item.setDescription(rs.getString("description"));
+				item.setProductGroup(productGroupDao.get(rs.getString("productGroup_id")));
+				item.setItemCategory(itemCategoryDao.get(rs.getString("itemCategory_id")));
+				item.setPurchasePrice(rs.getFloat("purchasePrice"));
+				item.setSalesPrice(rs.getFloat("salesPrice"));
 				list.add(item);
 			}
 			
@@ -72,6 +81,9 @@ public class JdbcItemDao implements ItemDao {
       
     	Item item = new Item();
     	
+    	JdbcProductGroupDao productGroupDao = new JdbcProductGroupDao(sqlConnection);
+    	JdbcItemCategoryDao itemCategoryDao = new JdbcItemCategoryDao(sqlConnection);
+    	
     	try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
 			stmt.setString(1, id);
@@ -80,6 +92,11 @@ public class JdbcItemDao implements ItemDao {
 			
 			item.setId(rs.getString("id"));
 			item.setName(rs.getString("name"));
+			item.setDescription(rs.getString("description"));
+			item.setProductGroup(productGroupDao.get(rs.getString("productGroup_id")));
+			item.setItemCategory(itemCategoryDao.get(rs.getString("itemCategory_id")));
+			item.setPurchasePrice(rs.getFloat("purchasePrice"));
+			item.setSalesPrice(rs.getFloat("salesPrice"));
 			
     	} catch (SQLException e) {
 			

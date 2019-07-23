@@ -16,11 +16,11 @@ public class JdbcCustomerDao implements CustomerDao {
 
 	private Connection sqlConnection;
 	
-	private final String CREATE_QUERY = "INSERT INTO customer VALUES(?, ?)";
-	private final String READ_QUERY = "SELECT * FROM customer";
-	private final String GET_QUERY = "SELECT * FROM customer WHERE id = ?";
-	private final String UPDATE_QUERY = "UPDATE customer SET id = ?, name = ? WHERE id = ?";
-	private final String DELETE_QUERY = "DELETE FROM customer WHERE id = ?";
+	protected static final String CREATE_QUERY = "INSERT INTO customer VALUES(?, ?)";
+	protected static final String READ_QUERY = "SELECT * FROM customer";
+	protected static final String GET_QUERY = "SELECT * FROM customer WHERE id = ?";
+	protected static final String UPDATE_QUERY = "UPDATE customer SET id = ?, name = ? WHERE id = ?";
+	protected static final String DELETE_QUERY = "DELETE FROM customer WHERE id = ?";
 	
 	public JdbcCustomerDao(Connection sqlConnection) {
 		this.sqlConnection = sqlConnection;
