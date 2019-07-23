@@ -15,11 +15,11 @@ public class JdbcItemDao implements ItemDao {
 
     private Connection sqlConnection;
     
-    private final String CREATE_QUERY = "INSERT INTO item VALUES (?,?,?,?,?,?,?)";
-    private final String READ_QUERY = "SELECT * FROM item";
-    private final String GET_QUERY = "SELECT * FROM item WHERE id = ?";
-    private final String UPDATE_QUERY = "UPDATE item SET id = ?, name = ?, description = ?, productGroup_id = ?, itemCategory_id = ?, purchasePrice = ?, salesPrice = ? WHERE id = ?";
-    private final String DELETE_QUERY = "DELETE FROM item WHERE id = ?";
+    protected final String CREATE_QUERY = "INSERT INTO item VALUES (?,?,?,?,?,?,?)";
+    protected final String READ_QUERY = "SELECT * FROM item";
+    protected final String GET_QUERY = "SELECT * FROM item WHERE id = ?";
+    protected final String UPDATE_QUERY = "UPDATE item SET id = ?, name = ?, description = ?, productGroup_id = ?, itemCategory_id = ?, purchasePrice = ?, salesPrice = ? WHERE id = ?";
+    protected final String DELETE_QUERY = "DELETE FROM item WHERE id = ?";
    
     public JdbcItemDao(Connection sqlConnection) {
         this.sqlConnection = sqlConnection;
