@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
-import org.myshop.shop.model.ProductGroup;
 
 public class JdbcItemDao implements ItemDao {
 
