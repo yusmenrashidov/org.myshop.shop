@@ -16,11 +16,11 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 
 	private Connection sqlConnection;
 	
-	private final String CREATE_QUERY = "INSERT INTO productGroup VALUES(?, ?, ?)";
-	private final String READ_QUERY = "SELECT * FROM productGroup";
-	private final String GET_QUERY = "SELECT * FROM productGroup WHERE id = ?";
-	private final String UPDATE_QUERY = "UPDATE productGroup SET id = ?, description = ?, itemCategory_id = ? WHERE id = ?";
-	private final String DELETE_QUERY = "DELETE FROM productGroup WHERE id = ?";
+	protected static final String CREATE_QUERY = "INSERT INTO productGroup VALUES(?, ?, ?)";
+	protected static final String READ_QUERY = "SELECT * FROM productGroup";
+	protected static final String GET_QUERY = "SELECT * FROM productGroup WHERE id = ?";
+	protected static final String UPDATE_QUERY = "UPDATE productGroup SET id = ?, description = ?, itemCategory_id = ? WHERE id = ?";
+	protected static final String DELETE_QUERY = "DELETE FROM productGroup WHERE id = ?";
 	
 	public JdbcProductGroupDao(Connection sqlConnection) {
 		
@@ -80,7 +80,6 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 			productGroup.setId(rs.getString("id"));
 			productGroup.setDescription(rs.getString("description"));
 			productGroup.setItemCategory(dao.get(rs.getString("itemCategory_id")));
-			
 		} catch (SQLException e) {
 			return null;
 		}
