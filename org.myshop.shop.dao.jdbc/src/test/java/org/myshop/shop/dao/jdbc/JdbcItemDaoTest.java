@@ -93,6 +93,7 @@ public class JdbcItemDaoTest {
         when(getProductGroupPreparedStatementMock.executeQuery()).thenReturn(productGroupResultSetMock);
         when(getItemCategoryPreparedStatementMock.executeQuery()).thenReturn(itemCategoryResulSetMock);
         
+        
         when(readItemResultSetMock.next()).thenReturn(Boolean.TRUE).thenReturn(Boolean.FALSE);
         
         when(readItemResultSetMock.getString("id")).thenReturn(TEST_ITEM_ID);
@@ -165,12 +166,26 @@ public class JdbcItemDaoTest {
     
     @Test
     public void testGet() throws SQLException{
-    	itemDao.get(TEST_ITEM_ID);
+    	Item item = itemDao.get(TEST_ITEM_ID);
     	
     	verify(sqlConnectionMock).prepareStatement(JdbcItemDao.GET_QUERY);
     	
-    	//TODO
-    	//complete following the style of read method
+    	verify(getItemPreparedStatementMock).setString(1, item.getId());
+    	verify(getItemPreparedStatementMock).executeQuery(); 
+    		
+    	assertNotNull(readItemResultSetMock.next());
+    	
+    	assertEquals(TEST_ITEM_ID, item.getId());
+    	assertEquals(TEST_ITEM_NAME, item.getName());
+    	assertEquals(TEST_ITEM_DESCRIPTION, item.getDescription());
+    	assertEquals(TEST_ITEM_CATEGORY_ID, item.getItemCategory().getId());
+    	assertEquals(TEST_ITEM_CATEGORY_NAME, item.getItemCategory().getName());
+    	assertEquals(TEST_ITEM_CATEGORY_DESCRIPTION, item.getItemCategory().getDescription());
+    	assertEquals(TEST_PRODUCT_GROUP_ID, item.getProductGroup().getId());
+    	assertEquals(TEST_PRODUCT_GROUP_DESCRIPTION, item.getProductGroup().getDescription());
+    	assertEquals(TEST_SALES_PRICE, item.getSalesPrice(), 0f);
+    	assertEquals(TEST_PURCHASE_PRICE, item.getPurchasePrice(), 0f);
+    	
      }
     
     @Test
