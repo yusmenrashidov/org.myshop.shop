@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jdbc;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 
@@ -99,7 +100,8 @@ public class JdbcItemDaoTest {
     	
     	verify(sqlConnectionMock).prepareStatement(JdbcItemDao.GET_QUERY);
     	verify(preparedStatementMock).setString(1, TEST_ITEM_ID);
-    	verify(preparedStatementMock).executeQuery();
+    	assertEquals(rsMock, preparedStatementMock.executeQuery());
+    	
      }
     
     @Test
