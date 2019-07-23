@@ -71,7 +71,7 @@ public class JdbcItemDaoTest {
     public void testCreate() throws SQLException {
         itemDao.create(itemMock);
         
-        verify(sqlConnectionMock).prepareStatement(itemDao.CREATE_QUERY);
+        verify(sqlConnectionMock).prepareStatement(JdbcItemDao.CREATE_QUERY);
         verify(preparedStatementMock).setString(1, TEST_ITEM_ID);
         verify(preparedStatementMock).setString(2, TEST_ITEM_NAME);
         verify(preparedStatementMock).setString(3, TEST_ITEM_DESCRIPTION);
@@ -86,7 +86,7 @@ public class JdbcItemDaoTest {
     public void testRead() throws SQLException{
     	itemDao.read();
     	
-    	verify(sqlConnectionMock).prepareStatement(itemDao.READ_QUERY);
+    	verify(sqlConnectionMock).prepareStatement(JdbcItemDao.READ_QUERY);
     	verify(preparedStatementMock).executeQuery();
     	verify(rsMock).next();
     	
@@ -97,7 +97,7 @@ public class JdbcItemDaoTest {
     public void testGet() throws SQLException{
     	itemDao.get(TEST_ITEM_ID);
     	
-    	verify(sqlConnectionMock).prepareStatement(itemDao.GET_QUERY);
+    	verify(sqlConnectionMock).prepareStatement(JdbcItemDao.GET_QUERY);
     	verify(preparedStatementMock).setString(1, TEST_ITEM_ID);
     	verify(preparedStatementMock).executeQuery();
      }
@@ -106,7 +106,7 @@ public class JdbcItemDaoTest {
     public void testUpdate() throws SQLException{
     	itemDao.update(itemMock);
     	
-    	verify(sqlConnectionMock).prepareStatement(itemDao.UPDATE_QUERY);
+    	verify(sqlConnectionMock).prepareStatement(JdbcItemDao.UPDATE_QUERY);
     	verify(preparedStatementMock).setString(1, itemMock.getId());
     	verify(preparedStatementMock).setString(2, itemMock.getName());
     	verify(preparedStatementMock).setString(3, itemMock.getDescription());
@@ -122,7 +122,7 @@ public class JdbcItemDaoTest {
     public void testDelete() throws SQLException{
     	itemDao.delete(itemMock);
     	
-    	verify(sqlConnectionMock).prepareStatement(itemDao.DELETE_QUERY);
+    	verify(sqlConnectionMock).prepareStatement(JdbcItemDao.DELETE_QUERY);
     	verify(preparedStatementMock).setString(1, itemMock.getId());
     	verify(preparedStatementMock).executeUpdate();
     	
