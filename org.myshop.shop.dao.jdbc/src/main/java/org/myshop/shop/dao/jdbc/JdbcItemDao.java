@@ -47,17 +47,25 @@ public class JdbcItemDao implements ItemDao {
     public List<Item> read() {
         	
     	List<Item>list = new ArrayList<Item>();
+    	
     	Item item = new Item();
     	
+    	JdbcProductGroupDao productGroupDao = new JdbcProductGroupDao(sqlConnection);
+    	JdbcItemCategoryDao itemCategoryDao = new JdbcItemCategoryDao(sqlConnection);
+    	
     	try {
-			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
-			ResultSet rs = stmt.executeQuery();
+			PreparedStatement preparedStatement = sqlConnection.prepareStatement(READ_QUERY);
 			
-			while(rs.next()) {
-				
-				item.setId(rs.getString("id"));
-				item.setName(rs.getString("name"));
-				
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			while(resultSet.next()) {
+				item.setId(resultSet.getString("id"));
+				item.setName(resultSet.getString("name"));
+				item.setDescription(resultSet.getString("description"));
+				item.setProductGroup(productGroupDao.get(resultSet.getString("productGroup_id")));
+				item.setItemCategory(itemCategoryDao.get(resultSet.getString("itemCategory_id")));
+				item.setPurchasePrice(resultSet.getFloat("purchasePrice"));
+				item.setSalesPrice(resultSet.getFloat("salesPrice"));
 				list.add(item);
 			}
 			
@@ -72,6 +80,9 @@ public class JdbcItemDao implements ItemDao {
       
     	Item item = new Item();
     	
+    	JdbcProductGroupDao productGroupDao = new JdbcProductGroupDao(sqlConnection);
+    	JdbcItemCategoryDao itemCategoryDao = new JdbcItemCategoryDao(sqlConnection);
+    	
     	try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
 			stmt.setString(1, id);
@@ -80,6 +91,11 @@ public class JdbcItemDao implements ItemDao {
 			
 			item.setId(rs.getString("id"));
 			item.setName(rs.getString("name"));
+			item.setDescription(rs.getString("description"));
+			item.setProductGroup(productGroupDao.get(rs.getString("productGroup_id")));
+			item.setItemCategory(itemCategoryDao.get(rs.getString("itemCategory_id")));
+			item.setPurchasePrice(rs.getFloat("purchasePrice"));
+			item.setSalesPrice(rs.getFloat("salesPrice"));
 			
     	} catch (SQLException e) {
 			
