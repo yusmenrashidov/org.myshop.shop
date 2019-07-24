@@ -45,6 +45,7 @@ public class JdbcCustomerDao implements CustomerDao {
 	public List<Customer> read() {
 		
 		List<Customer> list = new ArrayList<Customer>();
+		Customer customer = new Customer();
 		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
@@ -52,7 +53,10 @@ public class JdbcCustomerDao implements CustomerDao {
 		
 			while(rs.next()) {
 				
-				list.add(this.get(rs.getString("id")));
+				customer.setId(rs.getString("id"));
+				customer.setName(rs.getString("name"));
+				
+				list.add(customer);
 			}
 		
 		} catch (SQLException e) {
@@ -73,8 +77,10 @@ public class JdbcCustomerDao implements CustomerDao {
 			
 			ResultSet rs = stmt.executeQuery();
 			
+			if(rs.next()) {
 			customer.setId(rs.getString("id"));
 			customer.setName(rs.getString("name"));
+			}
 			
 		} catch (SQLException e) {
 			return null;
@@ -93,7 +99,7 @@ public class JdbcCustomerDao implements CustomerDao {
 			
 			stmt.setString(1, customer.getId());
 			stmt.setString(2,  customer.getName());
-			
+			stmt.setString(3, customer.getId());
 			stmt.executeUpdate();
 		
 		} catch (SQLException e) {
