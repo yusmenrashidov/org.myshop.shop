@@ -1,9 +1,11 @@
 package org.myshop.shop.dao.jdbc;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -38,13 +40,13 @@ public class JdbcCustomerDaoTest {
 	    private PreparedStatement readPreparedStatementMock;
 	    
 	    @Mock
+	    private PreparedStatement getPreparedStatementMock;
+	    
+	    @Mock
 	    private PreparedStatement updatePreparedStatementMock;
 	    
 	    @Mock
 	    private PreparedStatement deletePreparedStatementMock;
-	    
-	    @Mock
-	    private List<Customer> listMock;
 
 	    @Mock
 	    private JdbcCustomerDao customerDaoMock;
@@ -55,14 +57,21 @@ public class JdbcCustomerDaoTest {
 	        
 	        when(sqlConnectionMock.prepareStatement(JdbcCustomerDao.CREATE_QUERY)).thenReturn(createPreparedStatementMock);
 	        when(sqlConnectionMock.prepareStatement(JdbcCustomerDao.READ_QUERY)).thenReturn(readPreparedStatementMock);
-	        when(sqlConnectionMock.prepareStatement(JdbcCustomerDao.GET_QUERY)).thenReturn(readPreparedStatementMock);
+	        when(sqlConnectionMock.prepareStatement(JdbcCustomerDao.GET_QUERY)).thenReturn(getPreparedStatementMock);
 	        when(sqlConnectionMock.prepareStatement(JdbcCustomerDao.UPDATE_QUERY)).thenReturn(updatePreparedStatementMock);
 	        when(sqlConnectionMock.prepareStatement(JdbcCustomerDao.DELETE_QUERY)).thenReturn(deletePreparedStatementMock);
 	        
 	        when(readPreparedStatementMock.executeQuery()).thenReturn(rsMock);
+	        when(getPreparedStatementMock.executeQuery()).thenReturn(rsMock);
+	        
+	        when(rsMock.next()).thenReturn(Boolean.TRUE).thenReturn(Boolean.FALSE);
+	        
 	        when(customerMock.getId()).thenReturn(TEST_CUSTOMER_ID);
 	        when(customerMock.getName()).thenReturn(TEST_CUSTOMER_NAME);
-	       
+	        
+	        when(rsMock.getString("id")).thenReturn(TEST_CUSTOMER_ID);
+	        when(rsMock.getString("name")).thenReturn(TEST_CUSTOMER_NAME);
+	               
 	        customerDaoMock = new JdbcCustomerDao(sqlConnectionMock);
 	    }
 	    
@@ -79,22 +88,37 @@ public class JdbcCustomerDaoTest {
 	    
 	    @Test
 	    public void testRead() throws SQLException{
-	    	customerDaoMock.read();
+	    List<Customer>listMock = customerDaoMock.read();
 	    	
-	    	verify(sqlConnectionMock).prepareStatement(anyString());
+	    	verify(sqlConnectionMock).prepareStatement(JdbcCustomerDao.READ_QUERY);
 	    	verify(readPreparedStatementMock).executeQuery();
-	    	verify(rsMock).next();
+	    	verify(rsMock, times(2)).next();
 	    	
-	    	assertNotNull(customerDaoMock.read());
+	    	assertNotNull(listMock);
+	
+	    	 customerMock = listMock.get(0);
+	    	
+	    	assertNotNull(customerMock);
+	    	
+	    	assertEquals(TEST_CUSTOMER_ID, customerMock.getId());
+	    	assertEquals(TEST_CUSTOMER_NAME, customerMock.getName());
+	    	
 	    }
 	    
 	    @Test
 	    public void testGet() throws SQLException{
-	    	customerDaoMock.get(customerMock.getId());
+	    	Customer customer = customerDaoMock.get(TEST_CUSTOMER_ID);
 	    	
 	    	verify(sqlConnectionMock).prepareStatement(JdbcCustomerDao.GET_QUERY);
-	    	verify(readPreparedStatementMock).setString(1, customerMock.getId());
-	    	verify(readPreparedStatementMock).executeQuery();
+	    	verify(getPreparedStatementMock).setString(1, TEST_CUSTOMER_ID);
+	    	verify(getPreparedStatementMock).executeQuery();
+	    	verify(rsMock).next();
+	    	
+	    	assertNotNull(customer);
+	    	
+	    	assertEquals(TEST_CUSTOMER_ID, customer.getId());
+	    	assertEquals(TEST_CUSTOMER_NAME, customer.getName());
+	    	
 	     }
 	    
 	    @Test

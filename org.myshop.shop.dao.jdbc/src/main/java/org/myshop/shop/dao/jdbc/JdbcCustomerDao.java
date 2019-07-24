@@ -45,6 +45,7 @@ public class JdbcCustomerDao implements CustomerDao {
 	public List<Customer> read() {
 		
 		List<Customer> list = new ArrayList<Customer>();
+		Customer customer = new Customer();
 		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
@@ -52,7 +53,10 @@ public class JdbcCustomerDao implements CustomerDao {
 		
 			while(rs.next()) {
 				
-				list.add(this.get(rs.getString("id")));
+				customer.setId(rs.getString("id"));
+				customer.setName(rs.getString("name"));
+				
+				list.add(customer);
 			}
 		
 		} catch (SQLException e) {
