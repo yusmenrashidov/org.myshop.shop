@@ -172,8 +172,7 @@ public class JdbcItemDaoTest {
     	
     	verify(getItemPreparedStatementMock).setString(1, item.getId());
     	verify(getItemPreparedStatementMock).executeQuery(); 
-    		
-    	assertEquals(readItemResultSetMock.next(), true);
+    	verify(readItemResultSetMock).next();
     	
     	assertEquals(TEST_ITEM_ID, item.getId());
     	assertEquals(TEST_ITEM_NAME, item.getName());

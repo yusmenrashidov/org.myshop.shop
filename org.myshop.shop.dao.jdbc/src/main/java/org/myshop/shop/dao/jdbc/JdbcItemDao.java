@@ -89,6 +89,7 @@ public class JdbcItemDao implements ItemDao {
 			
 			ResultSet resultSet = stmt.executeQuery();
 			
+			if(resultSet.next()) {
 			item.setId(resultSet.getString("id"));
 			item.setName(resultSet.getString("name"));
 			item.setDescription(resultSet.getString("description"));
@@ -96,7 +97,7 @@ public class JdbcItemDao implements ItemDao {
 			item.setItemCategory(itemCategoryDao.get(resultSet.getString("itemCategory_id")));
 			item.setPurchasePrice(resultSet.getFloat("purchasePrice"));
 			item.setSalesPrice(resultSet.getFloat("salesPrice"));
-			
+			}
     	} catch (SQLException e) {
 			
     		return null;
