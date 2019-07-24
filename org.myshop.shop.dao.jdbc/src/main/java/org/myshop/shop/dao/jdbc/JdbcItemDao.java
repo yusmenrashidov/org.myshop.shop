@@ -87,16 +87,17 @@ public class JdbcItemDao implements ItemDao {
 			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
 			stmt.setString(1, id);
 			
-			ResultSet rs = stmt.executeQuery();
+			ResultSet resultSet = stmt.executeQuery();
 			
-			item.setId(rs.getString("id"));
-			item.setName(rs.getString("name"));
-			item.setDescription(rs.getString("description"));
-			item.setProductGroup(productGroupDao.get(rs.getString("productGroup_id")));
-			item.setItemCategory(itemCategoryDao.get(rs.getString("itemCategory_id")));
-			item.setPurchasePrice(rs.getFloat("purchasePrice"));
-			item.setSalesPrice(rs.getFloat("salesPrice"));
-			
+			if(resultSet.next()) {
+			item.setId(resultSet.getString("id"));
+			item.setName(resultSet.getString("name"));
+			item.setDescription(resultSet.getString("description"));
+			item.setProductGroup(productGroupDao.get(resultSet.getString("productGroup_id")));
+			item.setItemCategory(itemCategoryDao.get(resultSet.getString("itemCategory_id")));
+			item.setPurchasePrice(resultSet.getFloat("purchasePrice"));
+			item.setSalesPrice(resultSet.getFloat("salesPrice"));
+			}
     	} catch (SQLException e) {
 			
     		return null;
