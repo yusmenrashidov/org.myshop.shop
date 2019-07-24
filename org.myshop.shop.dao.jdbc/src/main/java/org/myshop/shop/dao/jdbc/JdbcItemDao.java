@@ -48,8 +48,6 @@ public class JdbcItemDao implements ItemDao {
         	
     	List<Item>list = new ArrayList<Item>();
     	
-    	Item item = new Item();
-    	
     	JdbcProductGroupDao productGroupDao = new JdbcProductGroupDao(sqlConnection);
     	JdbcItemCategoryDao itemCategoryDao = new JdbcItemCategoryDao(sqlConnection);
     	
@@ -59,6 +57,7 @@ public class JdbcItemDao implements ItemDao {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			
 			while(resultSet.next()) {
+				Item item = new Item();
 				item.setId(resultSet.getString("id"));
 				item.setName(resultSet.getString("name"));
 				item.setDescription(resultSet.getString("description"));
