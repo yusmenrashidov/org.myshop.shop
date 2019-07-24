@@ -73,8 +73,10 @@ public class JdbcCustomerDao implements CustomerDao {
 			
 			ResultSet rs = stmt.executeQuery();
 			
+			if(rs.next()) {
 			customer.setId(rs.getString("id"));
 			customer.setName(rs.getString("name"));
+			}
 			
 		} catch (SQLException e) {
 			return null;
@@ -93,7 +95,7 @@ public class JdbcCustomerDao implements CustomerDao {
 			
 			stmt.setString(1, customer.getId());
 			stmt.setString(2,  customer.getName());
-			
+			stmt.setString(3, customer.getId());
 			stmt.executeUpdate();
 		
 		} catch (SQLException e) {
