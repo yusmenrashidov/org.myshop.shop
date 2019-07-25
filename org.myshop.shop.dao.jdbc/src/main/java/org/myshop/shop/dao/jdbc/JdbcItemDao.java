@@ -76,8 +76,7 @@ public class JdbcItemDao implements ItemDao {
     }
 
     public Item get(String id) {
-      
-    	Item item = new Item();
+    	Item item = null; 
     	
     	JdbcProductGroupDao productGroupDao = new JdbcProductGroupDao(sqlConnection);
     	JdbcItemCategoryDao itemCategoryDao = new JdbcItemCategoryDao(sqlConnection);
@@ -89,16 +88,16 @@ public class JdbcItemDao implements ItemDao {
 			ResultSet resultSet = stmt.executeQuery();
 			
 			if(resultSet.next()) {
-			item.setId(resultSet.getString("id"));
-			item.setName(resultSet.getString("name"));
-			item.setDescription(resultSet.getString("description"));
-			item.setProductGroup(productGroupDao.get(resultSet.getString("productGroup_id")));
-			item.setItemCategory(itemCategoryDao.get(resultSet.getString("itemCategory_id")));
-			item.setPurchasePrice(resultSet.getFloat("purchasePrice"));
-			item.setSalesPrice(resultSet.getFloat("salesPrice"));
+			    item = new Item();
+    			item.setId(resultSet.getString("id"));
+    			item.setName(resultSet.getString("name"));
+    			item.setDescription(resultSet.getString("description"));
+    			item.setProductGroup(productGroupDao.get(resultSet.getString("productGroup_id")));
+    			item.setItemCategory(itemCategoryDao.get(resultSet.getString("itemCategory_id")));
+    			item.setPurchasePrice(resultSet.getFloat("purchasePrice"));
+    			item.setSalesPrice(resultSet.getFloat("salesPrice"));
 			}
     	} catch (SQLException e) {
-			
     		return null;
 		}
     	
