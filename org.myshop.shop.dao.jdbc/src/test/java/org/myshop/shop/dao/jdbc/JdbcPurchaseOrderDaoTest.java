@@ -20,10 +20,6 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import org.myshop.shop.model.Customer;
-import org.myshop.shop.model.Item;
-import org.myshop.shop.model.ItemCategory;
-import org.myshop.shop.model.ProductGroup;
 import org.myshop.shop.model.PurchaseOrder;
 
 
@@ -31,7 +27,7 @@ public class JdbcPurchaseOrderDaoTest {
 	
 	 private static final String TEST_PURCHASE_ORDER_ID = "test_customer_id";
      private static final String TEST_PURCHASE_ORDER_NUMBER = "test_customer_name";
-	 private static final Date TEST_PURCHASE_ORDER_CREATED = new Date(0);  
+	 private static final Date TEST_PURCHASE_ORDER_CREATED = (java.sql.Date)new Date(0);  
      
 	    @Mock
 	    private Connection sqlConnectionMock;

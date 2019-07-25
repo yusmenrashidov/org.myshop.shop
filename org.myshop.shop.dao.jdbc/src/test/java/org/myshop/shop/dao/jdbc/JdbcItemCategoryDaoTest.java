@@ -3,6 +3,7 @@ package org.myshop.shop.dao.jdbc;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyString;
 
 import java.sql.Connection;
@@ -98,6 +99,36 @@ public class JdbcItemCategoryDaoTest {
     	verify(preparedStatementMock).setString(3, itemCategoryMock.getDescription());
     	verify(preparedStatementMock).setString(4, itemCategoryMock.getId());
     	verify(preparedStatementMock).executeUpdate();
+    }
+    
+    @Test
+    public void testRead_executeQueryError() throws SQLException{
+    	when(sqlConnectionMock.prepareStatement(JdbcItemCategoryDao.READ_QUERY)).thenReturn(preparedStatementMock);
+    	when(preparedStatementMock.executeQuery()).thenThrow(new SQLException());
+    	
+    	List<ItemCategory> itemCategoryList = itemCategoryDaoMock.read();
+    	
+    	assertNull(itemCategoryList);
+    }
+    
+    @Test
+    public void testGet_executeQueryError() throws SQLException{
+    	when(sqlConnectionMock.prepareStatement(JdbcItemCategoryDao.GET_QUERY)).thenReturn(preparedStatementMock);
+    	when(preparedStatementMock.executeQuery()).thenThrow(new SQLException());
+    	
+    	ItemCategory itemCategory = itemCategoryDaoMock.get(TEST_ITEM_CATEGORY_ID);
+    	
+    	assertNull(itemCategory);
+    }
+    
+    @Test
+    public void testUpdate_executeQueryError() throws SQLException{
+    	when(sqlConnectionMock.prepareStatement(JdbcItemCategoryDao.UPDATE_QUERY)).thenReturn(preparedStatementMock);
+    	when(preparedStatementMock.executeUpdate()).thenThrow(new SQLException());
+    	
+    	ItemCategory itemCategory = itemCategoryDaoMock.update(itemCategoryMock);
+    	
+    	assertNull(itemCategory);
     }
     
     @Test
