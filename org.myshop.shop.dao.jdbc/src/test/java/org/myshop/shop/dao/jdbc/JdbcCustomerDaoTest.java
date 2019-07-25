@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -132,6 +133,34 @@ public class JdbcCustomerDaoTest {
 	    	
 	    	verify(updatePreparedStatementMock).executeUpdate();
 	    }
+	    
+	    @Test
+	    public void testRead_executeQuerryError() throws SQLException{
+	    	when(readPreparedStatementMock.executeQuery()).thenThrow(new SQLException());
+	    	
+	    	List <Customer> customerList = customerDaoMock.read();
+	    	
+	    	assertNull(customerList);
+	    }
+	    
+	    @Test
+	    public void testGet_executeQuerryError() throws SQLException{
+	    	when(getPreparedStatementMock.executeQuery()).thenThrow(new SQLException());
+	    	
+	    	Customer customer = customerDaoMock.get(TEST_CUSTOMER_ID);
+	    	
+	    	assertNull(customer);
+	    }
+	    
+	    @Test
+	    public void testUpdate_executeQuerryError() throws SQLException{
+	    	when(updatePreparedStatementMock.executeUpdate()).thenThrow(new SQLException());
+	    	
+	    	Customer customer = customerDaoMock.update(customerMock);
+	    	
+	    	assertNull(customer);
+	    }
+	    
 	    
 	    @Test
 	    public void testDelete() throws SQLException{
