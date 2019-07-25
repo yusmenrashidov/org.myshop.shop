@@ -2,11 +2,11 @@ package org.myshop.shop.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
+import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.anyString;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +25,7 @@ import org.myshop.shop.model.ProductGroup;
 public class JdbcItemDaoTest {
 
     private static final String TEST_ITEM_ID = "test_item_id";
+    private static final String NON_EXISTING_ITEM_ID = "non_existing_item_id";
     private static final String TEST_ITEM_NAME = "test_item_name";
     private static final String TEST_ITEM_DESCRIPTION = "test_item_description";
     private static final String TEST_PRODUCT_GROUP_ID = "test_product_group_id";
@@ -57,10 +58,16 @@ public class JdbcItemDaoTest {
     private ResultSet itemCategoryResulSetMock;
     
     @Mock
+    private ResultSet emptyResultSetMock;
+    
+    @Mock
     private PreparedStatement preparedStatementMock;
     
     @Mock
     private PreparedStatement readItemPreparedStatementMock;
+    
+    @Mock
+    private PreparedStatement emptyResultPreparedStatementMock;
     
     @Mock
     private PreparedStatement getItemPreparedStatementMock;
@@ -87,12 +94,13 @@ public class JdbcItemDaoTest {
         when(sqlConnectionMock.prepareStatement(JdbcProductGroupDao.GET_QUERY)).thenReturn(getProductGroupPreparedStatementMock);
         when(sqlConnectionMock.prepareStatement(JdbcItemCategoryDao.GET_QUERY)).thenReturn(getItemCategoryPreparedStatementMock);
         
-        
         when(readItemPreparedStatementMock.executeQuery()).thenReturn(readItemResultSetMock);
         when(getItemPreparedStatementMock.executeQuery()).thenReturn(readItemResultSetMock);
         when(getProductGroupPreparedStatementMock.executeQuery()).thenReturn(productGroupResultSetMock);
         when(getItemCategoryPreparedStatementMock.executeQuery()).thenReturn(itemCategoryResulSetMock);
-        
+        when(emptyResultPreparedStatementMock.executeQuery()).thenReturn(emptyResultSetMock);
+
+        when(emptyResultSetMock.next()).thenReturn(Boolean.FALSE);
         
         when(readItemResultSetMock.next()).thenReturn(Boolean.TRUE).thenReturn(Boolean.FALSE);
         
@@ -186,6 +194,15 @@ public class JdbcItemDaoTest {
     	assertEquals(TEST_PURCHASE_PRICE, item.getPurchasePrice(), 0f);
     	
      }
+    
+    @Test
+    public void testGet_itemNotFound() throws SQLException {
+        when(sqlConnectionMock.prepareStatement(JdbcItemDao.GET_QUERY)).thenReturn(emptyResultPreparedStatementMock);
+        
+        Item item = itemDao.get(NON_EXISTING_ITEM_ID);
+        
+        assertNull("Result should be null when item does not exist", item);
+    }
     
     @Test
     public void testUpdate() throws SQLException{
