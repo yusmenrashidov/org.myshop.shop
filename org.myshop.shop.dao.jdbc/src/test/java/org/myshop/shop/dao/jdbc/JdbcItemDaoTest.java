@@ -213,6 +213,26 @@ public class JdbcItemDaoTest {
     	assertNull(item);
     }
     
+    @Test
+    public void testRead_executeQuerryError() throws SQLException{
+    	when(readItemPreparedStatementMock.executeQuery()).thenThrow(new SQLException());
+    	
+    	List<Item> itemList = itemDao.read();
+    	
+    	assertNull(itemList);
+    	
+    }
+    
+    @Test
+    public void testUpdate_executeQuerryError() throws SQLException{
+    	when(sqlConnectionMock.prepareStatement(JdbcItemDao.UPDATE_QUERY)).thenReturn(preparedStatementMock);
+    	when(preparedStatementMock.executeUpdate()).thenThrow(new SQLException());
+    	
+    	Item item = itemDao.update(itemMock);
+    	
+    	assertNull(item);
+    }
+    
     
     @Test
     public void testUpdate() throws SQLException{
