@@ -57,7 +57,7 @@ public class JdbcPurchaseOrderDao implements PurchaseOrderDao {
 				
 				purchaseOrder.setId(resultSet.getString("id"));
 				purchaseOrder.setNumber(resultSet.getString("number"));
-				purchaseOrder.setCreated( (Date) resultSet.getDate("created"));
+				purchaseOrder.setCreated( (java.util.Date) resultSet.getDate("created"));
 				
 				list.add(purchaseOrder);
 			}
@@ -82,7 +82,7 @@ public class JdbcPurchaseOrderDao implements PurchaseOrderDao {
 			if(resultSet.next()) {
 				purchaseOrder.setId(resultSet.getString("id"));
 				purchaseOrder.setNumber(resultSet.getString("number"));
-				purchaseOrder.setCreated( (Date) resultSet.getDate("created"));
+				purchaseOrder.setCreated( (java.util.Date) resultSet.getDate("created"));
 			}
 			
 		} catch (SQLException e) {
