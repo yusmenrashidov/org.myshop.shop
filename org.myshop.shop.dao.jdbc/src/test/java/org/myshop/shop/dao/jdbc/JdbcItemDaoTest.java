@@ -206,14 +206,11 @@ public class JdbcItemDaoTest {
     
     @Test
     public void testGet_executeQuerryError() throws SQLException {
-    	    	
-    	when(sqlConnectionMock.prepareStatement(JdbcItemDao.GET_QUERY)).thenReturn(readItemPreparedStatementMock);
-    	when(readItemPreparedStatementMock.executeQuery()).thenThrow(new SQLException());
+    	when(getItemPreparedStatementMock.executeQuery()).thenThrow(new SQLException());
     	
     	Item item = itemDao.get(TEST_ITEM_ID);
     	
     	assertNull(item);
-    	
     }
     
     
