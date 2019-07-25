@@ -205,6 +205,18 @@ public class JdbcItemDaoTest {
     }
     
     @Test
+    public void testGet_executeQuerryError() throws SQLException {
+    	
+    	when(itemDao.get(TEST_ITEM_ID)).thenThrow(new SQLException());
+    	
+    	Item item = itemDao.get(TEST_ITEM_ID);
+    	
+    	assertNull(item);
+    	
+    }
+    
+    
+    @Test
     public void testUpdate() throws SQLException{
     	itemDao.update(itemMock);
     	
