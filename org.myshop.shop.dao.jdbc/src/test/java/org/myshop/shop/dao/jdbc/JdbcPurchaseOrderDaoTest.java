@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jdbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,8 +23,8 @@ import org.myshop.shop.model.PurchaseOrder;
 
 public class JdbcPurchaseOrderDaoTest {
 	
-	 private static final String TEST_PURCHASE_ORDER_ID = "test_customer_id";
-     private static final String TEST_PURCHASE_ORDER_NUMBER = "test_customer_name";
+	 private static final String TEST_PURCHASE_ORDER_ID = "test_purchaseOrder_id";
+     private static final String TEST_PURCHASE_ORDER_NUMBER = "test_purchaseOrder_number";
 	 private static final Date TEST_PURCHASE_ORDER_CREATED = new Date(0);  
      
 	    @Mock
@@ -73,7 +74,7 @@ public class JdbcPurchaseOrderDaoTest {
 	        when(purchaseOrderMock.getCreated()).thenReturn(TEST_PURCHASE_ORDER_CREATED);
 	        
 	        when(rsMock.getString("id")).thenReturn(TEST_PURCHASE_ORDER_ID);
-	        when(rsMock.getString("name")).thenReturn(TEST_PURCHASE_ORDER_NUMBER);
+	        when(rsMock.getString("number")).thenReturn(TEST_PURCHASE_ORDER_NUMBER);
 	        when(rsMock.getDate("created")).thenReturn(TEST_PURCHASE_ORDER_CREATED);
 	               
 	        purchaseOrderDaoMock = new JdbcPurchaseOrderDao(sqlConnectionMock);
@@ -103,11 +104,12 @@ public class JdbcPurchaseOrderDaoTest {
 	
 	    	 purchaseOrderMock = listMock.get(0);
 	    	
+	    	assertNotNull(listMock);
 	    	assertNotNull(purchaseOrderMock);
 	    	
-//	    	assertEquals(TEST_PURCHASE_ORDER_ID, purchaseOrderMock.getId());
-//	    	assertEquals(TEST_PURCHASE_ORDER_NUMBER, purchaseOrderMock.getNumber());
-//	    	assertEquals(TEST_PURCHASE_ORDER_CREATED, purchaseOrderMock.getCreated());
+	    	assertEquals(TEST_PURCHASE_ORDER_ID, purchaseOrderMock.getId());
+	    	assertEquals(TEST_PURCHASE_ORDER_NUMBER, purchaseOrderMock.getNumber());
+	    	assertEquals(TEST_PURCHASE_ORDER_CREATED, purchaseOrderMock.getCreated());
 	    	
 	    }
 	    
@@ -122,9 +124,9 @@ public class JdbcPurchaseOrderDaoTest {
 	    	
 	    	assertNotNull(purchaseOrder);
 	    	
-//	    	assertEquals(TEST_PURCHASE_ORDER_ID, purchaseOrder.getId());
-//	    	assertEquals(TEST_PURCHASE_ORDER_NUMBER, purchaseOrder.getNumber());
-	    	
+	    	assertEquals(TEST_PURCHASE_ORDER_ID, purchaseOrder.getId());
+	    	assertEquals(TEST_PURCHASE_ORDER_NUMBER, purchaseOrder.getNumber());
+	    	assertEquals(TEST_PURCHASE_ORDER_CREATED, purchaseOrder.getCreated());
 	     }
 	    
 	    @Test
@@ -137,6 +139,33 @@ public class JdbcPurchaseOrderDaoTest {
 	    	verify(updatePreparedStatementMock).setDate(3, (java.sql.Date) purchaseOrderMock.getCreated());
 	    	
 	    	verify(updatePreparedStatementMock).executeUpdate();
+	    }
+	    
+	    @Test
+	    public void testGet_executeQueryError() throws SQLException{
+	    	when(getPreparedStatementMock.executeQuery()).thenThrow(new SQLException());
+	    	
+	    	PurchaseOrder purchaseOrder = purchaseOrderDaoMock.get(TEST_PURCHASE_ORDER_ID);
+	    	
+	    	assertNull(purchaseOrder);
+	    }
+	    
+	    @Test
+	    public void testRead_executeQueryError() throws SQLException{
+	    	when(readPreparedStatementMock.executeQuery()).thenThrow(new SQLException());
+	    	
+	    	List<PurchaseOrder> purchaseOrderList = purchaseOrderDaoMock.read();
+	    	
+	    	assertNull(purchaseOrderList);
+	    }
+	    
+	    @Test
+	    public void testUpdate_executeQueryError() throws SQLException{
+	    	when(updatePreparedStatementMock.executeUpdate()).thenThrow(new SQLException());
+	    	
+	    	PurchaseOrder purchaseOrder = purchaseOrderDaoMock.update(purchaseOrderMock);
+	    	
+	    	assertNull(purchaseOrder);
 	    }
 	    
 	    @Test
