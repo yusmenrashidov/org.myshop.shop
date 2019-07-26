@@ -56,10 +56,10 @@ public class JdbcSalesOrderLineDaoTest {
 	@Mock
 	private ResultSet itemResultSetMock;
 	
-    @Mock
-    private ResultSet productGroupResultSetMock;
+    	@Mock
+   	private ResultSet productGroupResultSetMock;
 	    
-    @Mock
+   	@Mock
 	private ResultSet itemCategoryResulSetMock;
 	
 	@Mock
@@ -87,18 +87,18 @@ public class JdbcSalesOrderLineDaoTest {
 	private static final int TEST_SALES_ORDER_LINE_AMMOUNT = (int) 123d;
 	
 	private static final String TEST_ITEM_ID = "test_item_id";
-    private static final String TEST_ITEM_NAME = "test_item_name";
-    private static final String TEST_ITEM_DESCRIPTION = "test_item_description";
+    	private static final String TEST_ITEM_NAME = "test_item_name";
+    	private static final String TEST_ITEM_DESCRIPTION = "test_item_description";
    
-    private static final String TEST_PRODUCT_GROUP_ID = "test_product_group_id";
-    private static final String TEST_PRODUCT_GROUP_DESCRIPTION = "test_product_group_description";
+    	private static final String TEST_PRODUCT_GROUP_ID = "test_product_group_id";
+    	private static final String TEST_PRODUCT_GROUP_DESCRIPTION = "test_product_group_description";
   
-    private static final String TEST_ITEM_CATEGORY_ID = "test_item_category_id";
-    private static final String TEST_ITEM_CATEGORY_NAME = "test_item_category_name";
-    private static final String TEST_ITEM_CATEGORY_DESCRIPTION = "test_item_category_description";
+    	private static final String TEST_ITEM_CATEGORY_ID = "test_item_category_id";
+    	private static final String TEST_ITEM_CATEGORY_NAME = "test_item_category_name";
+    	private static final String TEST_ITEM_CATEGORY_DESCRIPTION = "test_item_category_description";
    
-    private static final float TEST_PURCHASE_PRICE = 123.123f;
-    private static final float TEST_SALES_PRICE = 234.234f;
+    	private static final float TEST_PURCHASE_PRICE = 123.123f;
+    	private static final float TEST_SALES_PRICE = 234.234f;
 		
     @Before
     public void setup() throws SQLException {
