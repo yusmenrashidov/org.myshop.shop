@@ -9,7 +9,7 @@ public interface PostedSalesOrderDao {
 	
 	public List<PostedSalesOrder> read();
 	
-	public PostedSalesOrder getPostedPurchaseOrder(String id);
+	public PostedSalesOrder get(String id);
 	
 	public PostedSalesOrder update(PostedSalesOrder order);
 	
