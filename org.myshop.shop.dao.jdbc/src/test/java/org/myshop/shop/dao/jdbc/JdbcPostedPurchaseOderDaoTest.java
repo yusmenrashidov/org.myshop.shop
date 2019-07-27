@@ -24,7 +24,7 @@ import org.myshop.shop.model.PostedPurchaseOrder;
 public class JdbcPostedPurchaseOderDaoTest {
 
 	 private static final String TEST_POSTED_PURCHASE_ORDER_ID = "test_postedPurchaseOrder_id";
-     private static final String TEST_POSTED_PURCHASE_ORDER_NUMBER = "test_postedPurchaseOrder_number";
+    	 private static final String TEST_POSTED_PURCHASE_ORDER_NUMBER = "test_postedPurchaseOrder_number";
 	 private static final Date TEST_POSTED_PURCHASE_ORDER_CREATED = new Date(0);  
      
 	    @Mock
