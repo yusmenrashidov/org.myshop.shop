@@ -30,6 +30,8 @@ public class ItemServlet extends HttpServlet {
 	    Item item = itemDeserializer.deserialize(requestBody);
 	    
 	    itemDao.create(item);
+	    
+	    response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
 	
     public IRequestBodyReader getRequestBodyReader() {

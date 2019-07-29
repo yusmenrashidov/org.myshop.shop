@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,6 +34,9 @@ public class ItemServletTest {
     private HttpServletRequest requestMock;
     
     @Mock
+    private HttpServletResponse responseMock;
+    
+    @Mock
     private Item itemMock;
     
     @Before
@@ -51,9 +55,11 @@ public class ItemServletTest {
     
     @Test
     public void testPut() {
-        itemServlet.doPut(requestMock, null);
+        itemServlet.doPut(requestMock, responseMock);
         
         verify(itemDaoMock).create(itemMock);
+        
+        verify(responseMock).setStatus(HttpServletResponse.SC_ACCEPTED);
     }
 }
 
