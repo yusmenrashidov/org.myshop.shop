@@ -10,7 +10,7 @@
   <groupId>org.myshop.shop.api.rest</groupId>
   <artifactId>org.myshop.shop.api.rest</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>org.myshop.shop.api.rest</name>
+  <name>org.myshop.shop - REST API</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
