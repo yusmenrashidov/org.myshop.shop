@@ -2,7 +2,6 @@ package org.org.myshop.shop.api.rest;
 
 import javax.servlet.http.HttpServlet;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
 
@@ -32,7 +31,7 @@ public class ItemServlet extends HttpServlet {
 			JdbcItemDao itemDao = new JdbcItemDao(sqlConnection);
 			
 					try {
-						itemDao.create(this.queryToObject(request));
+						itemDao.create(this.requestToObject(request));
 					} catch (IOException e) {
 					
 						e.printStackTrace();
@@ -41,7 +40,7 @@ public class ItemServlet extends HttpServlet {
 		
 	}
 	
-	public Item queryToObject(HttpServletRequest request) throws IOException {
+	public Item requestToObject(HttpServletRequest request) throws IOException {
 		
 		Item item = new Gson().fromJson(request.getReader(), Item.class);
 		
