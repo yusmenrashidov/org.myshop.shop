@@ -2,6 +2,7 @@ package org.org.myshop.shop.api.rest;
 
 import javax.servlet.http.HttpServlet;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Connection;
 
@@ -30,18 +31,31 @@ public class ItemServlet extends HttpServlet {
 		
 			JdbcItemDao itemDao = new JdbcItemDao(sqlConnection);
 			
-			itemDao.create(this.queryToObject(request));
+			try {
+				itemDao.create(this.queryToObject(request));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		
 	}
 	
-	public Item queryToObject(HttpServletRequest request) {
+	public Item queryToObject(HttpServletRequest request) throws IOException {
 		
 		Item item = new Item();
 		
 		JdbcProductGroupDao productGroupDao = new JdbcProductGroupDao(sqlConnection);
 		JdbcItemCategoryDao itemCategoryDao = new JdbcItemCategoryDao(sqlConnection);
+	
+		 StringBuilder buffer = new StringBuilder();
+		 BufferedReader reader = request.getReader();
 		
-		String queryString = request.getQueryString();
+		String line;
+		
+		while((line = reader.readLine())!= null)
+				buffer.append(line);
+		
+		
+		String queryString = buffer.toString();
 		
 		String fieldsString [] = queryString.split("&");
 		
