@@ -1,6 +1,7 @@
 package org.org.myshop.shop.api.rest;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,12 +36,15 @@ public class ItemServlet extends HttpServlet {
 	    
 	     item = itemDeserializer.deserialize(requestBody);
 	    
+	     itemDao.create(item);
+	     
 		}catch(IOException e) {
-	    	response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+	    	response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 	    }
-		
-	    itemDao.create(item);
-	    
+		catch(NullPointerException e){
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	   
 	    response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
 	

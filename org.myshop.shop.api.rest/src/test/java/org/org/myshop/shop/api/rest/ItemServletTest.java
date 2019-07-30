@@ -72,7 +72,7 @@ public class ItemServletTest {
     	
     	itemServlet.doPut(requestMock, responseMock);
     	
-    	verify(responseMock).setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+    	verify(responseMock).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
     
     @Test
@@ -82,7 +82,18 @@ public class ItemServletTest {
     	
     	itemServlet.doPut(requestMock, responseMock);
     	
-    	verify(responseMock).setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+    	verify(responseMock).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
+    
+    @Test
+    public void testNullPointerException() throws NullPointerException, IOException{
+    	
+    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new NullPointerException());
+    	
+    	itemServlet.doPut(requestMock, responseMock);
+    	
+    	verify(responseMock).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    }
+    
 }
 

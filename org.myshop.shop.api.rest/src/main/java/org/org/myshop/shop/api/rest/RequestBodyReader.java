@@ -17,10 +17,11 @@ public class RequestBodyReader implements IRequestBodyReader {
     	
 			reader = request.getReader();
 		
-			while((requestLine = reader.readLine()) != null)
+			while((requestLine = reader.readLine()) != null) {
 				buffer.append(requestLine);
-    	
-        return buffer.toString();
+			}
+        
+			return buffer.toString();
     }
 
 }
