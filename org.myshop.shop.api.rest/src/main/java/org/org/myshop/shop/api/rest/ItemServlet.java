@@ -1,5 +1,7 @@
 package org.org.myshop.shop.api.rest;
 
+import java.io.IOException;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +27,18 @@ public class ItemServlet extends HttpServlet {
 	@Override
 	public void doPut(HttpServletRequest request, HttpServletResponse response) {
 	    
-	    String requestBody = requestBodyReader.readBody(request);
+		String requestBody;
+		Item item = null;
+		
+		try {
+	     requestBody = requestBodyReader.readBody(request);
 	    
-	    Item item = itemDeserializer.deserialize(requestBody);
+	     item = itemDeserializer.deserialize(requestBody);
 	    
+		}catch(IOException e) {
+	    	response.setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+	    }
+		
 	    itemDao.create(item);
 	    
 	    response.setStatus(HttpServletResponse.SC_ACCEPTED);

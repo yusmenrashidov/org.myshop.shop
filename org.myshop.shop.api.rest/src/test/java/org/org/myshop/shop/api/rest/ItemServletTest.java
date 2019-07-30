@@ -1,6 +1,9 @@
 package org.org.myshop.shop.api.rest;
 
 import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+
 import static org.mockito.Mockito.verify;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +43,7 @@ public class ItemServletTest {
     private Item itemMock;
     
     @Before
-    public void setup() {
+    public void setup() throws IOException {
         MockitoAnnotations.initMocks(this);
         
         when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
@@ -60,6 +63,26 @@ public class ItemServletTest {
         verify(itemDaoMock).create(itemMock);
         
         verify(responseMock).setStatus(HttpServletResponse.SC_ACCEPTED);
+    }
+    
+    @Test
+    public void testReadBodyFailed() throws IOException{
+    	
+    	when(requestBodyReaderMock.readBody(requestMock)).thenThrow(new IOException());
+    	
+    	itemServlet.doPut(requestMock, responseMock);
+    	
+    	verify(responseMock).setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
+    }
+    
+    @Test
+    public void testDeserializeJSONStringFailed() throws IOException{
+    	 
+    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new IOException());
+    	
+    	itemServlet.doPut(requestMock, responseMock);
+    	
+    	verify(responseMock).setStatus(HttpServletResponse.SC_EXPECTATION_FAILED);
     }
 }
 

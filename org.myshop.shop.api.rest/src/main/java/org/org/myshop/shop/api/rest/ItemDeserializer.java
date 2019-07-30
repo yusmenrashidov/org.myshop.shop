@@ -10,17 +10,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ItemDeserializer implements IItemDeserializer {
 
-    public Item deserialize(String itemJsonString) {
+    public Item deserialize(String itemJsonString) throws IOException{
        
     	Item item = null;
     	ObjectMapper mapper = new ObjectMapper();
     	
-    	try {
 			item = mapper.readValue(itemJsonString, Item.class);
-		} catch (IOException e) {
-			return null;
-		}
-    	
+		
         return item;
     }
 
