@@ -41,9 +41,7 @@ public class ItemServlet extends HttpServlet {
 		}catch(IOException e) {
 	    	response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 	    }
-		catch(NullPointerException e){
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}
+		
 	   
 	    response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
