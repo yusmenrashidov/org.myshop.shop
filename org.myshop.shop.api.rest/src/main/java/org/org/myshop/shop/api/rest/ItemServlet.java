@@ -53,7 +53,7 @@ public class ItemServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		
-			List <Item> itemList = new ArrayList<Item>();
+			List <Item> itemList;
 			itemList = itemDao.read();
 		
 			if(itemList == null) {
@@ -61,8 +61,10 @@ public class ItemServlet extends HttpServlet {
 			
 			}else if(itemList.isEmpty())
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-			else
-				response.setStatus(HttpServletResponse.SC_ACCEPTED);
+			else {
+				response.setStatus(HttpServletResponse.SC_OK);
+				
+			}
 	}
 	
 	

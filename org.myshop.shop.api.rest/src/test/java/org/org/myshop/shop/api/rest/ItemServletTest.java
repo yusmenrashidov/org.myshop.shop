@@ -85,7 +85,7 @@ public class ItemServletTest {
     	verify(itemDaoMock).read();
     	
     	
-    	verify(responseMock).setStatus(HttpServletResponse.SC_ACCEPTED);
+    	verify(responseMock).setStatus(HttpServletResponse.SC_OK);
     }
     
     @Test
