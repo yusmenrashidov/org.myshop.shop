@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
+import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
 import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
@@ -43,7 +44,7 @@ public class ItemServletTest {
     private Item itemMock;
     
     @Before
-    public void setup() throws IOException {
+    public void setup() throws IOException, ItemDeserializationException {
         MockitoAnnotations.initMocks(this);
         
         when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
@@ -76,13 +77,13 @@ public class ItemServletTest {
     }
     
     @Test
-    public void testDeserializeJSONStringFailed() throws IOException{
+    public void testDeserializeJSONStringFailed() throws IOException, ItemDeserializationException{
     	 
-    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new IOException());
+    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new ItemDeserializationException());
     	
     	itemServlet.doPut(requestMock, responseMock);
     	
-    	verify(responseMock).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    	verify(responseMock).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
     
 }
