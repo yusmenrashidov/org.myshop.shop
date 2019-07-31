@@ -1,7 +1,6 @@
 package org.org.myshop.shop.api.rest;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
