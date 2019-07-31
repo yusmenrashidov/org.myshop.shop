@@ -28,7 +28,7 @@ public class ItemServlet extends HttpServlet {
 	
 	private IItemDeserializer itemDeserializer;
 	
-	private IItemSerializer itemSerializer;
+	private ItemSerializer itemSerializer;
 	
 	private ItemDao itemDao;
 	
@@ -55,22 +55,24 @@ public class ItemServlet extends HttpServlet {
 	}
 	
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, NullPointerException {
 		
 			List <Item> itemList;
 			itemList = itemDao.read();
-		
+			
 			if(itemList == null) {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			
 			}else if(itemList.isEmpty())
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			else {
+				
 				PrintWriter printWriter = response.getWriter();
 				response.setContentType("application/json");
-			
-				printWriter.print(itemSerializer.serializeList(itemList));
+				
+				printWriter.write(itemSerializer.serializeList(itemList));
 				printWriter.flush();
+				printWriter.close();
 				
 				response.setStatus(HttpServletResponse.SC_OK);
 			}
@@ -95,7 +97,6 @@ public class ItemServlet extends HttpServlet {
     	if(itemSerializer == null) {
     		itemSerializer = new ItemSerializer();
     	}
-    	
     	return itemSerializer;
     }
     
@@ -118,7 +119,7 @@ public class ItemServlet extends HttpServlet {
         this.itemDao = itemDao;
     }
     
-    public void setItemSerializer(IItemSerializer itemSerializer) {
-    	this.itemSerializer = itemSerializer;
+    public void setItemSerializer(ItemSerializer itemSerializer) {
+    	this.itemSerializer = (ItemSerializer) itemSerializer;
     }
 }

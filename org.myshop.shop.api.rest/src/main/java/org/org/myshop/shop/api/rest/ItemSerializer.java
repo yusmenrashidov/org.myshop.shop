@@ -11,7 +11,9 @@ public class ItemSerializer implements IItemSerializer {
 
 	public String serializeList(List<Item> itemList) {
 		
-		String listToJson = new Gson().toJson(itemList);
+		Gson gson = new Gson(); 
+		
+		String listToJson = gson.toJson(itemList);
 		
 		return listToJson;
 	}

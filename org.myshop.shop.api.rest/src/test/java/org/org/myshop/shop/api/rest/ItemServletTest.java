@@ -68,7 +68,7 @@ public class ItemServletTest {
     }
     
     @Test
-    public void testPut() {
+    public void testPut() throws IOException{
         itemServlet.doPut(requestMock, responseMock);
         
         verify(itemDaoMock).create(itemMock);
@@ -77,7 +77,7 @@ public class ItemServletTest {
     }
     
     @Test
-    public void testGet() {
+    public void testGet() throws IOException, NullPointerException{
     	when(itemDaoMock.read()).thenReturn(itemListMock);
     	
     	itemServlet.doGet(requestMock, responseMock);
@@ -89,7 +89,7 @@ public class ItemServletTest {
     }
     
     @Test
-    public void testGetFailed() {
+    public void testGetFailed() throws IOException{
     	when(itemDaoMock.read()).thenReturn(null);
     	
     	itemServlet.doGet(requestMock, responseMock);
@@ -99,7 +99,7 @@ public class ItemServletTest {
     }
     
     @Test
-    public void testEmptyList() {
+    public void testEmptyList() throws IOException{
     	when(itemDaoMock.read()).thenReturn(Collections.<Item>emptyList());
     	
     	itemServlet.doGet(requestMock, responseMock);
