@@ -1,6 +1,7 @@
 package org.org.myshop.shop.api.rest;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
 import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
 import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
+import org.org.myshop.shop.api.rest.servlet.util.IItemSerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 
@@ -25,6 +27,8 @@ public class ItemServlet extends HttpServlet {
 	private IRequestBodyReader requestBodyReader;
 	
 	private IItemDeserializer itemDeserializer;
+	
+	private IItemSerializer itemSerializer;
 	
 	private ItemDao itemDao;
 	
@@ -51,7 +55,7 @@ public class ItemServlet extends HttpServlet {
 	}
 	
 	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response) {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 			List <Item> itemList;
 			itemList = itemDao.read();
@@ -62,8 +66,13 @@ public class ItemServlet extends HttpServlet {
 			}else if(itemList.isEmpty())
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			else {
-				response.setStatus(HttpServletResponse.SC_OK);
+				PrintWriter printWriter = response.getWriter();
+				response.setContentType("application/json");
+			
+				printWriter.print(itemSerializer.serializeList(itemList));
+				printWriter.flush();
 				
+				response.setStatus(HttpServletResponse.SC_OK);
 			}
 	}
 	
@@ -81,7 +90,15 @@ public class ItemServlet extends HttpServlet {
         }
         return itemDeserializer;
     }
-
+    
+    public IItemSerializer getItemSerializer() {
+    	if(itemSerializer == null) {
+    		itemSerializer = new ItemSerializer();
+    	}
+    	
+    	return itemSerializer;
+    }
+    
     public ItemDao getItemDao() {
         if (itemDao == null) {
             //TODO Init itemDao
@@ -99,5 +116,9 @@ public class ItemServlet extends HttpServlet {
 
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
+    }
+    
+    public void setItemSerializer(IItemSerializer itemSerializer) {
+    	this.itemSerializer = itemSerializer;
     }
 }
