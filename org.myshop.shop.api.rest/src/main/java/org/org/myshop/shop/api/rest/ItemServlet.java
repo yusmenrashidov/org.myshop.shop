@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
+import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
 import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
@@ -40,8 +41,9 @@ public class ItemServlet extends HttpServlet {
 	     
 		}catch(IOException e) {
 	    	response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	    } catch (ItemDeserializationException e) {
+	        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	    }
-		
 	   
 	    response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
