@@ -2,6 +2,7 @@ package org.org.myshop.shop.api.rest;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
@@ -52,14 +53,16 @@ public class ItemServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) {
 		
-			List <Item> itemList = null;
+			List <Item> itemList = new ArrayList<Item>();
 			itemList = itemDao.read();
 		
 			if(itemList == null) {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			}else
-				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 			
+			}else if(itemList.isEmpty())
+				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			else
+				response.setStatus(HttpServletResponse.SC_ACCEPTED);
 	}
 	
 	

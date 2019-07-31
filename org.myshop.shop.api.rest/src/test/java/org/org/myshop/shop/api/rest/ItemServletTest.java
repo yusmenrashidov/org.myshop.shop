@@ -3,6 +3,7 @@ package org.org.myshop.shop.api.rest;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -49,6 +50,9 @@ public class ItemServletTest {
     @Mock
     private Item itemMock;
     
+    @Mock
+    private List<Item> itemListMock;
+    
     @Before
     public void setup() throws IOException, ItemDeserializationException {
         MockitoAnnotations.initMocks(this);
@@ -74,12 +78,12 @@ public class ItemServletTest {
     
     @Test
     public void testGet() {
+    	when(itemDaoMock.read()).thenReturn(itemListMock);
+    	
     	itemServlet.doGet(requestMock, responseMock);
     	
-    	List<Item> itemList = itemDaoMock.read();
-    	verify(itemDaoMock, times(2)).read();
+    	verify(itemDaoMock).read();
     	
-    	assertNotNull(itemList);
     	
     	verify(responseMock).setStatus(HttpServletResponse.SC_ACCEPTED);
     }
@@ -90,13 +94,17 @@ public class ItemServletTest {
     	
     	itemServlet.doGet(requestMock, responseMock);
     	
-    	List<Item> itemList = itemDaoMock.read();
-    	
-    	verify(itemDaoMock, times(2)).read();
-    	
-    	assertNull(itemList);
     	
     	verify(responseMock).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    }
+    
+    @Test
+    public void testEmptyList() {
+    	when(itemDaoMock.read()).thenReturn(Collections.<Item>emptyList());
+    	
+    	itemServlet.doGet(requestMock, responseMock);
+    	
+    	verify(responseMock).setStatus(HttpServletResponse.SC_NO_CONTENT);
     }
     
     @Test
