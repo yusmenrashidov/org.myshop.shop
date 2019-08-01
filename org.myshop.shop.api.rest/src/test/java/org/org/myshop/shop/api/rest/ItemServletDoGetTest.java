@@ -19,9 +19,6 @@ import static org.mockito.Mockito.verify;
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
 
-import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
-
 public class ItemServletDoGetTest {
 	
 	private static final String TEST_JSON_STRING = "{}";
@@ -42,9 +39,6 @@ public class ItemServletDoGetTest {
     
     @Mock
     private PrintWriter printWriterMock;
-    
-    @Mock
-    private Item itemMock;
     
     @Mock
     private List<Item> itemListMock;
