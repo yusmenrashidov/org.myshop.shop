@@ -98,6 +98,28 @@ public class ItemServlet extends HttpServlet {
 				response.setStatus(HttpServletResponse.SC_OK);
 	}
 	
+	@Override
+	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		
+		String requestBody;
+		Item item = null;
+		
+		try {
+			requestBody = requestBodyReader.readBody(request);
+			item = itemDeserializer.deserialize(requestBody);
+		
+		} catch (ItemDeserializationException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		
+		if(item == null) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}else {
+			itemDao.delete(item);
+			response.setStatus(HttpServletResponse.SC_OK);
+		}
+		
+	}
 	
     public IRequestBodyReader getRequestBodyReader() {
         if (requestBodyReader == null) {
