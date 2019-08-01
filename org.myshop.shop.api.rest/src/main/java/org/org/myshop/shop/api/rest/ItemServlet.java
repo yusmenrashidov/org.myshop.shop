@@ -1,6 +1,10 @@
 package org.org.myshop.shop.api.rest;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +15,7 @@ import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
 import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
 import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
+import org.org.myshop.shop.api.rest.servlet.util.IItemSerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 
@@ -23,29 +28,55 @@ public class ItemServlet extends HttpServlet {
 	
 	private IItemDeserializer itemDeserializer;
 	
+	private ItemSerializer itemSerializer;
+	
 	private ItemDao itemDao;
 	
+    @Override
+    public void doPut(HttpServletRequest request, HttpServletResponse response) {
+
+        String requestBody;
+        Item item = null;
+
+        try {
+            requestBody = requestBodyReader.readBody(request);
+
+            item = itemDeserializer.deserialize(requestBody);
+
+            itemDao.create(item);
+
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ItemDeserializationException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+	
 	@Override
-	public void doPut(HttpServletRequest request, HttpServletResponse response) {
-	    
-		String requestBody;
-		Item item = null;
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, NullPointerException {
 		
-		try {
-	     requestBody = requestBodyReader.readBody(request);
-	    
-	     item = itemDeserializer.deserialize(requestBody);
-	    
-	     itemDao.create(item);
-	     
-		}catch(IOException e) {
-	    	response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	    } catch (ItemDeserializationException e) {
-	        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	    }
-	   
-	    response.setStatus(HttpServletResponse.SC_ACCEPTED);
+			List <Item> itemList;
+			itemList = itemDao.read();
+			
+			if(itemList == null) {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			
+			}else if(itemList.isEmpty())
+				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+			else {
+				
+				PrintWriter printWriter = response.getWriter();
+				response.setContentType("application/json");
+				
+				printWriter.write(itemSerializer.serializeList(itemList));
+				printWriter.flush();
+				printWriter.close();
+				
+				response.setStatus(HttpServletResponse.SC_OK);
+			}
 	}
+	
 	
     public IRequestBodyReader getRequestBodyReader() {
         if (requestBodyReader == null) {
@@ -60,7 +91,14 @@ public class ItemServlet extends HttpServlet {
         }
         return itemDeserializer;
     }
-
+    
+    public IItemSerializer getItemSerializer() {
+    	if(itemSerializer == null) {
+    		itemSerializer = new ItemSerializer();
+    	}
+    	return itemSerializer;
+    }
+    
     public ItemDao getItemDao() {
         if (itemDao == null) {
             //TODO Init itemDao
@@ -78,5 +116,9 @@ public class ItemServlet extends HttpServlet {
 
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
+    }
+    
+    public void setItemSerializer(ItemSerializer itemSerializer) {
+    	this.itemSerializer = (ItemSerializer) itemSerializer;
     }
 }

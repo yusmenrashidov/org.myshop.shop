@@ -1,10 +1,10 @@
 package org.org.myshop.shop.api.rest;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-
-import static org.mockito.Mockito.verify;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +19,7 @@ import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
 import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
-public class ItemServletTest {
+public class ItemServletDoPutTest {
     
     private static final String TEST_REQUEST_BODY = "test_request_body";
 
@@ -43,6 +43,9 @@ public class ItemServletTest {
     @Mock
     private Item itemMock;
     
+    @Mock
+    private List<Item> itemListMock;
+    
     @Before
     public void setup() throws IOException, ItemDeserializationException {
         MockitoAnnotations.initMocks(this);
@@ -58,33 +61,29 @@ public class ItemServletTest {
     }
     
     @Test
-    public void testPut() {
+    public void testReadBodyFailed() throws IOException{
+        when(requestBodyReaderMock.readBody(requestMock)).thenThrow(new IOException());
+        
         itemServlet.doPut(requestMock, responseMock);
         
-        verify(itemDaoMock).create(itemMock);
-        
-        verify(responseMock).setStatus(HttpServletResponse.SC_ACCEPTED);
-    }
-    
-    @Test
-    public void testReadBodyFailed() throws IOException{
-    	
-    	when(requestBodyReaderMock.readBody(requestMock)).thenThrow(new IOException());
-    	
-    	itemServlet.doPut(requestMock, responseMock);
-    	
-    	verify(responseMock).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        verify(responseMock).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
     
     @Test
     public void testDeserializeJSONStringFailed() throws IOException, ItemDeserializationException{
-    	 
-    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new ItemDeserializationException());
-    	
-    	itemServlet.doPut(requestMock, responseMock);
-    	
-    	verify(responseMock).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new ItemDeserializationException());
+        
+        itemServlet.doPut(requestMock, responseMock);
+        
+        verify(responseMock).setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
-    
+
+    @Test
+    public void testSuccess() throws IOException{
+        itemServlet.doPut(requestMock, responseMock);
+        
+        verify(itemDaoMock).create(itemMock);
+        verify(responseMock).setStatus(HttpServletResponse.SC_ACCEPTED);
+    }
 }
 
