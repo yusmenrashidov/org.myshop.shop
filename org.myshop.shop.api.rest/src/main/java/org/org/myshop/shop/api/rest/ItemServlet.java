@@ -32,27 +32,26 @@ public class ItemServlet extends HttpServlet {
 	
 	private ItemDao itemDao;
 	
-	@Override
-	public void doPut(HttpServletRequest request, HttpServletResponse response) {
-	    
-		String requestBody;
-		Item item = null;
-		
-		try {
-	     requestBody = requestBodyReader.readBody(request);
-	    
-	     item = itemDeserializer.deserialize(requestBody);
-	    
-	     itemDao.create(item);
-	     
-		}catch(IOException e) {
-	    	response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-	    } catch (ItemDeserializationException e) {
-	        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-	    }
-	   
-	    response.setStatus(HttpServletResponse.SC_ACCEPTED);
-	}
+    @Override
+    public void doPut(HttpServletRequest request, HttpServletResponse response) {
+
+        String requestBody;
+        Item item = null;
+
+        try {
+            requestBody = requestBodyReader.readBody(request);
+
+            item = itemDeserializer.deserialize(requestBody);
+
+            itemDao.create(item);
+
+            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } catch (IOException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        } catch (ItemDeserializationException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, NullPointerException {
