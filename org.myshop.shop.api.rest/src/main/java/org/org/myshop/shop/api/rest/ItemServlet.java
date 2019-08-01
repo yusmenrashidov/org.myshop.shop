@@ -77,6 +77,27 @@ public class ItemServlet extends HttpServlet {
 			}
 	}
 	
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException{
+			
+			String requestBody;
+			Item item = null;
+			
+			try {
+				requestBody = requestBodyReader.readBody(request);
+				item = itemDeserializer.deserialize(requestBody);
+				item = itemDao.update(item);
+				
+			} catch (ItemDeserializationException e) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			}
+			
+			if(item == null)
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			else
+				response.setStatus(HttpServletResponse.SC_OK);
+	}
+	
 	
     public IRequestBodyReader getRequestBodyReader() {
         if (requestBodyReader == null) {
