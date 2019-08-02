@@ -21,15 +21,12 @@ import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 public class ItemServletDoDeleteTest {
    
-	private static final String TEST_REQUEST_BODY = "test_request_body";
+	private static final String TEST_ITEM_ID = "test_item_id";
 
     private ItemServlet itemServlet;
     
     @Mock
-    private IRequestBodyReader requestBodyReaderMock;
-    
-    @Mock
-    private IItemDeserializer itemDeserializerMock;
+    private ItemUrlReader urlReaderMock;
     
     @Mock
     private ItemDao itemDaoMock;
@@ -49,36 +46,28 @@ public class ItemServletDoDeleteTest {
     	
     	itemServlet = new ItemServlet();
     	itemServlet.setItemDao(itemDaoMock);
-    	itemServlet.setItemDeserializer(itemDeserializerMock);
-    	itemServlet.setRequestBodyReader(requestBodyReaderMock);
+    	itemServlet.setItemUlrReader(urlReaderMock);
     	
-    	when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
-    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(itemMock);
-    	
+    	when(urlReaderMock.getIdFromQuery(requestMock)).thenReturn(TEST_ITEM_ID);
+    	when(itemDaoMock.get(TEST_ITEM_ID)).thenReturn(itemMock);	
     }
     
     @Test
-    public void testDeleteSuccess() throws IOException{
+    public void deleteSuccess() throws IOException{
+    	
     	itemServlet.doDelete(requestMock, responseMock);
     	
-    	verify(responseMock).setStatus(HttpServletResponse.SC_OK);	
+    	verify(responseMock).setStatus(HttpServletResponse.SC_OK);
     }
     
     @Test
-    public void itemDeserializationFailed() throws ItemDeserializationException, IOException {
-    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new ItemDeserializationException());
+    public void deleteFailed() throws IOException{
+    	
+    	when(itemDaoMock.get(TEST_ITEM_ID)).thenReturn(null);
     	
     	itemServlet.doDelete(requestMock, responseMock);
     	
-    	verify(responseMock).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    	verify(responseMock).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
     
-    @Test
-    public void itemNull() throws IOException, ItemDeserializationException{
-    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(null);
-    	
-    	itemServlet.doDelete(requestMock, responseMock);
-    	
-    	verify(responseMock).setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);	
-    }
 }

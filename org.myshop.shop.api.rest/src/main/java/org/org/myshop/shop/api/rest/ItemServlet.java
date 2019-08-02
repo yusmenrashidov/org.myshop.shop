@@ -30,6 +30,8 @@ public class ItemServlet extends HttpServlet {
 	
 	private ItemSerializer itemSerializer;
 	
+	private ItemUrlReader urlReader;
+	
 	private ItemDao itemDao;
 	
     @Override
@@ -101,16 +103,11 @@ public class ItemServlet extends HttpServlet {
 	@Override
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		
-		String requestBody;
+		String id;
 		Item item = null;
 		
-		try {
-			requestBody = requestBodyReader.readBody(request);
-			item = itemDeserializer.deserialize(requestBody);
-		
-		} catch (ItemDeserializationException e) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		}
+		id = urlReader.getIdFromQuery(request);
+		item = itemDao.get(id);
 		
 		if(item == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -163,5 +160,9 @@ public class ItemServlet extends HttpServlet {
     
     public void setItemSerializer(ItemSerializer itemSerializer) {
     	this.itemSerializer = (ItemSerializer) itemSerializer;
+    }
+    
+    public void setItemUlrReader(ItemUrlReader urlReader) {
+    	this.urlReader = urlReader;
     }
 }
