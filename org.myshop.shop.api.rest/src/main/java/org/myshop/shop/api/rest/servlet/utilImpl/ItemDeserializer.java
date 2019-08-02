@@ -1,4 +1,4 @@
-package org.org.myshop.shop.api.rest;
+package org.myshop.shop.api.rest.servlet.utilImpl;
 
 import org.myshop.shop.model.Item;
 import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;

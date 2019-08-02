@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
+import org.myshop.shop.api.rest.servlet.utilImpl.ItemSerializer;
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
 

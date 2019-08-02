@@ -1,4 +1,4 @@
-package org.org.myshop.shop.api.rest;
+package org.myshop.shop.api.rest.servlet.utilImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;

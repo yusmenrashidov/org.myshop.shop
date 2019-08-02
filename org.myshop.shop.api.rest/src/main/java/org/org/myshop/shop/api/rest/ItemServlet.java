@@ -11,8 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.myshop.shop.api.rest.servlet.utilImpl.ItemDeserializer;
+import org.myshop.shop.api.rest.servlet.utilImpl.ItemSerializer;
+import org.myshop.shop.api.rest.servlet.utilImpl.UrlReader;
+import org.myshop.shop.api.rest.servlet.utilImpl.RequestBodyReader;
+
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
+
 import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
 import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IItemSerializer;
@@ -30,7 +36,7 @@ public class ItemServlet extends HttpServlet {
 	
 	private ItemSerializer itemSerializer;
 	
-	private ItemUrlReader urlReader;
+	private UrlReader urlReader;
 	
 	private ItemDao itemDao;
 	
@@ -162,7 +168,7 @@ public class ItemServlet extends HttpServlet {
     	this.itemSerializer = (ItemSerializer) itemSerializer;
     }
     
-    public void setItemUlrReader(ItemUrlReader urlReader) {
+    public void setItemUlrReader(UrlReader urlReader) {
     	this.urlReader = urlReader;
     }
 }
