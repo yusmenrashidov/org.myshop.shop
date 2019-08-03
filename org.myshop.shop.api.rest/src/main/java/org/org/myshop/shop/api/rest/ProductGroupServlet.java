@@ -9,11 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.myshop.shop.api.rest.servlet.utilImpl.ProductGroupDeserializer;
-import org.myshop.shop.api.rest.servlet.utilImpl.ProductGroupSerializer;
-import org.myshop.shop.api.rest.servlet.utilImpl.RequestBodyReader;
-import org.myshop.shop.api.rest.servlet.utilImpl.UrlReader;
-
+import org.myshop.shop.api.rest.servlet.util.implementation.ProductGroupDeserializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.ProductGroupSerializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
+import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
 import org.myshop.shop.dao.ProductGroupDao;
 import org.myshop.shop.model.ProductGroup;
 import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;

@@ -11,11 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.myshop.shop.api.rest.servlet.utilImpl.ItemDeserializer;
-import org.myshop.shop.api.rest.servlet.utilImpl.ItemSerializer;
-import org.myshop.shop.api.rest.servlet.utilImpl.UrlReader;
-import org.myshop.shop.api.rest.servlet.utilImpl.RequestBodyReader;
-
+import org.myshop.shop.api.rest.servlet.util.implementation.ItemDeserializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.ItemSerializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
+import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
 
