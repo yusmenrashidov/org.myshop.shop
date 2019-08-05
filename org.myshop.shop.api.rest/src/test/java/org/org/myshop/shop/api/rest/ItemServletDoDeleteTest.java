@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
 import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
@@ -26,7 +26,7 @@ public class ItemServletDoDeleteTest {
     private ItemServlet itemServlet;
     
     @Mock
-    private ItemUrlReader urlReaderMock;
+    private UrlReader urlReaderMock;
     
     @Mock
     private ItemDao itemDaoMock;

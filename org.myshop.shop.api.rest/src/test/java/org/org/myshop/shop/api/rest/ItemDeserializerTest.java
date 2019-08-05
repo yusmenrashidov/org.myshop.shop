@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.myshop.shop.api.rest.servlet.util.implementation.ItemDeserializer;
 import org.myshop.shop.model.Item;
 import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
 

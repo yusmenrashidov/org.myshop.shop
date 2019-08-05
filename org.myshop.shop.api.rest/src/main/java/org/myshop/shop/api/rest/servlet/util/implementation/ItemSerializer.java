@@ -1,4 +1,4 @@
-package org.org.myshop.shop.api.rest;
+package org.myshop.shop.api.rest.servlet.util.implementation;
 
 import java.util.List;
 
