@@ -102,7 +102,8 @@ public class CustomerServlet extends HttpServlet{
 		
 		if(customer == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}else {
+		}
+		else {
 			response.setStatus(HttpServletResponse.SC_OK);	
 		}
 	}
