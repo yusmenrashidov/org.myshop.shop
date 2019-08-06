@@ -100,10 +100,11 @@ public class CustomerServlet extends HttpServlet{
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
-		if(customer == null)
+		if(customer == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		else
+		}else {
 			response.setStatus(HttpServletResponse.SC_OK);	
+		}
 	}
 	
 	@Override
