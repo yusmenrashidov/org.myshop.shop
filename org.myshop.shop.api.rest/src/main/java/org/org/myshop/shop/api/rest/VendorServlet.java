@@ -9,53 +9,52 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.myshop.shop.api.rest.servlet.util.implementation.CustomerDeserializer;
-import org.myshop.shop.api.rest.servlet.util.implementation.CustomerSerializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
+import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
+import org.myshop.shop.api.rest.servlet.util.implementation.VendorDeserializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.VendorSerializer;
 
-import org.myshop.shop.dao.CustomerDao;
-import org.myshop.shop.model.Customer;
+import org.myshop.shop.dao.VendorDao;
+import org.myshop.shop.model.Vendor;
 
-import org.org.myshop.shop.api.rest.servlet.exc.CustomerDeserializationException;
-
-import org.org.myshop.shop.api.rest.servlet.util.ICustomerDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.ICustomerSerializer;
+import org.org.myshop.shop.api.rest.servlet.exc.VendorDeserializationException;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
+import org.org.myshop.shop.api.rest.servlet.util.IVendorDeserializer;
+import org.org.myshop.shop.api.rest.servlet.util.IVendorSerializer;
 
-@WebServlet(name = "CustomerServlet", urlPatterns = {"/api/v1/model/customer"})
-public class CustomerServlet extends HttpServlet{
+@WebServlet(name = "vendorServlet", urlPatterns = {"/api/v1/model/customer"})
+public class VendorServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private IRequestBodyReader requestBodyReader;
 	
-	private ICustomerDeserializer customerDeserializer;
+	private IVendorDeserializer vendorDeserializer;
 	
-	private ICustomerSerializer customerSerializer;
+	private IVendorSerializer vendorSerializer;
 	
 	private IUrlReader urlReader;
 	
-	private CustomerDao customerDao;
-	
+	private VendorDao vendorDao;
 	
 	@Override
 	public void doPut(HttpServletRequest request, HttpServletResponse response) {
 		
 		String requestBody;
-		Customer customer = null;
+		Vendor vendor = null;
 		
 		try {
 			requestBody = requestBodyReader.readBody(request);
 			
-			customer = customerDeserializer.deserialize(requestBody);
+			vendor = vendorDeserializer.deserialize(requestBody);
 			
-			customerDao.create(customer);
+			vendorDao.create(vendor);
 			
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
 		}catch(IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		} catch(CustomerDeserializationException e) {
+		}catch(VendorDeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
@@ -63,21 +62,21 @@ public class CustomerServlet extends HttpServlet{
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
-		List <Customer> customerList;
-		customerList = customerDao.read();
+		List <Vendor> vendorList;
+		vendorList = vendorDao.read();
 		
-		if(customerList == null) {
+		if(vendorList == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		
-		}else if(customerList.isEmpty()) {
+		}else if(vendorList.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 		
 		}else {
-
+			
 			PrintWriter printWriter = response.getWriter();
 			response.setContentType("application/json");
 			
-			printWriter.write(customerSerializer.serializerList(customerList));
+			printWriter.write(vendorSerializer.serializeList(vendorList));
 			printWriter.flush();
 			printWriter.close();
 			
@@ -89,18 +88,18 @@ public class CustomerServlet extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		String requestBody;
-		Customer customer = null;
+		Vendor vendor = null;
 		
 		try {
 			requestBody = requestBodyReader.readBody(request);
-			customer = customerDeserializer.deserialize(requestBody);
-			customer = customerDao.update(customer);
-			
-		}catch(CustomerDeserializationException e) {
+			vendor = vendorDeserializer.deserialize(requestBody);
+			vendor = vendorDao.update(vendor);
+		
+		}catch(VendorDeserializationException e ) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
-		if(customer == null) {
+		if(vendor == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		
 		}else {
@@ -112,58 +111,65 @@ public class CustomerServlet extends HttpServlet{
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) {
 		
 		String id;
-		Customer customer = null;
+		Vendor vendor = null;
 		
 		id = urlReader.getIdFromQuery(request);
-		customer = customerDao.get(id);
+		vendor = vendorDao.get(id);
 		
-		if(customer == null) {
+		if(vendor == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		
 		}else {
-			customerDao.delete(customer);
+			vendorDao.delete(vendor);
 			response.setStatus(HttpServletResponse.SC_OK);
 		}
 	}
 	
-    public IRequestBodyReader getRequestBodyReader() {
+	public IRequestBodyReader getRequestBodyReader() {
         if (requestBodyReader == null) {
             requestBodyReader = new RequestBodyReader();
         }
         return requestBodyReader;
     }
-    
-    public ICustomerDeserializer getCustomerDeserializer() {
-        if (customerDeserializer == null) {
-        	customerDeserializer = new  CustomerDeserializer();
+	
+	public IVendorDeserializer getVendorDeserializer() {
+        if (vendorDeserializer == null) {
+        	vendorDeserializer = new  VendorDeserializer();
         }
-        return customerDeserializer;
+        return vendorDeserializer;
     }
-    
-    public ICustomerSerializer getCustomerSerializer() {
-    	if(customerSerializer == null) {
-    		customerSerializer = new CustomerSerializer();
+	
+	public IVendorSerializer getVendorSerializer() {
+    	if(vendorSerializer == null) {
+    		vendorSerializer = new VendorSerializer();
     	}
-    	return customerSerializer;
-    }  
-    
-    public void setRequestBodyReader(IRequestBodyReader requestBodyReader) {
+    	return vendorSerializer;
+    }
+	
+	public IUrlReader getUrlReader() {
+		if(urlReader == null) {
+			urlReader = new UrlReader();
+		}
+		return urlReader;
+	}
+	
+	public void setRequestBodyReader(IRequestBodyReader requestBodyReader) {
         this.requestBodyReader = requestBodyReader;
     }
-
-	public void setCustomerDeserializer(ICustomerDeserializer customerDeserializer) {
-		this.customerDeserializer = customerDeserializer;
+	
+	public void setVendorSerializer(IVendorSerializer vendorSerializer) {
+		this.vendorSerializer = vendorSerializer;
 	}
-
-	public void setCustomerSerializer(ICustomerSerializer customerSerializer) {
-		this.customerSerializer = customerSerializer;
+	
+	public void setVendorDeserializer(IVendorDeserializer vendorDeserializer) {
+		this.vendorDeserializer = vendorDeserializer;
 	}
-
+	
 	public void setUrlReader(IUrlReader urlReader) {
 		this.urlReader = urlReader;
 	}
-
-	public void setCustomerDao(CustomerDao customerDao) {
-		this.customerDao = customerDao;
+	
+	public void setVendorDao(VendorDao vendorDao) {
+		this.vendorDao = vendorDao;
 	}
 }
