@@ -9,15 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.myshop.shop.api.rest.servlet.util.implementation.PurchaseOrderDeserializer;
-import org.myshop.shop.api.rest.servlet.util.implementation.PurchaseOrderSerializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.Deserializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
+import org.myshop.shop.api.rest.servlet.util.implementation.Serializer;
+
 import org.myshop.shop.dao.PurchaseOrderDao;
 import org.myshop.shop.model.PurchaseOrder;
-import org.org.myshop.shop.api.rest.servlet.exc.PurchaseOrderDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IPurchaseOrderDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.IPurchaseOrderSerializer;
+
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
 
 @WebServlet(name ="PurchaseOrderServlet", urlPatterns = {"/api/v1/model/purchaseOrder"})
@@ -27,9 +29,9 @@ public class PurchaseOrderServlet extends HttpServlet{
 	
 	private IRequestBodyReader requestBodyReader;
 	
-	private IPurchaseOrderDeserializer purchaseOrderDeserializer;
+	private IDeserializer<PurchaseOrder> deserializer;
 	
-	private IPurchaseOrderSerializer purchaseOrderSerializer;
+	private ISerializer<PurchaseOrder> serializer;
 	
 	private IUrlReader urlReader;
 	
@@ -44,14 +46,14 @@ public class PurchaseOrderServlet extends HttpServlet{
 		try {
 			requestBody = requestBodyReader.readBody(request);
 			
-			purchaseOrder = purchaseOrderDeserializer.deserialize(requestBody);
+			purchaseOrder = deserializer.deserialize(requestBody);
 			
 			purchaseOrderDao.create(purchaseOrder);
 			
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
 		}catch(IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}catch(PurchaseOrderDeserializationException e) {
+		}catch(DeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
@@ -73,7 +75,7 @@ public class PurchaseOrderServlet extends HttpServlet{
 			PrintWriter printWriter = response.getWriter();
 			response.setContentType("application/json");
 			
-			printWriter.write(purchaseOrderSerializer.serializerList(purchaseOrderList));
+			printWriter.write(serializer.serializeList(purchaseOrderList));
 			printWriter.flush();
 			printWriter.close();
 			
@@ -89,10 +91,10 @@ public class PurchaseOrderServlet extends HttpServlet{
 		
 		try {
 			requestBody = requestBodyReader.readBody(request);
-			purchaseOrder = purchaseOrderDeserializer.deserialize(requestBody);
+			purchaseOrder = deserializer.deserialize(requestBody);
 			purchaseOrder = purchaseOrderDao.update(purchaseOrder);
 		
-		}catch(PurchaseOrderDeserializationException e) {
+		}catch(DeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
@@ -129,30 +131,30 @@ public class PurchaseOrderServlet extends HttpServlet{
         return requestBodyReader;
     }
 	
-	public IPurchaseOrderDeserializer getPurchaseOrderDeserializer() {
-		if(purchaseOrderDeserializer == null) {
-			purchaseOrderDeserializer = new PurchaseOrderDeserializer();
+	public IDeserializer<PurchaseOrder> getDeserializer() {
+		if(deserializer == null) {
+			deserializer = new Deserializer<PurchaseOrder>(PurchaseOrder.class);
 		}
-		return purchaseOrderDeserializer;
+		return deserializer;
 	}
 	
-	public IPurchaseOrderSerializer getPurchaseOrderSerializer() {
-		if(purchaseOrderSerializer == null) {
-			purchaseOrderSerializer = new PurchaseOrderSerializer();
+	public ISerializer<PurchaseOrder> getSerializer() {
+		if(serializer == null) {
+			serializer = new Serializer<PurchaseOrder>(PurchaseOrder.class);
 		}
-		return purchaseOrderSerializer;
+		return serializer;
 	}
 
 	public void setRequestBodyReader(IRequestBodyReader requestBodyReader) {
 		this.requestBodyReader = requestBodyReader;
 	}
 
-	public void setPurchaseOrderDeserializer(IPurchaseOrderDeserializer purchaseOrderDeserializer) {
-		this.purchaseOrderDeserializer = purchaseOrderDeserializer;
+	public void setDeserializer(IDeserializer<PurchaseOrder> deserializer) {
+		this.deserializer = deserializer;
 	}
 
-	public void setPurchaseOrderSerializer(IPurchaseOrderSerializer purchaseOrderSerializer) {
-		this.purchaseOrderSerializer = purchaseOrderSerializer;
+	public void setSerializer(ISerializer<PurchaseOrder> serializer) {
+		this.serializer = serializer;
 	}
 
 	public void setUrlReader(IUrlReader urlReader) {

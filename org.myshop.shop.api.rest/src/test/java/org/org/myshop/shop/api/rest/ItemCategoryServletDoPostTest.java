@@ -15,8 +15,8 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.ItemCategoryDao;
 import org.myshop.shop.model.ItemCategory;
-import org.org.myshop.shop.api.rest.servlet.exc.ItemCategoryDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IItemCategoryDeserializer;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 public class ItemCategoryServletDoPostTest {
@@ -29,7 +29,7 @@ public class ItemCategoryServletDoPostTest {
 	private IRequestBodyReader requestBodyReaderMock;
 	
 	@Mock
-	private IItemCategoryDeserializer itemCategoryDeserializerMock;
+	private IDeserializer<ItemCategory> deserializerMock;
 	
 	@Mock
 	private ItemCategoryDao itemCategoryDaoMock;
@@ -44,17 +44,17 @@ public class ItemCategoryServletDoPostTest {
     private ItemCategory itemCategoryMock;
 	
     @Before
-    public void setup() throws IOException, ItemCategoryDeserializationException {
+    public void setup() throws IOException, DeserializationException {
     	MockitoAnnotations.initMocks(this);
     	
     	itemCategoryServlet = new ItemCategoryServlet();
     	
     	itemCategoryServlet.setRequestBodyReader(requestBodyReaderMock);
-    	itemCategoryServlet.setItemCategoryDeserializer(itemCategoryDeserializerMock);
+    	itemCategoryServlet.setDeserializer(deserializerMock);
     	itemCategoryServlet.setItemCategoryDao(itemCategoryDaoMock);
     	
     	when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
-    	when(itemCategoryDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(itemCategoryMock);
+    	when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(itemCategoryMock);
     	when(itemCategoryDaoMock.update(itemCategoryMock)).thenReturn(itemCategoryMock);
     
     }
@@ -78,9 +78,9 @@ public class ItemCategoryServletDoPostTest {
     }
     
     @Test
-    public void testDeserializeFailed() throws ItemCategoryDeserializationException, IOException {
+    public void testDeserializeFailed() throws IOException, DeserializationException {
     	
-    	when(itemCategoryDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new ItemCategoryDeserializationException());
+    	when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new DeserializationException());
     	
     	itemCategoryServlet.doPost(requestMock, responseMock);
     	

@@ -9,17 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.myshop.shop.api.rest.servlet.util.implementation.ItemCategoryDeserializer;
-import org.myshop.shop.api.rest.servlet.util.implementation.ItemCategorySerializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.Deserializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
+import org.myshop.shop.api.rest.servlet.util.implementation.Serializer;
 
 import org.myshop.shop.dao.ItemCategoryDao;
 import org.myshop.shop.model.ItemCategory;
 
-import org.org.myshop.shop.api.rest.servlet.exc.ItemCategoryDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IItemCategoryDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.IItemCategorySerializer;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
 
 @WebServlet(name="itemCateogryServlet", urlPatterns = {"/api/v1/model/itemCategory"})
@@ -30,9 +30,9 @@ public class ItemCategoryServlet extends HttpServlet{
 
 	private IRequestBodyReader requestBodyReader;
 	
-	private IItemCategorySerializer itemCategorySerializer;
+	private IDeserializer<ItemCategory> deserializer;
 	
-	private IItemCategoryDeserializer itemCategoryDeserializer;
+	private ISerializer<ItemCategory> serializer;
 	
 	private IUrlReader urlReader;
 	
@@ -47,14 +47,14 @@ public class ItemCategoryServlet extends HttpServlet{
 		try {
 			requestBody = requestBodyReader.readBody(request);
 			
-			itemCategory = itemCategoryDeserializer.deserialize(requestBody);
+			itemCategory = deserializer.deserialize(requestBody);
 			
 			itemCategoryDao.create(itemCategory);
 			
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
 		}catch(IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}catch(ItemCategoryDeserializationException e){
+		}catch(DeserializationException e){
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
@@ -76,7 +76,7 @@ public class ItemCategoryServlet extends HttpServlet{
 			PrintWriter printWriter = response.getWriter();
 			response.setContentType("application/json");
 			
-			printWriter.write(itemCategorySerializer.serializerList(itemCategoryList));
+			printWriter.write(serializer.serializeList(itemCategoryList));
 			printWriter.flush();
 			printWriter.close();
 			
@@ -92,10 +92,10 @@ public class ItemCategoryServlet extends HttpServlet{
 		
 		try {
 			requestBody = requestBodyReader.readBody(request);
-			itemCategory = itemCategoryDeserializer.deserialize(requestBody);
+			itemCategory = deserializer.deserialize(requestBody);
 			itemCategory = itemCategoryDao.update(itemCategory);
 		
-		}catch(ItemCategoryDeserializationException e ) {
+		}catch(DeserializationException e ) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
@@ -130,30 +130,30 @@ public class ItemCategoryServlet extends HttpServlet{
         return requestBodyReader;
     }
 	
-	public IItemCategoryDeserializer getItemCategoryDeserializer() {
-		if(itemCategoryDeserializer == null)
-			itemCategoryDeserializer = new ItemCategoryDeserializer();
-		
-		return itemCategoryDeserializer;
+	public IDeserializer<ItemCategory> getDeserializer(){
+		if(deserializer == null) {
+			deserializer = new Deserializer<ItemCategory>(ItemCategory.class);
+		}
+		return deserializer;
 	}
 	
-	public IItemCategorySerializer getItemCategorySerializer() {
-		if(itemCategorySerializer == null)
-			itemCategorySerializer = new ItemCategorySerializer();
+	public ISerializer<ItemCategory> getSerializer() {
+		if(serializer == null)
+			serializer = new Serializer<ItemCategory>(ItemCategory.class);
 		
-		return itemCategorySerializer;
+		return serializer;
 	}
 	
     public void setRequestBodyReader(IRequestBodyReader requestBodyReader) {
         this.requestBodyReader = requestBodyReader;
     }
     
-    public void setItemCategoryDeserializer(IItemCategoryDeserializer itemCategoryDeserializer) {
-    	this.itemCategoryDeserializer = itemCategoryDeserializer;
+    public void setDeserializer(IDeserializer<ItemCategory> deserializer) {
+    	this.deserializer = deserializer;
     }
     
-    public void setItemCategorySerializer(IItemCategorySerializer itemCategorySerializer) {
-    	this.itemCategorySerializer = itemCategorySerializer;
+    public void setSerializer(ISerializer<ItemCategory> serializer) {
+    	this.serializer = serializer;
     }
     
     public void setItemCategoryDao(ItemCategoryDao itemCategoryDao) {

@@ -15,8 +15,8 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.ProductGroupDao;
 import org.myshop.shop.model.ProductGroup;
-import org.org.myshop.shop.api.rest.servlet.exc.ProductGroupDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IProductGroupDeserializer;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 public class ProductGroupServletDoPostTest {
@@ -35,7 +35,7 @@ public class ProductGroupServletDoPostTest {
 	private IRequestBodyReader requestBodyReaderMock;
 	
 	@Mock
-	private IProductGroupDeserializer deserializerMock;
+	private IDeserializer<ProductGroup> deserializerMock;
 	
 	@Mock
 	private ProductGroupDao productGroupDaoMock;
@@ -44,7 +44,7 @@ public class ProductGroupServletDoPostTest {
 	private ProductGroup productGroupMock;
 	
 	@Before
-	public void setup() throws IOException, ProductGroupDeserializationException {
+	public void setup() throws IOException, DeserializationException {
 		MockitoAnnotations.initMocks(this);
 		
 		productGroupServlet = new ProductGroupServlet();
@@ -77,8 +77,8 @@ public class ProductGroupServletDoPostTest {
 	}
 	
 	@Test
-	public void testDeserializationFailed() throws ProductGroupDeserializationException, IOException {
-		when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new ProductGroupDeserializationException());
+	public void testDeserializationFailed() throws IOException, DeserializationException {
+		when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new DeserializationException());
 		
 		productGroupServlet.doPost(requestMock, responseMock);
 		

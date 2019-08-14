@@ -9,18 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.myshop.shop.api.rest.servlet.util.implementation.CustomerDeserializer;
-import org.myshop.shop.api.rest.servlet.util.implementation.CustomerSerializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.Deserializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
-
+import org.myshop.shop.api.rest.servlet.util.implementation.Serializer;
 import org.myshop.shop.dao.CustomerDao;
 import org.myshop.shop.model.Customer;
 
-import org.org.myshop.shop.api.rest.servlet.exc.CustomerDeserializationException;
-
-import org.org.myshop.shop.api.rest.servlet.util.ICustomerDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.ICustomerSerializer;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = {"/api/v1/model/customer"})
@@ -30,9 +28,9 @@ public class CustomerServlet extends HttpServlet{
 	
 	private IRequestBodyReader requestBodyReader;
 	
-	private ICustomerDeserializer customerDeserializer;
+	private IDeserializer<Customer> deserializer;
 	
-	private ICustomerSerializer customerSerializer;
+	private ISerializer<Customer> serializer;
 	
 	private IUrlReader urlReader;
 	
@@ -48,14 +46,14 @@ public class CustomerServlet extends HttpServlet{
 		try {
 			requestBody = requestBodyReader.readBody(request);
 			
-			customer = customerDeserializer.deserialize(requestBody);
+			customer =  deserializer.deserialize(requestBody);
 			
 			customerDao.create(customer);
 			
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
 		}catch(IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		} catch(CustomerDeserializationException e) {
+		}catch(DeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
@@ -77,7 +75,7 @@ public class CustomerServlet extends HttpServlet{
 			PrintWriter printWriter = response.getWriter();
 			response.setContentType("application/json");
 			
-			printWriter.write(customerSerializer.serializerList(customerList));
+			printWriter.write(serializer.serializeList(customerList));
 			printWriter.flush();
 			printWriter.close();
 			
@@ -93,10 +91,10 @@ public class CustomerServlet extends HttpServlet{
 		
 		try {
 			requestBody = requestBodyReader.readBody(request);
-			customer = customerDeserializer.deserialize(requestBody);
+			customer = deserializer.deserialize(requestBody);
 			customer = customerDao.update(customer);
 			
-		}catch(CustomerDeserializationException e) {
+		}catch(DeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
@@ -133,32 +131,33 @@ public class CustomerServlet extends HttpServlet{
         return requestBodyReader;
     }
     
-    public ICustomerDeserializer getCustomerDeserializer() {
-        if (customerDeserializer == null) {
-        	customerDeserializer = new  CustomerDeserializer();
-        }
-        return customerDeserializer;
-    }
     
-    public ICustomerSerializer getCustomerSerializer() {
-    	if(customerSerializer == null) {
-    		customerSerializer = new CustomerSerializer();
+    public ISerializer<Customer> getSerializer() {
+    	if(serializer == null) {
+    		serializer = new Serializer<Customer>(Customer.class);
     	}
-    	return customerSerializer;
+    	return serializer;
     }  
+    
+    public IDeserializer<Customer> getDeserializer() {
+    	if(deserializer == null) {
+    		deserializer = new Deserializer<Customer>(Customer.class);
+    	}
+    	return deserializer;
+    }
     
     public void setRequestBodyReader(IRequestBodyReader requestBodyReader) {
         this.requestBodyReader = requestBodyReader;
     }
 
-	public void setCustomerDeserializer(ICustomerDeserializer customerDeserializer) {
-		this.customerDeserializer = customerDeserializer;
+	public void setDeserializer(IDeserializer<Customer> deserializer) {
+		this.deserializer = deserializer;
 	}
-
-	public void setCustomerSerializer(ICustomerSerializer customerSerializer) {
-		this.customerSerializer = customerSerializer;
+	
+	public void setSerializer(ISerializer<Customer> serializer) {
+		this.serializer = serializer;
 	}
-
+	
 	public void setUrlReader(IUrlReader urlReader) {
 		this.urlReader = urlReader;
 	}

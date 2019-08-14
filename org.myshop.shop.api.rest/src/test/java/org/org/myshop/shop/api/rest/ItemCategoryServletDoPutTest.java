@@ -15,9 +15,8 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.ItemCategoryDao;
 import org.myshop.shop.model.ItemCategory;
-
-import org.org.myshop.shop.api.rest.servlet.exc.ItemCategoryDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IItemCategoryDeserializer;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 public class ItemCategoryServletDoPutTest {
@@ -30,7 +29,7 @@ public class ItemCategoryServletDoPutTest {
 	private IRequestBodyReader requestBodyReaderMock;
 	
 	@Mock
-	private IItemCategoryDeserializer itemCategoryDeserializerMock;
+	private IDeserializer<ItemCategory> deserializerMock;
 	
 	@Mock
 	private ItemCategoryDao itemCategoryDaoMock;
@@ -45,16 +44,16 @@ public class ItemCategoryServletDoPutTest {
 	private ItemCategory itemCategoryMock;
 	
 	@Before
-	public void setup() throws IOException, ItemCategoryDeserializationException {
+	public void setup() throws IOException, DeserializationException {
 		MockitoAnnotations.initMocks(this);
 		
 		when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQEUST_BODY);
 		
-		when(itemCategoryDeserializerMock.deserialize(TEST_REQEUST_BODY)).thenReturn(itemCategoryMock);
+		when(deserializerMock.deserialize(TEST_REQEUST_BODY)).thenReturn(itemCategoryMock);
 		
 		itemCategoryServlet = new ItemCategoryServlet();
 		itemCategoryServlet.setRequestBodyReader(requestBodyReaderMock);
-		itemCategoryServlet.setItemCategoryDeserializer(itemCategoryDeserializerMock);
+		itemCategoryServlet.setDeserializer(deserializerMock);
 		itemCategoryServlet.setItemCategoryDao(itemCategoryDaoMock);
 		
 	}
@@ -76,8 +75,8 @@ public class ItemCategoryServletDoPutTest {
 	}
 	
 	@Test
-	public void testJSONStringFailed() throws ItemCategoryDeserializationException {
-		when(itemCategoryDeserializerMock.deserialize(TEST_REQEUST_BODY)).thenThrow(new ItemCategoryDeserializationException());
+	public void testJSONStringFailed() throws DeserializationException {
+		when(deserializerMock.deserialize(TEST_REQEUST_BODY)).thenThrow(new DeserializationException());
 		
 		itemCategoryServlet.doPut(requestMock, responseMock);
 		

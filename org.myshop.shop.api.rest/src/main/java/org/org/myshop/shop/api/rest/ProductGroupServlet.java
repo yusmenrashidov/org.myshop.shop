@@ -9,16 +9,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.myshop.shop.api.rest.servlet.util.implementation.ProductGroupDeserializer;
-import org.myshop.shop.api.rest.servlet.util.implementation.ProductGroupSerializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.Deserializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
+import org.myshop.shop.api.rest.servlet.util.implementation.Serializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
+
 import org.myshop.shop.dao.ProductGroupDao;
 import org.myshop.shop.model.ProductGroup;
-import org.org.myshop.shop.api.rest.servlet.exc.ProductGroupDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IProductGroupDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.IProductGroupSerializer;
+
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
 
 @WebServlet(name = "productGroupServlet", urlPatterns = {"/api/v1/model/productGroup"})
@@ -28,9 +30,9 @@ public class ProductGroupServlet extends HttpServlet{
 
 	private IRequestBodyReader requestBodyReader;
 	
-	private IProductGroupDeserializer deserializer;
+	private IDeserializer<ProductGroup> deserializer;
 	
-	private IProductGroupSerializer serializer;
+	private ISerializer<ProductGroup> serializer;
 	
 	private IUrlReader urlReader;
 	
@@ -52,7 +54,7 @@ public class ProductGroupServlet extends HttpServlet{
 		
 		}catch(IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		} catch (ProductGroupDeserializationException e) {
+		} catch (DeserializationException e) {
 			 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}	
 	}
@@ -74,7 +76,7 @@ public class ProductGroupServlet extends HttpServlet{
 				PrintWriter printWriter = response.getWriter();
 				response.setContentType("application/json");
 				
-				printWriter.write(serializer.serialize(productGroupList));
+				printWriter.write(serializer.serializeList(productGroupList));
 				printWriter.flush();
 				printWriter.close();
 				
@@ -93,7 +95,7 @@ public class ProductGroupServlet extends HttpServlet{
 		productGroup = deserializer.deserialize(requestBody);
 		productGroup = productGroupDao.update(productGroup);
 		
-		} catch (ProductGroupDeserializationException e) {
+		} catch (DeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
@@ -118,10 +120,8 @@ public class ProductGroupServlet extends HttpServlet{
 		}else {
 			productGroupDao.delete(productGroup);
 			response.setStatus(HttpServletResponse.SC_OK);
-		}
-		
+		}	
 	}
-	
 	
 	public IRequestBodyReader getReader() {
 		if(requestBodyReader == null)
@@ -134,25 +134,25 @@ public class ProductGroupServlet extends HttpServlet{
 		this.requestBodyReader = reader;
 	}
 
-	public IProductGroupDeserializer getDeserializer() {
+	public IDeserializer<ProductGroup> getDeserializer() {
 		if(deserializer == null)
-			deserializer = new ProductGroupDeserializer();
+			deserializer = new Deserializer<ProductGroup>(ProductGroup.class);
 		
 		return deserializer;
 	}
 
-	public void setDeserializer(IProductGroupDeserializer deserializer) {
+	public void setDeserializer(IDeserializer<ProductGroup> deserializer) {
 		this.deserializer = deserializer;
 	}
 
-	public IProductGroupSerializer getSerializer() {
+	public ISerializer<ProductGroup> getSerializer() {
 		if(serializer == null)
-			serializer = new ProductGroupSerializer();
+			serializer = new Serializer<ProductGroup>(ProductGroup.class);
 		
 		return serializer;
 	}
 
-	public void setSerializer(IProductGroupSerializer serializer) {
+	public void setSerializer(ISerializer<ProductGroup> serializer) {
 		this.serializer = serializer;
 	}
 

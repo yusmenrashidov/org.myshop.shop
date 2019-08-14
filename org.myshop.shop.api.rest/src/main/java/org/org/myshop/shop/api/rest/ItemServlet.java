@@ -9,18 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.myshop.shop.api.rest.servlet.util.implementation.ItemDeserializer;
-import org.myshop.shop.api.rest.servlet.util.implementation.ItemSerializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.Deserializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
-import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
+import org.myshop.shop.api.rest.servlet.util.implementation.Serializer;
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
-
-import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.IItemSerializer;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
-
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
+import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
 
 @WebServlet(name = "itemServlet", urlPatterns = {"/api/v1/model/item"})
 public class ItemServlet extends HttpServlet {
@@ -29,11 +27,11 @@ public class ItemServlet extends HttpServlet {
 
 	private IRequestBodyReader requestBodyReader;
 	
-	private IItemDeserializer itemDeserializer;
+	private IDeserializer<Item> deserializer;
 	
-	private ItemSerializer itemSerializer;
+	private ISerializer<Item> serializer;
 	
-	private UrlReader urlReader;
+	private IUrlReader urlReader;
 	
 	private ItemDao itemDao;
 	
@@ -46,14 +44,14 @@ public class ItemServlet extends HttpServlet {
         try {
             requestBody = requestBodyReader.readBody(request);
 
-            item = itemDeserializer.deserialize(requestBody);
+            item = deserializer.deserialize(requestBody);
 
             itemDao.create(item);
 
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         } catch (IOException e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } catch (ItemDeserializationException e) {
+        } catch (DeserializationException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
@@ -74,7 +72,7 @@ public class ItemServlet extends HttpServlet {
 				PrintWriter printWriter = response.getWriter();
 				response.setContentType("application/json");
 				
-				printWriter.write(itemSerializer.serializeList(itemList));
+				printWriter.write(serializer.serializeList(itemList));
 				printWriter.flush();
 				printWriter.close();
 				
@@ -90,10 +88,10 @@ public class ItemServlet extends HttpServlet {
 			
 			try {
 				requestBody = requestBodyReader.readBody(request);
-				item = itemDeserializer.deserialize(requestBody);
+				item = deserializer.deserialize(requestBody);
 				item = itemDao.update(item);
 				
-			} catch (ItemDeserializationException e) {
+			} catch (DeserializationException e) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			}
 			
@@ -128,18 +126,18 @@ public class ItemServlet extends HttpServlet {
         return requestBodyReader;
     }
 
-    public IItemDeserializer getItemDeserializer() {
-        if (itemDeserializer == null) {
-            itemDeserializer = new ItemDeserializer();
+    public IDeserializer<Item> getDeserializer() {
+        if (deserializer == null) {
+        	deserializer = new Deserializer<Item>(Item.class);
         }
-        return itemDeserializer;
+        return deserializer;
     }
     
-    public IItemSerializer getItemSerializer() {
-    	if(itemSerializer == null) {
-    		itemSerializer = new ItemSerializer();
+    public ISerializer<Item> getSerializer() {
+    	if(serializer == null) {
+    		serializer = new Serializer<Item>(Item.class);
     	}
-    	return itemSerializer;
+    	return serializer;
     }
     
     public ItemDao getItemDao() {
@@ -153,19 +151,19 @@ public class ItemServlet extends HttpServlet {
         this.requestBodyReader = requestBodyReader;
     }
 
-    public void setItemDeserializer(IItemDeserializer itemDeserializer) {
-        this.itemDeserializer = itemDeserializer;
+    public void setDeserializer(IDeserializer<Item> deserializer) {
+        this.deserializer = deserializer;
     }
 
     public void setItemDao(ItemDao itemDao) {
         this.itemDao = itemDao;
     }
     
-    public void setItemSerializer(ItemSerializer itemSerializer) {
-    	this.itemSerializer = (ItemSerializer) itemSerializer;
+    public void setSerializer(ISerializer<Item> serializer) {
+    	this.serializer = serializer;
     }
     
-    public void setItemUlrReader(UrlReader urlReader) {
+    public void setItemUlrReader(IUrlReader urlReader) {
     	this.urlReader = urlReader;
     }
 }

@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.myshop.shop.dao.CustomerDao;
 import org.myshop.shop.model.Customer;
-import org.org.myshop.shop.api.rest.servlet.util.ICustomerSerializer;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
@@ -26,7 +26,7 @@ public class CustomerServletDoGetTest {
 	private CustomerServlet customerServlet;
 	
 	@Mock
-	private ICustomerSerializer customerSerializerMock;
+	private ISerializer<Customer> serializerMock;
 	
 	@Mock
 	private CustomerDao customerDaoMock;
@@ -49,10 +49,10 @@ public class CustomerServletDoGetTest {
 		
 		customerServlet = new CustomerServlet();
 		customerServlet.setCustomerDao(customerDaoMock);
-		customerServlet.setCustomerSerializer(customerSerializerMock);
+		customerServlet.setSerializer(serializerMock);
 		
 		when(customerDaoMock.read()).thenReturn(customerListMock);
-		when(customerSerializerMock.serializerList(customerListMock)).thenReturn(TEST_JSON_STRING);
+		when(serializerMock.serializeList(customerListMock)).thenReturn(TEST_JSON_STRING);
 		when(responseMock.getWriter()).thenReturn(printWriterMock);
 		
 	}

@@ -15,9 +15,8 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.PostedPurchaseOrderDao;
 import org.myshop.shop.model.PostedPurchaseOrder;
-
-import org.org.myshop.shop.api.rest.servlet.exc.PostedPurchaseOrderDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IPostedPurchaseOrderDeserializer;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 public class PostedPurchaseOrderServletDoPutTest {
@@ -30,7 +29,7 @@ private final String TEST_REQUEST_BODY = "test_request_body";
 	private IRequestBodyReader requestBodyReaderMock;
 	
 	@Mock
-	private IPostedPurchaseOrderDeserializer postedPurchaseOrderDeserializerMock;
+	private IDeserializer<PostedPurchaseOrder> deserializerMock;
 	
 	@Mock
 	private PostedPurchaseOrderDao postedPurchaseOrderDaoMock;
@@ -45,16 +44,16 @@ private final String TEST_REQUEST_BODY = "test_request_body";
 	private PostedPurchaseOrder postedPurchaseOrderMock;
 	
 	@Before
-	public void setup() throws IOException, PostedPurchaseOrderDeserializationException {
+	public void setup() throws IOException, DeserializationException {
 		MockitoAnnotations.initMocks(this);
 		
 		when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
 		
-		when(postedPurchaseOrderDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(postedPurchaseOrderMock);
+		when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(postedPurchaseOrderMock);
 		
 		postedPurchaseOrderServlet = new PostedPurchaseOrderServlet();
 		postedPurchaseOrderServlet.setRequestBodyReader(requestBodyReaderMock);
-		postedPurchaseOrderServlet.setPostedPurchaseOrderDeserializer(postedPurchaseOrderDeserializerMock);
+		postedPurchaseOrderServlet.setDeserializer(deserializerMock);
 		postedPurchaseOrderServlet.setPostedPurchaseOrderDao(postedPurchaseOrderDaoMock);
 	}
 	
@@ -75,8 +74,8 @@ private final String TEST_REQUEST_BODY = "test_request_body";
 	}
 	
 	@Test
-	public void testJSONStringFailed() throws PostedPurchaseOrderDeserializationException {
-		when(postedPurchaseOrderDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new PostedPurchaseOrderDeserializationException());
+	public void testJSONStringFailed() throws DeserializationException {
+		when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new DeserializationException());
 		
 		postedPurchaseOrderServlet.doPut(requestMock, responseMock);
 		

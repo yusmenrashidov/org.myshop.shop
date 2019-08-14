@@ -18,7 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.PostedPurchaseOrderDao;
 import org.myshop.shop.model.PostedPurchaseOrder;
-import org.org.myshop.shop.api.rest.servlet.util.IPostedPurchaseOrderSerializer;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 
 public class PostedPurchaseOrderServletDoGetTest {
 
@@ -27,7 +27,7 @@ private static final String TEST_JSON_STRING = "{}";
 	private PostedPurchaseOrderServlet postedPurchaseOrderServlet;
 	
 	@Mock
-	private IPostedPurchaseOrderSerializer postedPurchaseOrderSerializerMock;
+	private ISerializer<PostedPurchaseOrder> serializerMock;
 	
 	@Mock
 	private PostedPurchaseOrderDao postedPurchaseOrderDaoMock;
@@ -50,10 +50,10 @@ private static final String TEST_JSON_STRING = "{}";
 		
 		postedPurchaseOrderServlet = new PostedPurchaseOrderServlet();
 		postedPurchaseOrderServlet.setPostedPurchaseOrderDao(postedPurchaseOrderDaoMock);
-		postedPurchaseOrderServlet.setPostedPurchaseOrderSerializer(postedPurchaseOrderSerializerMock);
+		postedPurchaseOrderServlet.setSerializer(serializerMock);
 		
 		when(postedPurchaseOrderDaoMock.read()).thenReturn(postedPurchaseOrderListMock);
-		when(postedPurchaseOrderSerializerMock.serializerList(postedPurchaseOrderListMock)).thenReturn(TEST_JSON_STRING);
+		when(serializerMock.serializeList(postedPurchaseOrderListMock)).thenReturn(TEST_JSON_STRING);
 		when(responseMock.getWriter()).thenReturn(printWriterMock);
 		
 	}

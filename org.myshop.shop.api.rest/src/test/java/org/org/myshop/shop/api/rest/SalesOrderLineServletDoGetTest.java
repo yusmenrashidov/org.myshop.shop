@@ -18,7 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.SalesOrderLineDao;
 import org.myshop.shop.model.SalesOrderLine;
-import org.org.myshop.shop.api.rest.servlet.util.ISalesOrderLineSerializer;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 
 public class SalesOrderLineServletDoGetTest {
 
@@ -27,7 +27,7 @@ private static final String TEST_JSON_STRING = "{}";
 	private SalesOrderLineServlet salesOrderLineServlet;
 	
 	@Mock
-	private ISalesOrderLineSerializer salesOrderLineSerializerMock;
+	private ISerializer<SalesOrderLine> serializerMock;
 	
 	@Mock
 	private SalesOrderLineDao salesOrderLineDaoMock;
@@ -50,10 +50,10 @@ private static final String TEST_JSON_STRING = "{}";
 		
 		salesOrderLineServlet = new SalesOrderLineServlet();
 		salesOrderLineServlet.setSalesOrderLineDao(salesOrderLineDaoMock);
-		salesOrderLineServlet.setSalesOrderLineSerializer(salesOrderLineSerializerMock);
+		salesOrderLineServlet.setSerializer(serializerMock);
 		
 		when(salesOrderLineDaoMock.read()).thenReturn(salesOrderLineListMock);
-		when(salesOrderLineSerializerMock.serializerList(salesOrderLineListMock)).thenReturn(TEST_JSON_STRING);
+		when(serializerMock.serializeList(salesOrderLineListMock)).thenReturn(TEST_JSON_STRING);
 		when(responseMock.getWriter()).thenReturn(printWriterMock);
 		
 	}

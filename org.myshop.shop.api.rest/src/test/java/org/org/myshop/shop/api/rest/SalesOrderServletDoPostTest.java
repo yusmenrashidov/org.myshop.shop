@@ -15,10 +15,9 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.SalesOrderDao;
 import org.myshop.shop.model.SalesOrder;
-
-import org.org.myshop.shop.api.rest.servlet.exc.SalesOrderDeserializationException;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
-import org.org.myshop.shop.api.rest.servlet.util.ISalesOrderDeserializer;
 
 public class SalesOrderServletDoPostTest {
 
@@ -30,7 +29,7 @@ public class SalesOrderServletDoPostTest {
 	private IRequestBodyReader requestBodyReaderMock;
 	
 	@Mock
-	private ISalesOrderDeserializer salesOrderDeserializerMock;
+	private IDeserializer<SalesOrder> deserializer;
 	
 	@Mock
     private HttpServletRequest requestMock;
@@ -45,16 +44,16 @@ public class SalesOrderServletDoPostTest {
     private SalesOrder salesOrderMock;
     
     @Before
-    public void setup() throws SalesOrderDeserializationException, IOException {
+    public void setup() throws DeserializationException, IOException {
     	MockitoAnnotations.initMocks(this);
     	
     	salesOrderServlet = new SalesOrderServlet();
     	salesOrderServlet.setSalesOrderDao(salesOrderDaoMock);
-    	salesOrderServlet.setSalesOrderDeserializer(salesOrderDeserializerMock);
+    	salesOrderServlet.setDeserializer(deserializer);
     	salesOrderServlet.setRequestBodyReader(requestBodyReaderMock);
     	
     	when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
-    	when(salesOrderDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(salesOrderMock);
+    	when(deserializer.deserialize(TEST_REQUEST_BODY)).thenReturn(salesOrderMock);
     	when(salesOrderDaoMock.update(salesOrderMock)).thenReturn(salesOrderMock);
     }
     
@@ -75,8 +74,8 @@ public class SalesOrderServletDoPostTest {
     } 
     
     @Test
-    public void testDeserializerFailed() throws SalesOrderDeserializationException, IOException   {
-    	when(salesOrderDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new SalesOrderDeserializationException());
+    public void testDeserializerFailed() throws IOException, DeserializationException   {
+    	when(deserializer.deserialize(TEST_REQUEST_BODY)).thenThrow(new DeserializationException());
     	
     	salesOrderServlet.doPost(requestMock, responseMock);
     	
