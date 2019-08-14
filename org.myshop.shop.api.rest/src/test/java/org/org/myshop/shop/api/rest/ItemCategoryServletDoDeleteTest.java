@@ -6,8 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
