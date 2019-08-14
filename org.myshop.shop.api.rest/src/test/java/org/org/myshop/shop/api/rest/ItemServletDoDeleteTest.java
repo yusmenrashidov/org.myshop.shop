@@ -16,8 +16,6 @@ import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
 import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 public class ItemServletDoDeleteTest {
    

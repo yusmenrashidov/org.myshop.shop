@@ -10,9 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.myshop.shop.dao.CustomerDao;
 import org.myshop.shop.dao.SalesOrderLineDao;
-import org.myshop.shop.model.Customer;
 import org.myshop.shop.model.SalesOrderLine;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
 
