@@ -14,9 +14,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.myshop.shop.dao.SalesOrderLineDao;
 import org.myshop.shop.model.SalesOrderLine;
-import org.org.myshop.shop.api.rest.servlet.exc.SalesOrderLineDeserializationException;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
-import org.org.myshop.shop.api.rest.servlet.util.ISalesOrderLineDeserializer;
 
 public class SalesOrderLineServletDoPostTest {
 
@@ -28,7 +28,7 @@ private static final String TEST_REQUEST_BODY = "test_request_body";
 	private IRequestBodyReader requestBodyReaderMock;
 	
 	@Mock
-	private ISalesOrderLineDeserializer salesOrderLineDeserializerMock;
+	private IDeserializer<SalesOrderLine> deserializer;
 	
 	@Mock
 	private SalesOrderLineDao salesOrderLineDaoMock;
@@ -43,16 +43,16 @@ private static final String TEST_REQUEST_BODY = "test_request_body";
     private SalesOrderLine salesOrderLineMock;
     
     @Before
-    public void setup() throws IOException, SalesOrderLineDeserializationException {
+    public void setup() throws IOException, DeserializationException {
     	MockitoAnnotations.initMocks(this);
     	
     	salesOrderLineServlet = new SalesOrderLineServlet();
     	salesOrderLineServlet.setRequestBodyReader(requestBodyReaderMock);
     	salesOrderLineServlet.setSalesOrderLineDao(salesOrderLineDaoMock);
-    	salesOrderLineServlet.setSalesOrderLineDeserializer(salesOrderLineDeserializerMock);
+    	salesOrderLineServlet.setDeserializer(deserializer);
     	
     	when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
-    	when(salesOrderLineDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(salesOrderLineMock);
+    	when(deserializer.deserialize(TEST_REQUEST_BODY)).thenReturn(salesOrderLineMock);
     	when(salesOrderLineDaoMock.update(salesOrderLineMock)).thenReturn(salesOrderLineMock);
     }
     
@@ -73,8 +73,8 @@ private static final String TEST_REQUEST_BODY = "test_request_body";
     } 
     
     @Test
-    public void testDeserializerFailed() throws IOException, SalesOrderLineDeserializationException   {
-    	when(salesOrderLineDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new SalesOrderLineDeserializationException());
+    public void testDeserializerFailed() throws IOException, DeserializationException   {
+    	when(deserializer.deserialize(TEST_REQUEST_BODY)).thenThrow(new DeserializationException());
     	
     	salesOrderLineServlet.doPost(requestMock, responseMock);
     	

@@ -14,8 +14,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.myshop.shop.dao.CustomerDao;
 import org.myshop.shop.model.Customer;
-import org.org.myshop.shop.api.rest.servlet.exc.CustomerDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.ICustomerDeserializer;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 public class CustomerServletDoPutTest {
@@ -28,7 +28,7 @@ public class CustomerServletDoPutTest {
 	private IRequestBodyReader requestBodyReaderMock;
 	
 	@Mock
-	private ICustomerDeserializer customerDeserializerMock;
+	private IDeserializer<Customer> deserializerMock;
 	
 	@Mock
 	private CustomerDao customerDaoMock;
@@ -43,16 +43,15 @@ public class CustomerServletDoPutTest {
 	private Customer customerMock;
 	
 	@Before
-	public void setup() throws IOException, CustomerDeserializationException {
+	public void setup() throws IOException, DeserializationException {
 		MockitoAnnotations.initMocks(this);
 		
 		when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
-		
-		when(customerDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(customerMock);
+		when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(customerMock);
 		
 		customerServlet = new CustomerServlet();
 		customerServlet.setRequestBodyReader(requestBodyReaderMock);
-		customerServlet.setCustomerDeserializer(customerDeserializerMock);
+		customerServlet.setDeserializer(deserializerMock);
 		customerServlet.setCustomerDao(customerDaoMock);
 	}
 	
@@ -73,12 +72,12 @@ public class CustomerServletDoPutTest {
 	}
 	
 	@Test
-	public void testJSONStringFailed() throws CustomerDeserializationException {
-		when(customerDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new CustomerDeserializationException());
+	public void testJSONFailed() throws DeserializationException {
+		when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new DeserializationException());
 		
 		customerServlet.doPut(requestMock, responseMock);
 		
-		verify(responseMock).setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		responseMock.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 	}
 	
 }

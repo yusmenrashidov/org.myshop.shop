@@ -15,7 +15,6 @@ import org.mockito.MockitoAnnotations;
 import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
-import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
 
 public class ItemServletDoDeleteTest {
    
@@ -39,7 +38,7 @@ public class ItemServletDoDeleteTest {
     private Item itemMock;
     
     @Before
-    public void setup() throws IOException, ItemDeserializationException {
+    public void setup() throws IOException {
     	MockitoAnnotations.initMocks(this);
     	
     	itemServlet = new ItemServlet();

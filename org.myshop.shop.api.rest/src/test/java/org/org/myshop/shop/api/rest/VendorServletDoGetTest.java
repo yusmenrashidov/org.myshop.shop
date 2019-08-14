@@ -10,9 +10,7 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.VendorDao;
 import org.myshop.shop.model.Vendor;
-
-import org.org.myshop.shop.api.rest.servlet.util.IVendorSerializer;
-
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -28,7 +26,7 @@ public class VendorServletDoGetTest {
 	private VendorServlet vendorServlet;
 	
 	@Mock
-	private IVendorSerializer vendorSerializerMock;
+	private ISerializer<Vendor> serializer;
 	
 	@Mock
 	private VendorDao vendorDaoMock;
@@ -51,10 +49,10 @@ public class VendorServletDoGetTest {
 		
 		vendorServlet = new VendorServlet();
 		vendorServlet.setVendorDao(vendorDaoMock);
-		vendorServlet.setVendorSerializer(vendorSerializerMock);
+		vendorServlet.setSerializer(serializer);
 		
 		when(vendorDaoMock.read()).thenReturn(vendorListMock);
-		when(vendorSerializerMock.serializeList(vendorListMock)).thenReturn(TEST_JSON_STRING);
+		when(serializer.serializeList(vendorListMock)).thenReturn(TEST_JSON_STRING);
 		when(responseMock.getWriter()).thenReturn(printWriterMock);
 	}
 	

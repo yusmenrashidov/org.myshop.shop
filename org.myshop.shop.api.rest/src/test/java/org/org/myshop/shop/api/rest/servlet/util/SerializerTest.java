@@ -1,35 +1,26 @@
 package org.org.myshop.shop.api.rest.servlet.util;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import org.mockito.Mock;
+
+import org.myshop.shop.api.rest.servlet.util.implementation.Serializer;
 import org.myshop.shop.model.Customer;
 
-public class SerializerTest {
-    
-    @Test
-    public void test() {
-        ISerializer<MyClass> itemSerializer = new Serializer<MyClass>(MyClass.class);
-        
-        MyClass serializedItem = itemSerializer.serialize("{\n" + 
-                "    \"s\" : \"alabala\",\n" + 
-                "    \"i\" : 123\n" + 
-                "}");
-        
-        assertNotNull(serializedItem);
-    }
+import java.util.List;
 
-    @Test
-    public void test_customer() {
-        ISerializer<Customer> customerSerializer = new Serializer<Customer>(Customer.class);
-        
-        Customer customer = customerSerializer.serialize("{\n" + 
-                "    \"id\" : \"alabala\",\n" + 
-                "    \"name\" : \"portokola\"\n" + 
-                "}");
-        
-        assertEquals("alabala", customer.getId());
-        assertEquals("portokola", customer.getName());
-    }
+public class SerializerTest {
+	
+	@Mock
+	private List<Customer> customerList;
+	
+	@Test
+	public void testSerialization_customer() {
+		ISerializer<Customer> customerSerializer = new Serializer<Customer>(Customer.class);
+		
+		String serialized = customerSerializer.serializeList(customerList);
+		
+		assertNotNull(serialized);
+	}
 }

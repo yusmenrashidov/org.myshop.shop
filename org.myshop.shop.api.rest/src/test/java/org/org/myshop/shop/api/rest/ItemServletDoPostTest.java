@@ -15,8 +15,8 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
-import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.IItemDeserializer;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 public class ItemServletDoPostTest {
@@ -28,7 +28,7 @@ public class ItemServletDoPostTest {
 	    private IRequestBodyReader requestBodyReaderMock;
 	    
 	    @Mock
-	    private IItemDeserializer itemDeserializerMock;
+	    private IDeserializer<Item> deserializerMock;
 	    
 	    @Mock
 	    private ItemDao itemDaoMock;
@@ -43,16 +43,16 @@ public class ItemServletDoPostTest {
 	    private Item itemMock;
 	    
 	    @Before
-	    public void setup() throws IOException, ItemDeserializationException {
+	    public void setup() throws IOException, DeserializationException {
 	    	MockitoAnnotations.initMocks(this);
 	    	
 	    	itemServlet = new ItemServlet();
 	    	itemServlet.setItemDao(itemDaoMock);
-	    	itemServlet.setItemDeserializer(itemDeserializerMock);
+	    	itemServlet.setDeserializer(deserializerMock);
 	    	itemServlet.setRequestBodyReader(requestBodyReaderMock);
 	    	
 	    	when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
-	    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(itemMock);
+	    	when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(itemMock);
 	    	when(itemDaoMock.update(itemMock)).thenReturn(itemMock);
 	    }
 	    
@@ -75,9 +75,9 @@ public class ItemServletDoPostTest {
 	    }
 	    
 	    @Test
-	    public void testPost_deserializeFail() throws IOException, ItemDeserializationException{
+	    public void testPost_deserializeFail() throws IOException, DeserializationException{
 	    	
-	    	when(itemDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new ItemDeserializationException());
+	    	when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new DeserializationException());
 	    	
 	    	itemServlet.doPost(requestMock, responseMock);
 	    	

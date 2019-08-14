@@ -15,11 +15,9 @@ import org.mockito.MockitoAnnotations;
 
 import org.myshop.shop.dao.VendorDao;
 import org.myshop.shop.model.Vendor;
-
-import org.org.myshop.shop.api.rest.servlet.exc.VendorDeserializationException;
-
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
-import org.org.myshop.shop.api.rest.servlet.util.IVendorDeserializer;
 
 public class VendorServletDoPutTest {
 
@@ -31,7 +29,7 @@ public class VendorServletDoPutTest {
 	private IRequestBodyReader requestBodyReaderMock;
 	
 	@Mock
-	private IVendorDeserializer vendorDeserializerMock;
+	private IDeserializer<Vendor> deserializer;
 	
 	@Mock
 	private VendorDao vendorDaoMock;
@@ -46,16 +44,16 @@ public class VendorServletDoPutTest {
 	private Vendor vendorMock;
 	
 	@Before
-	public void setup() throws IOException, VendorDeserializationException {
+	public void setup() throws IOException, DeserializationException {
 		MockitoAnnotations.initMocks(this);
 		
 		when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
 		
-		when(vendorDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(vendorMock);
+		when(deserializer.deserialize(TEST_REQUEST_BODY)).thenReturn(vendorMock);
 		
 		vendorServlet = new VendorServlet();
 		vendorServlet.setRequestBodyReader(requestBodyReaderMock);
-		vendorServlet.setVendorDeserializer(vendorDeserializerMock);
+		vendorServlet.setDeserializer(deserializer);
 		vendorServlet.setVendorDao(vendorDaoMock);
 	}
 	
@@ -77,8 +75,8 @@ public class VendorServletDoPutTest {
 	}
 	
 	@Test
-	public void testJSONStringFailed() throws VendorDeserializationException {
-		when(vendorDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new VendorDeserializationException());
+	public void testJSONStringFailed() throws DeserializationException {
+		when(deserializer.deserialize(TEST_REQUEST_BODY)).thenThrow(new DeserializationException());
 		
 		vendorServlet.doPut(requestMock, responseMock);
 		

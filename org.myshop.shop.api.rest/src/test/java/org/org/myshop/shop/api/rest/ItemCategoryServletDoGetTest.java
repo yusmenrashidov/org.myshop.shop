@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.myshop.shop.dao.ItemCategoryDao;
 import org.myshop.shop.model.ItemCategory;
-import org.org.myshop.shop.api.rest.servlet.util.IItemCategorySerializer;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 
 public class ItemCategoryServletDoGetTest {
 
@@ -27,7 +27,7 @@ public class ItemCategoryServletDoGetTest {
 	private ItemCategoryServlet itemCategoryServlet;
 	
 	@Mock
-	private IItemCategorySerializer itemCategorySerializerMock;
+	private ISerializer<ItemCategory> serializerMock;
 	
 	@Mock
 	private ItemCategoryDao itemCategoryDaoMock;
@@ -50,10 +50,10 @@ public class ItemCategoryServletDoGetTest {
 		
 		itemCategoryServlet = new ItemCategoryServlet();
 		itemCategoryServlet.setItemCategoryDao(itemCategoryDaoMock);
-		itemCategoryServlet.setItemCategorySerializer(itemCategorySerializerMock);
+		itemCategoryServlet.setSerializer(serializerMock);
 		
 		when(itemCategoryDaoMock.read()).thenReturn(itemCategoryListMock);
-		when(itemCategorySerializerMock.serializerList(itemCategoryListMock)).thenReturn(TEST_JSON_STRING);
+		when(serializerMock.serializeList(itemCategoryListMock)).thenReturn(TEST_JSON_STRING);
 		when(responseMock.getWriter()).thenReturn(printWriterMock);
 	}
 

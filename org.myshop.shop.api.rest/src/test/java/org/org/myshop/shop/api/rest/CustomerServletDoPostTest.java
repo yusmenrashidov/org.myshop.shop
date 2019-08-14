@@ -12,10 +12,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import org.myshop.shop.dao.CustomerDao;
 import org.myshop.shop.model.Customer;
-import org.org.myshop.shop.api.rest.servlet.exc.CustomerDeserializationException;
-import org.org.myshop.shop.api.rest.servlet.util.ICustomerDeserializer;
+
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 
 public class CustomerServletDoPostTest {
@@ -28,7 +30,7 @@ public class CustomerServletDoPostTest {
 	private IRequestBodyReader requestBodyReaderMock;
 	
 	@Mock
-	private ICustomerDeserializer customerDeserializerMock;
+	private IDeserializer<Customer> deserializerMock;
 	
 	@Mock
 	private CustomerDao customerDaoMock;
@@ -43,16 +45,16 @@ public class CustomerServletDoPostTest {
     private Customer customerMock;
     
     @Before
-    public void setup() throws IOException, CustomerDeserializationException {
+    public void setup() throws IOException, DeserializationException {
     	MockitoAnnotations.initMocks(this);
     	
     	customerServlet = new CustomerServlet();
     	customerServlet.setRequestBodyReader(requestBodyReaderMock);
     	customerServlet.setCustomerDao(customerDaoMock);
-    	customerServlet.setCustomerDeserializer(customerDeserializerMock);
+    	customerServlet.setDeserializer(deserializerMock);
     	
     	when(requestBodyReaderMock.readBody(requestMock)).thenReturn(TEST_REQUEST_BODY);
-    	when(customerDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(customerMock);
+    	when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenReturn(customerMock);
     	when(customerDaoMock.update(customerMock)).thenReturn(customerMock);
     }
     
@@ -73,8 +75,8 @@ public class CustomerServletDoPostTest {
     } 
     
     @Test
-    public void testDeserializerFailed() throws CustomerDeserializationException, IOException   {
-    	when(customerDeserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new CustomerDeserializationException());
+    public void testDeserializerFailed() throws IOException, DeserializationException {
+    	when(deserializerMock.deserialize(TEST_REQUEST_BODY)).thenThrow(new DeserializationException());
     	
     	customerServlet.doPost(requestMock, responseMock);
     	

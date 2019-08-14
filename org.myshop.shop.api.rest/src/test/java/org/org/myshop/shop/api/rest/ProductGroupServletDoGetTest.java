@@ -19,7 +19,7 @@ import org.mockito.MockitoAnnotations;
 import org.myshop.shop.dao.ProductGroupDao;
 import org.myshop.shop.model.ProductGroup;
 
-import org.org.myshop.shop.api.rest.servlet.util.IProductGroupSerializer;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 
 public class ProductGroupServletDoGetTest {
 
@@ -28,7 +28,7 @@ public class ProductGroupServletDoGetTest {
 	private final static String JSON_STRING = "{}";
 	
 	@Mock
-	private IProductGroupSerializer serializerMock;
+	private ISerializer<ProductGroup> serializerMock;
 	
 	@Mock
 	private ProductGroupDao productGroupDaoMock;
@@ -55,7 +55,7 @@ public class ProductGroupServletDoGetTest {
 		
 		when(productGroupDaoMock.read()).thenReturn(listMock);
 		when(responseMock.getWriter()).thenReturn(printWriterMock);
-		when(serializerMock.serialize(listMock)).thenReturn(JSON_STRING);
+		when(serializerMock.serializeList(listMock)).thenReturn(JSON_STRING);
 	}
 	
 	@Test

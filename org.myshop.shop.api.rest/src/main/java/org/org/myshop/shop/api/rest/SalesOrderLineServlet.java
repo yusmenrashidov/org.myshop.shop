@@ -8,18 +8,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.myshop.shop.api.rest.servlet.util.implementation.Deserializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
-import org.myshop.shop.api.rest.servlet.util.implementation.SalesOrderLineDeserializer;
-import org.myshop.shop.api.rest.servlet.util.implementation.SalesOrderLineSerializer;
+import org.myshop.shop.api.rest.servlet.util.implementation.Serializer;
 
 import org.myshop.shop.dao.SalesOrderLineDao;
 import org.myshop.shop.model.SalesOrderLine;
 
-import org.org.myshop.shop.api.rest.servlet.exc.SalesOrderLineDeserializationException;
-
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
-import org.org.myshop.shop.api.rest.servlet.util.ISalesOrderLineDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.ISalesOrderLineSerializer;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
 
 public class SalesOrderLineServlet extends HttpServlet{
@@ -28,9 +27,9 @@ public class SalesOrderLineServlet extends HttpServlet{
 	
 	private IRequestBodyReader requestBodyReader;
 	
-	private ISalesOrderLineDeserializer salesOrderLineDeserializer;
+	private IDeserializer<SalesOrderLine> deserializer;
 	
-	private ISalesOrderLineSerializer salesOrderLineSerializer;
+	private ISerializer<SalesOrderLine> serializer;
 	
 	private IUrlReader urlReader;
 	
@@ -45,14 +44,14 @@ public class SalesOrderLineServlet extends HttpServlet{
 		try {
 			requestBody = requestBodyReader.readBody(request);
 			
-			salesOrderLine = salesOrderLineDeserializer.deserialize(requestBody);
+			salesOrderLine = deserializer.deserialize(requestBody);
 			
 			salesOrderLineDao.create(salesOrderLine);
 			
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
 		}catch(IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}catch(SalesOrderLineDeserializationException e) {
+		}catch(DeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
@@ -74,7 +73,7 @@ public class SalesOrderLineServlet extends HttpServlet{
 			PrintWriter printWriter = response.getWriter();
 			response.setContentType("application/json");
 			
-			printWriter.write(salesOrderLineSerializer.serializerList(salesOrderLineList));
+			printWriter.write(serializer.serializeList(salesOrderLineList));
 			printWriter.flush();
 			printWriter.close();
 			
@@ -90,10 +89,10 @@ public class SalesOrderLineServlet extends HttpServlet{
 		
 		try {
 			requestBody = requestBodyReader.readBody(request);
-			salesOrderLine = salesOrderLineDeserializer.deserialize(requestBody);
+			salesOrderLine = deserializer.deserialize(requestBody);
 			salesOrderLine = salesOrderLineDao.update(salesOrderLine);
 			
-		}catch(SalesOrderLineDeserializationException e) {
+		}catch(DeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);	
 		}
 		
@@ -130,30 +129,30 @@ public class SalesOrderLineServlet extends HttpServlet{
         return requestBodyReader;
     }
 	
-	public ISalesOrderLineDeserializer getSalesOrderLineDeserializer() {
-        if (salesOrderLineDeserializer == null) {
-        	salesOrderLineDeserializer = new  SalesOrderLineDeserializer();
+	public IDeserializer<SalesOrderLine> getDeserializer() {
+        if (deserializer == null) {
+        	deserializer = new Deserializer<SalesOrderLine>(SalesOrderLine.class);
         }
-        return salesOrderLineDeserializer;
+        return deserializer;
     }
 	
-	public ISalesOrderLineSerializer getSalesOrderLineSerializer() {
-    	if(salesOrderLineSerializer == null) {
-    		salesOrderLineSerializer = new SalesOrderLineSerializer();
+	public ISerializer<SalesOrderLine> getSerializer() {
+    	if(serializer == null) {
+    		serializer = new Serializer<SalesOrderLine>(SalesOrderLine.class);
     	}
-    	return salesOrderLineSerializer;
+    	return serializer;
     }
 
 	public void setRequestBodyReader(IRequestBodyReader requestBodyReader) {
 		this.requestBodyReader = requestBodyReader;
 	}
 
-	public void setSalesOrderLineDeserializer(ISalesOrderLineDeserializer salesOrderLineDeserializer) {
-		this.salesOrderLineDeserializer = salesOrderLineDeserializer;
+	public void setDeserializer(IDeserializer<SalesOrderLine> deserializer) {
+		this.deserializer = deserializer;
 	}
 
-	public void setSalesOrderLineSerializer(ISalesOrderLineSerializer salesOrderLineSerializer) {
-		this.salesOrderLineSerializer = salesOrderLineSerializer;
+	public void setSerializer(ISerializer<SalesOrderLine> serializer) {
+		this.serializer = serializer;
 	}
 
 	public void setUrlReader(IUrlReader urlReader) {

@@ -9,19 +9,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.myshop.shop.api.rest.servlet.util.implementation.Deserializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
+import org.myshop.shop.api.rest.servlet.util.implementation.Serializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
-import org.myshop.shop.api.rest.servlet.util.implementation.VendorDeserializer;
-import org.myshop.shop.api.rest.servlet.util.implementation.VendorSerializer;
 
 import org.myshop.shop.dao.VendorDao;
 import org.myshop.shop.model.Vendor;
 
-import org.org.myshop.shop.api.rest.servlet.exc.VendorDeserializationException;
+import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
+import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
-import org.org.myshop.shop.api.rest.servlet.util.IVendorDeserializer;
-import org.org.myshop.shop.api.rest.servlet.util.IVendorSerializer;
 
 @WebServlet(name = "vendorServlet", urlPatterns = {"/api/v1/model/customer"})
 public class VendorServlet extends HttpServlet{
@@ -30,9 +30,9 @@ public class VendorServlet extends HttpServlet{
 
 	private IRequestBodyReader requestBodyReader;
 	
-	private IVendorDeserializer vendorDeserializer;
+	private IDeserializer<Vendor> deserializer;
 	
-	private IVendorSerializer vendorSerializer;
+	private ISerializer<Vendor> serializer;
 	
 	private IUrlReader urlReader;
 	
@@ -47,14 +47,14 @@ public class VendorServlet extends HttpServlet{
 		try {
 			requestBody = requestBodyReader.readBody(request);
 			
-			vendor = vendorDeserializer.deserialize(requestBody);
+			vendor = deserializer.deserialize(requestBody);
 			
 			vendorDao.create(vendor);
 			
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
 		}catch(IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}catch(VendorDeserializationException e) {
+		}catch(DeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
@@ -76,7 +76,7 @@ public class VendorServlet extends HttpServlet{
 			PrintWriter printWriter = response.getWriter();
 			response.setContentType("application/json");
 			
-			printWriter.write(vendorSerializer.serializeList(vendorList));
+			printWriter.write(serializer.serializeList(vendorList));
 			printWriter.flush();
 			printWriter.close();
 			
@@ -92,10 +92,10 @@ public class VendorServlet extends HttpServlet{
 		
 		try {
 			requestBody = requestBodyReader.readBody(request);
-			vendor = vendorDeserializer.deserialize(requestBody);
+			vendor = deserializer.deserialize(requestBody);
 			vendor = vendorDao.update(vendor);
 		
-		}catch(VendorDeserializationException e ) {
+		}catch(DeserializationException e ) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
@@ -132,18 +132,18 @@ public class VendorServlet extends HttpServlet{
         return requestBodyReader;
     }
 	
-	public IVendorDeserializer getVendorDeserializer() {
-        if (vendorDeserializer == null) {
-        	vendorDeserializer = new  VendorDeserializer();
+	public IDeserializer<Vendor> getDeserializer() {
+        if (deserializer == null) {
+        	deserializer = new Deserializer<Vendor>(Vendor.class);
         }
-        return vendorDeserializer;
+        return deserializer;
     }
 	
-	public IVendorSerializer getVendorSerializer() {
-    	if(vendorSerializer == null) {
-    		vendorSerializer = new VendorSerializer();
+	public ISerializer<Vendor> getSerializer() {
+    	if(serializer == null) {
+    		serializer = new Serializer<Vendor>(Vendor.class);
     	}
-    	return vendorSerializer;
+    	return serializer;
     }
 	
 	public IUrlReader getUrlReader() {
@@ -157,12 +157,12 @@ public class VendorServlet extends HttpServlet{
         this.requestBodyReader = requestBodyReader;
     }
 	
-	public void setVendorSerializer(IVendorSerializer vendorSerializer) {
-		this.vendorSerializer = vendorSerializer;
+	public void setSerializer(ISerializer<Vendor> serializer) {
+		this.serializer = serializer;
 	}
 	
-	public void setVendorDeserializer(IVendorDeserializer vendorDeserializer) {
-		this.vendorDeserializer = vendorDeserializer;
+	public void setDeserializer(IDeserializer<Vendor> deserializer) {
+		this.deserializer = deserializer;
 	}
 	
 	public void setUrlReader(IUrlReader urlReader) {

@@ -16,9 +16,9 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
-import org.myshop.shop.api.rest.servlet.util.implementation.ItemSerializer;
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
+import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 
 public class ItemServletDoGetTest {
 	
@@ -27,7 +27,7 @@ public class ItemServletDoGetTest {
     private ItemServlet itemServlet;
     
     @Mock
-    private ItemSerializer itemSerializerMock;
+    private ISerializer<Item> serializer;
     
     @Mock
     private ItemDao itemDaoMock;
@@ -50,10 +50,10 @@ public class ItemServletDoGetTest {
     	
     	itemServlet = new ItemServlet();
     	itemServlet.setItemDao(itemDaoMock);
-    	itemServlet.setItemSerializer(itemSerializerMock);
+    	itemServlet.setSerializer(serializer);
     	
     	when(itemDaoMock.read()).thenReturn(itemListMock);
-    	when(itemSerializerMock.serializeList(itemListMock)).thenReturn(TEST_JSON_STRING);
+    	when(serializer.serializeList(itemListMock)).thenReturn(TEST_JSON_STRING);
     	when(responseMock.getWriter()).thenReturn(printWriterMock);
     }
     
