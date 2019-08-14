@@ -15,7 +15,6 @@ import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
 import org.myshop.shop.api.rest.servlet.util.implementation.UrlReader;
 import org.myshop.shop.dao.ProductGroupDao;
 import org.myshop.shop.model.ProductGroup;
-import org.org.myshop.shop.api.rest.servlet.exc.ItemDeserializationException;
 import org.org.myshop.shop.api.rest.servlet.exc.ProductGroupDeserializationException;
 import org.org.myshop.shop.api.rest.servlet.util.IProductGroupDeserializer;
 import org.org.myshop.shop.api.rest.servlet.util.IProductGroupSerializer;
