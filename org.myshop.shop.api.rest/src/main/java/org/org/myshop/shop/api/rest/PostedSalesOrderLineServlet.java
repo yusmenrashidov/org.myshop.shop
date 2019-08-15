@@ -13,8 +13,8 @@ import org.myshop.shop.api.rest.servlet.util.implementation.Deserializer;
 import org.myshop.shop.api.rest.servlet.util.implementation.RequestBodyReader;
 import org.myshop.shop.api.rest.servlet.util.implementation.Serializer;
 
-import org.myshop.shop.dao.PostedPurchaseOrderLineDao;
-import org.myshop.shop.model.PostedPurchaseOrderLine;
+import org.myshop.shop.dao.PostedSalesOrderLineDao;
+import org.myshop.shop.model.PostedSalesOrderLine;
 
 import org.org.myshop.shop.api.rest.servlet.exc.DeserializationException;
 import org.org.myshop.shop.api.rest.servlet.util.IDeserializer;
@@ -22,55 +22,56 @@ import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
 
-@WebServlet(name = "PostedPurchaseOrderLineServlet", urlPatterns = {"/api/v1/model/postedPurchaseOrderLine"})
-public class PostedPurchaseOrderLineServlet extends HttpServlet{
-
-	private static final long serialVersionUID = 1L;
+@WebServlet(name = "PostedSalesOrderLineServlet", urlPatterns = {"/api/v1/model/postedSalesOrderLine"})
+public class PostedSalesOrderLineServlet extends HttpServlet{
 	
+	private static final long serialVersionUID = 1L;
+
 	private IRequestBodyReader requestBodyReader;
 	
-	private IDeserializer<PostedPurchaseOrderLine> deserializer;
+	private IDeserializer<PostedSalesOrderLine> deserializer;
 	
-	private ISerializer<PostedPurchaseOrderLine> serializer;
+	private ISerializer<PostedSalesOrderLine> serializer;
 	
 	private IUrlReader urlReader;
 	
-	private PostedPurchaseOrderLineDao postedPurchaseOrderLineDao;
+	private PostedSalesOrderLineDao postedSalesOrderLineDao;
 	
 	@Override
 	public void doPut(HttpServletRequest request, HttpServletResponse response) {
 		
 		String requestBody;
-		PostedPurchaseOrderLine line = null;
+		PostedSalesOrderLine line = null;
 		
 		try {
 			requestBody = requestBodyReader.readBody(request);
 			
 			line = deserializer.deserialize(requestBody);
 			
-			postedPurchaseOrderLineDao.create(line);
+			postedSalesOrderLineDao.create(line);
 			
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
-		} catch (DeserializationException e) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		}catch(IOException e) {
+		} catch(IOException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}	
+		}catch(DeserializationException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		}
 	}
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
-		List<PostedPurchaseOrderLine> lineList;
-		lineList = postedPurchaseOrderLineDao.read();
+		List<PostedSalesOrderLine> lineList;
+		lineList = postedSalesOrderLineDao.read();
 		
 		if(lineList == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		
+			
 		}else if(lineList.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 			
 		}else {
+			
 			PrintWriter printWriter = response.getWriter();
 			response.setContentType("application/json");
 			
@@ -86,21 +87,23 @@ public class PostedPurchaseOrderLineServlet extends HttpServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		String requestBody;
-		PostedPurchaseOrderLine line = null;
-		
+		PostedSalesOrderLine line = null;
 		
 		try {
+		
 			requestBody = requestBodyReader.readBody(request);
-			line = deserializer.deserialize(requestBody);
-			line = postedPurchaseOrderLineDao.update(line);
 			
+			line = deserializer.deserialize(requestBody);
+			
+			line = postedSalesOrderLineDao.update(line);
+	
 		} catch (DeserializationException e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 		}
 		
 		if(line == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		
+			
 		}else {
 			response.setStatus(HttpServletResponse.SC_OK);
 		}
@@ -110,16 +113,16 @@ public class PostedPurchaseOrderLineServlet extends HttpServlet{
 	public void doDelete(HttpServletRequest request, HttpServletResponse response) {
 		
 		String id;
-		PostedPurchaseOrderLine line = null;
+		PostedSalesOrderLine line = null;
 		
 		id = urlReader.getIdFromQuery(request);
-		line = postedPurchaseOrderLineDao.get(id);
+		line = postedSalesOrderLineDao.get(id);
 		
 		if(line == null) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			
 		}else {
-			postedPurchaseOrderLineDao.delete(line);
+			postedSalesOrderLineDao.delete(line);
 			response.setStatus(HttpServletResponse.SC_OK);
 		}
 	}
@@ -131,16 +134,16 @@ public class PostedPurchaseOrderLineServlet extends HttpServlet{
         return requestBodyReader;
     }
 	
-	public IDeserializer<PostedPurchaseOrderLine> getDeserializer(){
+	public IDeserializer<PostedSalesOrderLine> getDeserializer(){
 		if(deserializer == null) {
-			deserializer = new Deserializer<PostedPurchaseOrderLine>(PostedPurchaseOrderLine.class);
+			deserializer = new Deserializer<PostedSalesOrderLine>(PostedSalesOrderLine.class);
 		}
 		return deserializer;
 	}
 	
-	public ISerializer<PostedPurchaseOrderLine> getSerializer() {
+	public ISerializer<PostedSalesOrderLine> getSerializer() {
 		if(serializer == null)
-			serializer = new Serializer<PostedPurchaseOrderLine>(PostedPurchaseOrderLine.class);
+			serializer = new Serializer<PostedSalesOrderLine>(PostedSalesOrderLine.class);
 		
 		return serializer;
 	}
@@ -149,11 +152,11 @@ public class PostedPurchaseOrderLineServlet extends HttpServlet{
 		this.requestBodyReader = requestBodyReader;
 	}
 
-	public void setDeserializer(IDeserializer<PostedPurchaseOrderLine> deserializer) {
+	public void setDeserializer(IDeserializer<PostedSalesOrderLine> deserializer) {
 		this.deserializer = deserializer;
 	}
 
-	public void setSerializer(ISerializer<PostedPurchaseOrderLine> serializer) {
+	public void setSerializer(ISerializer<PostedSalesOrderLine> serializer) {
 		this.serializer = serializer;
 	}
 
@@ -161,8 +164,8 @@ public class PostedPurchaseOrderLineServlet extends HttpServlet{
 		this.urlReader = urlReader;
 	}
 
-	public void setPostedPurchaseOrderLineDao(PostedPurchaseOrderLineDao postedPurchaseOrderLineDao) {
-		this.postedPurchaseOrderLineDao = postedPurchaseOrderLineDao;
+	public void setPostedSalesOrderLineDao(PostedSalesOrderLineDao postedSalesOrderLineDao) {
+		this.postedSalesOrderLineDao = postedSalesOrderLineDao;
 	}
 	
 	
