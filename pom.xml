@@ -18,6 +18,7 @@
 		<module>org.myshop.shop.dao</module>
 		<module>org.myshop.shop.dao.jdbc</module>
     <module>org.myshop.shop.api.rest</module>
+    <module>org.myshop.shop.jpa</module>
   </modules>
 
 </project>
