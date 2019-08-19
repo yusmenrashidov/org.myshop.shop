@@ -48,7 +48,7 @@ public class JpaCustomerDaoTest {
 		when(customerMock.getId()).thenReturn(TEST_CUSTOMER_ID);
 		when(customerMock.getName()).thenReturn(TEST_CUSTOMER_NAME);
 		
-		jpaCustomerDao = new JpaCustomerDao(TEST_PERSISTENCE_UNIT_NAME);
+		jpaCustomerDao = new JpaCustomerDao(factoryMock);
 	}
 	
 	@Test

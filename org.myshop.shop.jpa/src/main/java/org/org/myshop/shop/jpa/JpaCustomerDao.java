@@ -12,12 +12,12 @@ public class JpaCustomerDao implements CustomerDao{
 	private EntityManagerFactory factory;
 	private EntityManager entityManager;
 	
-	protected static final String READ_QUERY = "SELECT * FROM customer";
+	protected static final String READ_QUERY = "SELECT c FROM customer c";
 	
-	public JpaCustomerDao(String persistenceUnitName) {
+	public JpaCustomerDao(EntityManagerFactory factory) {
 		
-		factory = Persistence.createEntityManagerFactory(persistenceUnitName);
-		entityManager = factory.createEntityManager();
+		this.factory = factory;
+		entityManager = this.factory.createEntityManager();
 	}
 	
 	public void create(Customer customer) {
