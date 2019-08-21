@@ -20,6 +20,9 @@
  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <ferris.property.test.data.db>myshop</ferris.property.test.data.db>
+    <ferris.property.test.data.user>myshop</ferris.property.test.data.user>
+    <ferris.property.test.data.pass>myshop</ferris.property.test.data.pass>
   </properties>
  
   <dependencies>
