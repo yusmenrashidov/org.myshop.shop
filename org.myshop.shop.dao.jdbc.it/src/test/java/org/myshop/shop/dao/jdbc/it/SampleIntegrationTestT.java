@@ -9,7 +9,7 @@ import java.sql.Statement;
 
 import org.junit.Test;
 
-public class SampleIntegrationTestIT {
+public class SampleIntegrationTestT {
 
     private static String dbURL = "jdbc:derby://localhost:1527/memory:myshop;create=true;user=myshop;password=myshop";
     private static String tableName = "restaurants";
