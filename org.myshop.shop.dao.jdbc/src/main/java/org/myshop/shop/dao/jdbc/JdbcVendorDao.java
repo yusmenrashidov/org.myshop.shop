@@ -15,9 +15,9 @@ public class JdbcVendorDao implements VendorDao {
 
 	private Connection sqlConnection;
 	
-	private final String CREATE_QUERY = "INSERT INTO vendor VALUES(?, ?)";
-	private final String READ_QUERY = "SELECT * FROM vendor";
-	private final String GET_QUERY = "SELECT * FROM vendor WHERE id = ?";
+	static final String CREATE_QUERY = "INSERT INTO vendor VALUES(?, ?)";
+	static final String READ_QUERY = "SELECT * FROM vendor";
+	static final String GET_QUERY = "SELECT * FROM vendor WHERE id = ?";
 	private final String UPDATE_QUERY = "UPDATE vendor SET id = ?, name = ? WHERE id = ?";
 	private final String DELETE_QUERY = "DELETE FROM vendor WHERE id = ?";
 	
@@ -26,22 +26,18 @@ public class JdbcVendorDao implements VendorDao {
 	}
 	
 	public void create(Vendor vendor) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(CREATE_QUERY);
 			stmt.setString(1, vendor.getId());
 			stmt.setString(2, vendor.getName());
 			
 			stmt.executeUpdate();
-		
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
 	}
 
 	public List<Vendor> read() {
-		
 		List<Vendor>list = new ArrayList<Vendor>();
 		
 		try {
@@ -65,7 +61,6 @@ public class JdbcVendorDao implements VendorDao {
 	}
 
 	public Vendor get(String id) {
-		
 		Vendor vendor = new Vendor();
 			try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
@@ -75,7 +70,6 @@ public class JdbcVendorDao implements VendorDao {
 			
 			vendor.setId(rs.getString("id"));
 			vendor.setName(rs.getString("name"));
-			
 		} catch (SQLException e) {
 			return null;
 		}
