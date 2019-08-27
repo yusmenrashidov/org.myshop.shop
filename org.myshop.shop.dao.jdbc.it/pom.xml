@@ -19,6 +19,24 @@
 	<dependencies>
 
         <dependency>
+            <groupId>org.myshop.shop</groupId>
+            <artifactId>org.myshop.shop.model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.myshop.shop</groupId>
+            <artifactId>org.myshop.shop.dao</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.myshop.shop</groupId>
+            <artifactId>org.myshop.shop.dao.jdbc</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.8.1</version>
@@ -66,7 +84,7 @@
 							<password>myshop</password>
 							<sources>
 								<script>
-									<sourceFile>${basedir}/src/test/resources/sql/test-data-derby.sql</sourceFile>
+									<sourceFile>${basedir}/src/test/resources/sql/model_tables.sql</sourceFile>
 								</script>
 							</sources>
 						</configuration>
