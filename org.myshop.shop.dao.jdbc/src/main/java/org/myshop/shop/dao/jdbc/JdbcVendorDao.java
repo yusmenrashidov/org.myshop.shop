@@ -48,10 +48,15 @@ public class JdbcVendorDao implements VendorDao {
 			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
 			ResultSet rs = stmt.executeQuery();
 			
-			while(rs.next()) 
-				list.add(this.get(rs.getString("id")));
-			
-		
+			while(rs.next()) {
+				
+				Vendor vendor = new Vendor();
+				
+				vendor.setId(rs.getString("id"));
+				vendor.setName(rs.getString("name"));
+				
+				list.add(vendor);
+			}
 		} catch (SQLException e) {
 			return null;
 		}
