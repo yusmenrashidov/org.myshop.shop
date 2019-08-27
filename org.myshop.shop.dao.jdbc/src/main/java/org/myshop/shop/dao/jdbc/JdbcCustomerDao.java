@@ -45,14 +45,13 @@ public class JdbcCustomerDao implements CustomerDao {
 	public List<Customer> read() {
 		
 		List<Customer> list = new ArrayList<Customer>();
-		Customer customer = new Customer();
 		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
 			ResultSet rs = stmt.executeQuery();
 		
 			while(rs.next()) {
-				
+		        Customer customer = new Customer();
 				customer.setId(rs.getString("id"));
 				customer.setName(rs.getString("name"));
 				
