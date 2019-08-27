@@ -45,6 +45,12 @@ public class JdbcVendorDaoTest {
     private PreparedStatement getStatementMock;
     
     @Mock
+    private PreparedStatement updateStatementMock;
+    
+    @Mock
+    private PreparedStatement deleteStatementMock;
+    
+    @Mock
     private ResultSet readResultSetMock;
     
     @Mock
@@ -74,6 +80,8 @@ public class JdbcVendorDaoTest {
         when(sqlConnectionMock.prepareStatement(JdbcVendorDao.CREATE_QUERY)).thenReturn(createStatementMock);
         when(sqlConnectionMock.prepareStatement(JdbcVendorDao.READ_QUERY)).thenReturn(readStatementMock);
         when(sqlConnectionMock.prepareStatement(JdbcVendorDao.GET_QUERY)).thenReturn(getStatementMock);
+        when(sqlConnectionMock.prepareStatement(JdbcVendorDao.UPDATE_QUERY)).thenReturn(updateStatementMock);
+        when(sqlConnectionMock.prepareStatement(JdbcVendorDao.DELETE_QUERY)).thenReturn(deleteStatementMock);
         
         jdbcVendorDao = new JdbcVendorDao(sqlConnectionMock);
     }
@@ -128,5 +136,27 @@ public class JdbcVendorDaoTest {
         
         assertEquals(TEST_ID, vendor.getId());
         assertEquals(TEST_NAME, vendor.getName());
+    }
+    
+    @Test
+    public void testUpdate() throws SQLException {
+        jdbcVendorDao.update(vendorMock);
+        
+        verify(sqlConnectionMock).prepareStatement(JdbcVendorDao.UPDATE_QUERY);
+        
+        verify(updateStatementMock).setString(1,  TEST_ID);
+        verify(updateStatementMock).setString(2,  TEST_NAME);
+        verify(updateStatementMock).setString(3,  TEST_ID);
+        verify(updateStatementMock).executeUpdate();
+    }
+    
+    @Test
+    public void testDelete() throws SQLException {
+        jdbcVendorDao.delete(vendorMock);
+        
+        verify(sqlConnectionMock).prepareStatement(JdbcVendorDao.DELETE_QUERY);
+        
+        verify(deleteStatementMock).setString(1, TEST_ID);
+        verify(deleteStatementMock).executeUpdate();
     }
 }
