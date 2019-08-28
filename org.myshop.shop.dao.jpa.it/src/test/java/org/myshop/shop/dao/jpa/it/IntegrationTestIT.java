@@ -38,9 +38,12 @@ public class IntegrationTestIT {
 	}
 	
 	@Test
-	public void testGetData() {
+	public void testGetData() throws Exception {
 		
-		CustomerEntity customer = entityManager.find(CustomerEntity.class, "test_id");
+		this.setup();
+		this.testInsertSomeData();
+		
+	   CustomerEntity customer = entityManager.find(CustomerEntity.class, "test_id");
 		
 		assertNotNull(customer);
 		assertEquals(customer.getId(), "test_id");
@@ -48,31 +51,53 @@ public class IntegrationTestIT {
 	}
 	
 	@Test
-	public void testUpdate() {
-		CustomerEntity customer = entityManager.find(CustomerEntity.class, "test_id");
+	public void testUpdate() throws Exception {
 		
+		this.setup();
 		entityManager.getTransaction().begin();
 		
-		customer.setName("test_update_name");
+		CustomerEntity customer = new CustomerEntity();
+		customer.setId("update_id");
+		customer.setName("update_name");
+		
+		entityManager.persist(customer);	
 		
 		entityManager.getTransaction().commit();
+		
+	    customer = entityManager.find(CustomerEntity.class, "update_id");
+		
+		entityManager.getTransaction().begin();
+		customer.setName("new_name");
+		entityManager.getTransaction().commit();
 	
-	    customer = entityManager.find(CustomerEntity.class, "test_id");
+	    customer = entityManager.find(CustomerEntity.class, "update_id");
 	    
-	    assertEquals(customer.getId(), "test_id");
-	    assertEquals(customer.getName(), "test_update_name");
+	    assertEquals(customer.getId(), "update_id");
+	    assertEquals(customer.getName(), "new_name");
 	
 	}
 	
 	@Test
-	public void testDelete() {
-		CustomerEntity customer = entityManager.find(CustomerEntity.class, "test_id");
+	public void testDelete() throws Exception {
 		
+		this.setup();
 		entityManager.getTransaction().begin();
+		
+		CustomerEntity customer = new CustomerEntity();
+		customer.setId("test_id_delete");
+		customer.setName("test_name_delete");
+		
+		entityManager.persist(customer);	
+		
+		entityManager.getTransaction().commit();
+		
+	    customer = entityManager.find(CustomerEntity.class, "test_id_delete");
+	
+	    entityManager.getTransaction().begin();
 		entityManager.remove(customer);
 		entityManager.getTransaction().commit();
 		
-		customer = entityManager.find(CustomerEntity.class, "test_id");
+		customer = entityManager.find(CustomerEntity.class, "test_id_delete");
 		assertNull(customer);
 	}
 	
