@@ -8,23 +8,32 @@ import org.myshop.shop.model.Customer;
 
 @Entity
 @Table(name = "customer")
-public class CustomerEntity extends Customer{
+public class CustomerEntity{
 
 	@Id
 	private String id;
+	private String name;
 	
-	@Override
+	public CustomerEntity() {
+		super();
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	public Customer toCustomer() {
-		Customer customer = new Customer();
-		
-		customer.setId(this.getId());
-		customer.setName(this.getName());
-		
-		return customer;
+
+	public String getName() {
+		return name;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
 	
 }
