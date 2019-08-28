@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.myshop.shop</groupId>
+    <artifactId>org.myshop.shop</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+ 
+  <groupId>org.myshop.shop.dao.jpa.it</groupId>
+ 
+  <artifactId>org.myshop.shop.dao.jpa.it</artifactId>
+ 
+  <version>1.0-SNAPSHOT</version>
+ 
+  <name>org.myshop.shop - JPA Integration Test</name>
+ 
+  <url>http://maven.apache.org</url>
+ 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <ferris.property.test.data.db>myshop</ferris.property.test.data.db>
+    <ferris.property.test.data.user>myshop</ferris.property.test.data.user>
+    <ferris.property.test.data.pass>myshop</ferris.property.test.data.pass>
+  </properties>
+ 
+  <dependencies>
+  
+  	<dependency>
+			<groupId>org.myshop.shop</groupId>
+			<artifactId>org.myshop.shop.model</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+	<dependency>
+			<groupId>org.myshop.shop</groupId>
+			<artifactId>org.myshop.shop.dao</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
+<dependency>
+    <groupId>org.hibernate.javax.persistence</groupId>
+    <artifactId>hibernate-jpa-2.1-api</artifactId>
+    <version>1.0.2.Final</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-entitymanager</artifactId>
+    <version>5.4.4.Final</version>
+</dependency>
+
+   	
+    <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<version>10.10.1.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyclient</artifactId>
+			<version>10.10.1.1</version>
+		</dependency>
+  </dependencies>
+  
+  <build>
+  	<plugins>
+  	
+  	<plugin>
+				<groupId>com.btmatthews.maven.plugins.inmemdb</groupId>
+				<artifactId>inmemdb-maven-plugin</artifactId>
+				<version>1.4.3</version>
+				<configuration>
+					<monitorKey>inmemdb</monitorKey>
+					<monitorPort>11527</monitorPort>
+				</configuration>
+				<executions>
+					<execution>
+						<id>run</id>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<phase>pre-integration-test</phase>
+						<configuration>
+							<daemon>true</daemon>
+							<type>derby</type>
+							<database>${ferris.property.test.data.db}</database>
+							<username>${ferris.property.test.data.user}</username>
+							<password>${ferris.property.test.data.pass}</password>
+							<sources>
+								<script>
+									<sourceFile>${basedir}/src/test/resources/sql/test-data-derby.sql</sourceFile>
+								</script>
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>stop</id>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+						<phase>post-integration-test</phase>
+					</execution>
+				</executions>
+			</plugin>
+			
+			
+		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.12.4</version>
+				<executions>
+					<execution>
+						<id>integration-tests</id>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+						<configuration>
+							<skiptests>${skip.integration.tests}</skiptests>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>	
+  	
+  	</plugins>
+  	
+  	<testResources>
+ 		
+ 		<testResource>
+  			<directory>src/test/resources</directory>
+ 			 <filtering>true</filtering>
+ 			</testResource>
+		
+		</testResources>
+  	  	
+  </build>
+  
+</project>
