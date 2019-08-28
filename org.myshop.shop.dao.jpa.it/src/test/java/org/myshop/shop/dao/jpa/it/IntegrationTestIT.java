@@ -1,14 +1,13 @@
-package org.org.myshop.shop.dao.jpa.it;
+package org.myshop.shop.dao.jpa.it;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class IntegrationTest {
+public class IntegrationTestIT {
 
 	private EntityManager entityManager;
 	private EntityManagerFactory factory;

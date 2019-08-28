@@ -1,4 +1,4 @@
-package org.org.myshop.shop.dao.jpa.it;
+package org.myshop.shop.dao.jpa.it;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -11,9 +11,11 @@ import org.myshop.shop.model.Customer;
 public class CustomerEntity extends Customer{
 
 	@Id
+	private String id;
+	
 	@Override
 	public void setId(String id) {
-		super.setId(id);
+		this.id = id;
 	}
 	
 	public Customer toCustomer() {
