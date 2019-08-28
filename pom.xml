@@ -20,6 +20,8 @@
 		<module>org.myshop.shop.dao.jdbc.it</module>
     		<module>org.myshop.shop.api.rest</module>
     <module>org.myshop.shop.dao.jpa.it</module>
+    <module>org.myshop.shop.jpa.model</module>
+    <module>org.myshop.shop.dao.jpa</module>
   </modules>
 
 </project>
