@@ -36,15 +36,11 @@ public class JpaCustomerDao implements CustomerDao{
 		List<Customer> customerList = new ArrayList<Customer>();
 				
 		@SuppressWarnings("unchecked")
-		List<CustomerEntity> entityList = entityManager.createNativeQuery("SELECT * FROM customer").getResultList();
+		List<CustomerEntity> entityList = entityManager.createNativeQuery("SELECT * FROM customer", CustomerEntity.class).getResultList();
 		
 			for(int i=0; i < entityList.size(); i++) {
 			
-			Customer customer = new Customer();
-			customer.setId(entityList.get(i).getId());
-			customer.setName(entityList.get(i).getName());
-			
-			customerList.add(customer);
+			customerList.add(entityList.get(i).toCustomer());
 		}
 		
 		return customerList;

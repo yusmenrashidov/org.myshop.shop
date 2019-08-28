@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,10 +31,31 @@ public class JpaCustomerDaoIntegrationIT {
 	
 		customerDao.create(customer);
 	}
-
+	
+	@Test
+	public void testRead() {
+		
+		Customer customer = new Customer();
+		
+		customer.setId("id_1");
+		customer.setName("name_1");
+		
+		customerDao.create(customer);
+		
+		customer = new Customer();
+		customer.setId("id_2");
+		customer.setName("name_2");
+		
+		customerDao.create(customer);
+		
+		List<Customer> readList = customerDao.read();
+		
+		assertNotNull(readList);	
+	}
+	
 	@Test
 	public void testGet() {
-	
+		
 		Customer customer = new Customer();
 		
 		customer.setId("test_id");
@@ -43,6 +66,7 @@ public class JpaCustomerDaoIntegrationIT {
 		Customer getCustomer = customerDao.get("test_id");
 		
 		assertNotNull(getCustomer);
+		
 		assertEquals(getCustomer.getId(), "test_id");
 		assertEquals(getCustomer.getName(), "test_name");
 	}
@@ -68,6 +92,8 @@ public class JpaCustomerDaoIntegrationIT {
 	
 	@Test
 	public void testDelete() {
+		
+		this.setup();
 		
 		Customer customer = new Customer();
 		
