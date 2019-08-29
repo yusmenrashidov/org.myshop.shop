@@ -1,6 +1,7 @@
 package org.org.myshop.shop.jpa.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import org.myshop.shop.model.PostedPurchaseOrderLine;
 @Table(name = "postedPurchaseOrderLine")
 public class PostedPurchaseOrderLineEntity {
 
+	@Id
 	private String id = "";
 	private int lineNumber;
 	@OneToOne

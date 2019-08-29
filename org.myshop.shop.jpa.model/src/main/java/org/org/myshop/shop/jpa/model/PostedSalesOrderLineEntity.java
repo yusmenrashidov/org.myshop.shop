@@ -9,7 +9,7 @@ import org.myshop.shop.model.PostedSalesOrderLine;
 
 @Entity
 @Table(name = "postedSalesOrderLine")
-public class PostedSalesOrdeLineEntity {
+public class PostedSalesOrderLineEntity {
 
 	@Id
 	private String id = "";
@@ -20,11 +20,11 @@ public class PostedSalesOrdeLineEntity {
 	private float price;
 	private int ammount;
 	
-	public PostedSalesOrdeLineEntity() {
+	public PostedSalesOrderLineEntity() {
 		super();
 	}
 	
-	public PostedSalesOrdeLineEntity(PostedSalesOrderLine line) {
+	public PostedSalesOrderLineEntity(PostedSalesOrderLine line) {
 		
 		this.id = line.getId();
 		this.lineNumber = line.getLineNumber();
