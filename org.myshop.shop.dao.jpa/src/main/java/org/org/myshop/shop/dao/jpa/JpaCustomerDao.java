@@ -17,8 +17,8 @@ public class JpaCustomerDao implements CustomerDao{
 	private EntityManagerFactory factory;
 	
 	
-	public JpaCustomerDao() {
-		factory = Persistence.createEntityManagerFactory("CustomerEntity");
+	public JpaCustomerDao(EntityManagerFactory factory) {
+		this.factory = factory;
 		entityManager = factory.createEntityManager();
 	}
 	

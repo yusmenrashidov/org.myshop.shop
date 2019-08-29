@@ -6,6 +6,9 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,10 +18,14 @@ import org.org.myshop.shop.dao.jpa.JpaCustomerDao;
 public class JpaCustomerDaoIntegrationIT {
 
 	private JpaCustomerDao customerDao;
+	private EntityManagerFactory factory;
 	
 	@Before
 	public void setup() {
-		customerDao = new JpaCustomerDao();
+		
+		factory = Persistence.createEntityManagerFactory("CustomerEntity");
+		
+		customerDao = new JpaCustomerDao(factory);
 	}
 	
 	@Test
