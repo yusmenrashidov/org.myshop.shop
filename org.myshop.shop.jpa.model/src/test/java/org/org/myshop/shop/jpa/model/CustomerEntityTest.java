@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.myshop.shop.model.Customer;
 
+import java.lang.reflect.Field;;
+
 public class CustomerEntityTest {
 
 	
@@ -31,4 +33,20 @@ public class CustomerEntityTest {
 		assertEquals(customer.getName(), "test_name");
 	}
 	
+	@Test
+	public void testCustomerEntityReflection() throws SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		
+		Field [] modelFields = Class.forName("org.myshop.shop.model.Customer").newInstance().getClass().getDeclaredFields();
+		Field [] jpaEntityFields = Class.forName("org.org.myshop.shop.jpa.model.CustomerEntity").newInstance().getClass().getDeclaredFields();
+		
+		for(int i=0; i< modelFields.length; i++) {
+			
+			modelFields[i].setAccessible(true);
+			jpaEntityFields[i].setAccessible(true);
+			
+			assertEquals(modelFields[i], jpaEntityFields[i]);
+		
+		}
+		
+	}
 }
