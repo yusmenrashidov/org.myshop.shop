@@ -14,6 +14,7 @@ public class ProductGroupEntity {
 	@Id
 	private String id = "";
 	private String description;
+	
 	@OneToOne
 	private ItemCategoryEntity itemCategory;
 	

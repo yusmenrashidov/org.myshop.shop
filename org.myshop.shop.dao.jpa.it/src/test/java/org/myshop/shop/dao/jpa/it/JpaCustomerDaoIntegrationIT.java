@@ -23,7 +23,7 @@ public class JpaCustomerDaoIntegrationIT {
 	@Before
 	public void setup() {
 		
-		factory = Persistence.createEntityManagerFactory("CustomerEntity");
+		factory = Persistence.createEntityManagerFactory("myshopDB");
 		
 		customerDao = new JpaCustomerDao(factory);
 	}
