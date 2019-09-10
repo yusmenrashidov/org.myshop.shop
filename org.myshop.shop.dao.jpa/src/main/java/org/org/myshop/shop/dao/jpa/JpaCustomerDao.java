@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import org.myshop.shop.dao.CustomerDao;
 import org.myshop.shop.model.Customer;
@@ -15,6 +14,8 @@ public class JpaCustomerDao implements CustomerDao{
 
 	private EntityManager entityManager;
 	private EntityManagerFactory factory;
+	
+	protected static final String READ_QUERY = "SELECT * FROM customer";
 	
 	public JpaCustomerDao(EntityManagerFactory factory) {
 		this.factory = factory;
@@ -35,7 +36,7 @@ public class JpaCustomerDao implements CustomerDao{
 		List<Customer> customerList = new ArrayList<Customer>();
 				
 		@SuppressWarnings("unchecked")
-		List<CustomerEntity> entityList = entityManager.createNativeQuery("SELECT * FROM customer", CustomerEntity.class).getResultList();
+		List<CustomerEntity> entityList = entityManager.createNativeQuery(READ_QUERY, CustomerEntity.class).getResultList();
 		
 			for(int i=0; i < entityList.size(); i++) {
 			
