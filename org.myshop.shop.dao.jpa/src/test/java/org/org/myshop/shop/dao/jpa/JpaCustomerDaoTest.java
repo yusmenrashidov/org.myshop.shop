@@ -10,7 +10,9 @@ import static org.mockito.Matchers.anyString;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.transaction.Transaction;
 
 import static org.mockito.Mockito.times;
 
@@ -43,11 +45,17 @@ public class JpaCustomerDaoTest {
 	@Mock
 	private JpaCustomerDao customerDaoMock;
 	
+	@Mock
+	private EntityTransaction entityTransactionMock;
+	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 		
-		when(Persistence.createEntityManagerFactory("myshopDB")).thenReturn(factoryMock);
+		//when(Persistence.createEntityManagerFactory("myshopDB")).thenReturn(factoryMock);
+		
+		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
+		
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
 		
 		when(customerMock.getId()).thenReturn(TEST_CUSTOMER_ID);
