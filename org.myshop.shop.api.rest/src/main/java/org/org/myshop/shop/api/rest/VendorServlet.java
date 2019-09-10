@@ -23,7 +23,7 @@ import org.org.myshop.shop.api.rest.servlet.util.IRequestBodyReader;
 import org.org.myshop.shop.api.rest.servlet.util.ISerializer;
 import org.org.myshop.shop.api.rest.servlet.util.IUrlReader;
 
-@WebServlet(name = "vendorServlet", urlPatterns = {"/api/v1/model/customer"})
+@WebServlet(name = "vendorServlet", urlPatterns = {"/api/v1/model/vendor"})
 public class VendorServlet extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
