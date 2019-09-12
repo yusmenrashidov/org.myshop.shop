@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -84,6 +85,16 @@ public class JpaItemCategoryDaoTest {
 		itemCategoryDaoMock.create(itemCategoryMock);
 		
 		verify(entityTransactionMock).begin();
+		
+		ArgumentCaptor<ItemCategoryEntity> itemCategoryEntityArgumentCaptor = ArgumentCaptor.forClass(ItemCategoryEntity.class);
+		verify(entityManagerMock).persist(itemCategoryEntityArgumentCaptor.capture());
+		
+		ItemCategoryEntity capturedItemCategoryEntity = itemCategoryEntityArgumentCaptor.getValue();
+		
+		assertEquals(capturedItemCategoryEntity.getId(), TEST_ITEM_CATEGORY_ID);
+		assertEquals(capturedItemCategoryEntity.getName(), TEST_ITEM_CATEGORY_NAME);
+		assertEquals(capturedItemCategoryEntity.getDescription(), TEST_ITEM_CATEGORY_DESCRIPTION);
+		
 		verify(entityTransactionMock).commit();
 	}
 	
@@ -124,6 +135,10 @@ public class JpaItemCategoryDaoTest {
 		itemCategoryDaoMock.delete(itemCategoryMock);
 		
 		verify(entityTransactionMock).begin();
+		
+		ArgumentCaptor<ItemCategoryEntity> itemCategoryEntityArgumentCaptor = ArgumentCaptor.forClass(ItemCategoryEntity.class);
+		verify(entityManagerMock).remove(itemCategoryEntityArgumentCaptor.capture());
+		
 		verify(entityTransactionMock).commit();
 	}
 	
