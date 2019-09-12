@@ -63,7 +63,7 @@ public class JdbcCustomerDao implements CustomerDao {
 
 	public Customer get(String id) {
 
-		Customer customer = new Customer();
+		Customer customer = null;
 
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
@@ -73,6 +73,7 @@ public class JdbcCustomerDao implements CustomerDao {
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
+				customer = new Customer();
 				customer.setId(rs.getString("id"));
 				customer.setName(rs.getString("name"));
 			}
