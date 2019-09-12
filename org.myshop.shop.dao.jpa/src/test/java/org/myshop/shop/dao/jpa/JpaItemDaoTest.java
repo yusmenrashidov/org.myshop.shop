@@ -1,4 +1,4 @@
-package org.org.myshop.shop.dao.jpa;
+package org.myshop.shop.dao.jpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import org.myshop.shop.dao.jpa.JpaItemDao;
 import org.myshop.shop.model.Item;
 import org.myshop.shop.model.ItemCategory;
 import org.myshop.shop.model.ProductGroup;

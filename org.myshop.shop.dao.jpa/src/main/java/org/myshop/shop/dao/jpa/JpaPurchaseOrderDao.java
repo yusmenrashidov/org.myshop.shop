@@ -1,4 +1,4 @@
-package org.org.myshop.shop.dao.jpa;
+package org.myshop.shop.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;

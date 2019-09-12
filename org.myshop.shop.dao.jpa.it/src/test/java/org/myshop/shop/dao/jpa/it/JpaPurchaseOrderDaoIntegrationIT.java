@@ -12,9 +12,8 @@ import javax.persistence.Persistence;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import org.myshop.shop.dao.jpa.JpaPurchaseOrderDao;
 import org.myshop.shop.model.PurchaseOrder;
-import org.org.myshop.shop.dao.jpa.JpaPurchaseOrderDao;
 
 public class JpaPurchaseOrderDaoIntegrationIT {
 

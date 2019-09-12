@@ -11,14 +11,12 @@ import javax.persistence.Persistence;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import org.myshop.shop.dao.jpa.JpaItemCategoryDao;
+import org.myshop.shop.dao.jpa.JpaItemDao;
+import org.myshop.shop.dao.jpa.JpaProductGroupDao;
 import org.myshop.shop.model.Item;
 import org.myshop.shop.model.ItemCategory;
 import org.myshop.shop.model.ProductGroup;
-
-import org.org.myshop.shop.dao.jpa.JpaItemCategoryDao;
-import org.org.myshop.shop.dao.jpa.JpaItemDao;
-import org.org.myshop.shop.dao.jpa.JpaProductGroupDao;
 
 public class JpaItemDaoIntegrationIT {
 

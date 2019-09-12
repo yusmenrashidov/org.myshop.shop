@@ -1,4 +1,4 @@
-package org.org.myshop.shop.dao.jpa;
+package org.myshop.shop.dao.jpa;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
+import org.myshop.shop.dao.jpa.JpaVendorDao;
 import org.myshop.shop.model.Vendor;
 import org.org.myshop.shop.jpa.model.VendorEntity;
 

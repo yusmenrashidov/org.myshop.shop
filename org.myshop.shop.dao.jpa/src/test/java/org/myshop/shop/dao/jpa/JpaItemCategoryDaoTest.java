@@ -1,4 +1,4 @@
-package org.org.myshop.shop.dao.jpa;
+package org.myshop.shop.dao.jpa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,6 +20,7 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
+import org.myshop.shop.dao.jpa.JpaItemCategoryDao;
 import org.myshop.shop.model.ItemCategory;
 
 import org.org.myshop.shop.jpa.model.ItemCategoryEntity;

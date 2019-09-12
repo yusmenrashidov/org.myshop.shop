@@ -11,9 +11,8 @@ import javax.persistence.Persistence;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import org.myshop.shop.dao.jpa.JpaCustomerDao;
 import org.myshop.shop.model.Customer;
-import org.org.myshop.shop.dao.jpa.JpaCustomerDao;
 
 public class JpaCustomerDaoIntegrationIT {
 
