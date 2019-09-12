@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -103,6 +104,18 @@ public class JpaProductGroupDaoTest {
 		productGroupDaoMock.create(productGroupMock);
 		
 		verify(entityTransactionMock).begin();
+		
+		ArgumentCaptor<ProductGroupEntity> productGroupEntityArgumentCaptor = ArgumentCaptor.forClass(ProductGroupEntity.class);
+		verify(entityManagerMock).persist(productGroupEntityArgumentCaptor.capture());
+		
+		ProductGroupEntity capturedProductGroupEntity = productGroupEntityArgumentCaptor.getValue();
+		
+		assertEquals(capturedProductGroupEntity.getId(), TEST_PRODUCT_GROUP_ID);
+		assertEquals(capturedProductGroupEntity.getDescription(), TEST_PRODUCT_GROUP_DESCRIPTION);
+		assertEquals(capturedProductGroupEntity.getItemCategory().getId(), TEST_ITEM_CATEGORY_ID);
+		assertEquals(capturedProductGroupEntity.getItemCategory().getName(), TEST_ITEM_CATEGORY_NAME);
+		assertEquals(capturedProductGroupEntity.getItemCategory().getDescription(), TEST_ITEM_CATEGORY_DESCRIPTION);	
+		
 		verify(entityTransactionMock).commit();
 	}
 	
@@ -147,6 +160,10 @@ public class JpaProductGroupDaoTest {
 		productGroupDaoMock.delete(productGroupMock);
 		
 		verify(entityTransactionMock).begin();
+		
+		ArgumentCaptor<ProductGroupEntity> productGroupEntityArgumentCaptor = ArgumentCaptor.forClass(ProductGroupEntity.class);
+		verify(entityManagerMock).remove(productGroupEntityArgumentCaptor.capture());
+		
 		verify(entityTransactionMock).commit();
 	}
 	
