@@ -16,6 +16,7 @@ import javax.persistence.Query;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -80,6 +81,15 @@ public class JpaVendorDaoTest {
 		vendorDaoMock.create(vendorMock);
 		
 		verify(entityTransactionMock).begin();
+		
+		ArgumentCaptor<VendorEntity> vendorEntityArgumentCaptor = ArgumentCaptor.forClass(VendorEntity.class);
+		verify(entityManagerMock).persist(vendorEntityArgumentCaptor.capture());
+
+		VendorEntity capturedVendorEntity = vendorEntityArgumentCaptor.getValue();
+		
+		assertEquals(capturedVendorEntity.getId(), TEST_VENDOR_ID);
+		assertEquals(capturedVendorEntity.getName(), TEST_VENDOR_NAME);
+		
 		verify(entityTransactionMock).commit();
 	}
 	
@@ -118,6 +128,10 @@ public class JpaVendorDaoTest {
 		vendorDaoMock.delete(vendorMock);
 		
 		verify(entityTransactionMock).begin();
+		
+		ArgumentCaptor<VendorEntity> vendorEntityArgumentCaptor = ArgumentCaptor.forClass(VendorEntity.class);
+		verify(entityManagerMock).remove(vendorEntityArgumentCaptor.capture());
+		
 		verify(entityTransactionMock).commit();
 	}
 	
