@@ -16,6 +16,8 @@ public class JpaProductGroupDao implements ProductGroupDao{
 	private EntityManager entityManager;
 	private EntityManagerFactory factory;
 	
+	protected final static String READ_QUERY = "SELECT * FROM productGroup";
+	
 	public JpaProductGroupDao(EntityManagerFactory factory) {
 		this.factory = factory;
 		entityManager = factory.createEntityManager();
@@ -35,7 +37,7 @@ public class JpaProductGroupDao implements ProductGroupDao{
 		List<ProductGroup> productGroupList = new ArrayList<ProductGroup>();
 		
 		@SuppressWarnings("unchecked")
-		List<ProductGroupEntity> entityList = entityManager.createNativeQuery("SELECT * FROM productGroup", ProductGroupEntity.class).getResultList();
+		List<ProductGroupEntity> entityList = entityManager.createNativeQuery(READ_QUERY, ProductGroupEntity.class).getResultList();
 		
 		for(int i=0; i<entityList.size(); i++) {
 			productGroupList.add(entityList.get(i).toProductGroup());
