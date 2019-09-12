@@ -18,6 +18,8 @@ public class JpaItemDao implements ItemDao{
 	private EntityManager entityManager;
 	private EntityManagerFactory factory;
 	
+	protected final static String READ_QUERY = "SELECT * FROM item";
+	
 	public JpaItemDao(EntityManagerFactory factory) {
 		this.factory = factory;
 		entityManager = factory.createEntityManager();
@@ -37,7 +39,7 @@ public class JpaItemDao implements ItemDao{
 		List<Item> itemList = new ArrayList<Item>();
 		
 		@SuppressWarnings("unchecked")
-		List<ItemEntity> entityList = entityManager.createNativeQuery("SELECT * FROM item", ItemEntity.class).getResultList();
+		List<ItemEntity> entityList = entityManager.createNativeQuery(READ_QUERY, ItemEntity.class).getResultList();
 		
 		for(int i=0; i < entityList.size(); i++) {
 			itemList.add(entityList.get(i).toItem());
