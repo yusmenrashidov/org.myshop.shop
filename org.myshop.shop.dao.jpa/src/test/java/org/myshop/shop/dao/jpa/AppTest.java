@@ -1,4 +1,4 @@
-package org.org.myshop.shop.dao.jpa;
+package org.myshop.shop.dao.jpa;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

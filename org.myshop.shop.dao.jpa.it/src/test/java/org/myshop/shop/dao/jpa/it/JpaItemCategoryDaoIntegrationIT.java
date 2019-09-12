@@ -11,8 +11,8 @@ import javax.persistence.Persistence;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.myshop.shop.dao.jpa.JpaItemCategoryDao;
 import org.myshop.shop.model.ItemCategory;
-import org.org.myshop.shop.dao.jpa.JpaItemCategoryDao;
 
 public class JpaItemCategoryDaoIntegrationIT {
 

@@ -11,12 +11,10 @@ import javax.persistence.Persistence;
 
 import org.junit.Before;
 import org.junit.Test;
-
+import org.myshop.shop.dao.jpa.JpaItemDao;
+import org.myshop.shop.dao.jpa.JpaPostedPurchaseOrderLineDao;
 import org.myshop.shop.model.Item;
 import org.myshop.shop.model.PostedPurchaseOrderLine;
-
-import org.org.myshop.shop.dao.jpa.JpaItemDao;
-import org.org.myshop.shop.dao.jpa.JpaPostedPurchaseOrderLineDao;
 
 public class JpaPostedPurchaseOrderLineDaoIntegration {
 

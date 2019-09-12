@@ -11,8 +11,8 @@ import javax.persistence.Persistence;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.myshop.shop.dao.jpa.JpaVendorDao;
 import org.myshop.shop.model.Vendor;
-import org.org.myshop.shop.dao.jpa.JpaVendorDao;
 
 public class JpaVendorDaoIntegrationIT {
 
