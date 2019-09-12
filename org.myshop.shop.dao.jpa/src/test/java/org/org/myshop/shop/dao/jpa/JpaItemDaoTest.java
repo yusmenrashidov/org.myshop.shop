@@ -7,11 +7,14 @@ import javax.persistence.Query;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import org.myshop.shop.model.Item;
 import org.myshop.shop.model.ItemCategory;
 import org.myshop.shop.model.ProductGroup;
+
 import org.org.myshop.shop.jpa.model.ItemCategoryEntity;
 import org.org.myshop.shop.jpa.model.ItemEntity;
 import org.org.myshop.shop.jpa.model.ProductGroupEntity;
@@ -132,6 +135,20 @@ public class JpaItemDaoTest {
 		itemDaoMock.create(itemMock);
 		
 		verify(entityTransactionMock).begin();
+		
+		ArgumentCaptor<ItemEntity> itemEntityArgumentCaptor = ArgumentCaptor.forClass(ItemEntity.class);
+		verify(entityManagerMock).persist(itemEntityArgumentCaptor.capture());
+		
+		ItemEntity capturedItemEntity = itemEntityArgumentCaptor.getValue();
+		
+		assertEquals(capturedItemEntity.getId(), TEST_ITEM_ID);
+		assertEquals(capturedItemEntity.getName(), TEST_ITEM_NAME);
+		assertEquals(capturedItemEntity.getDescription(), TEST_ITEM_DESCRIPTION);
+		assertEquals(capturedItemEntity.getProductGroup().getId(), TEST_PRODUCT_GROUP_ID);
+		assertEquals(capturedItemEntity.getItemCategory().getId(), TEST_ITEM_CATEGORY_ID);
+		assertEquals(0f, capturedItemEntity.getPurchasePrice(), 123.456f);
+		assertEquals(0f, capturedItemEntity.getSalesPrice(), 123.789f);
+		
 		verify(entityTransactionMock).commit();
 	}
 	
@@ -177,6 +194,10 @@ public class JpaItemDaoTest {
 		itemDaoMock.delete(itemMock);
 		
 		verify(entityTransactionMock).begin();
+		
+		ArgumentCaptor<ItemEntity> itemEntityArgumentCaptor = ArgumentCaptor.forClass(ItemEntity.class);
+		verify(entityManagerMock).remove(itemEntityArgumentCaptor.capture());
+		
 		verify(entityTransactionMock).commit();
 	}
 	
