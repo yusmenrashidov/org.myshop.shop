@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNull;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.Matchers.isA;
 
 import java.util.List;
 
@@ -17,6 +16,7 @@ import javax.persistence.Query;
 
 import org.junit.Before;
 import org.junit.Test;
+
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -83,7 +83,6 @@ public class JpaCustomerDaoTest {
 		customerDaoMock.create(customerMock);
 		
 		verify(entityTransactionMock).begin();
-		verify(entityTransactionMock).commit();
 		
 		ArgumentCaptor<CustomerEntity> customerEntityArgumentCaptor = ArgumentCaptor.forClass(CustomerEntity.class);
 		verify(entityManagerMock).persist(customerEntityArgumentCaptor.capture());
@@ -92,6 +91,8 @@ public class JpaCustomerDaoTest {
 		
 		assertEquals(TEST_CUSTOMER_ID, capturedCustomerEntity.getId());
 		assertEquals(TEST_CUSTOMER_NAME, capturedCustomerEntity.getName());
+		
+		verify(entityTransactionMock).commit();
 	}
 	
 	@Test
@@ -129,7 +130,10 @@ public class JpaCustomerDaoTest {
 		customerDaoMock.delete(customerMock);
 		
 		verify(entityTransactionMock).begin();
-		verify(entityManagerMock).remove(isA(CustomerEntity.class));
+		
+		ArgumentCaptor<CustomerEntity> customerEntityArgumentCaptor = ArgumentCaptor.forClass(CustomerEntity.class);
+		verify(entityManagerMock).remove(customerEntityArgumentCaptor.capture());
+	
 		verify(entityTransactionMock).commit();
 	}
 	
