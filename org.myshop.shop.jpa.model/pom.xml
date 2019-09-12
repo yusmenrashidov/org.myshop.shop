@@ -9,7 +9,6 @@
   </parent>
   <groupId>org.myshop.shop.jpa.model</groupId>
   <artifactId>org.myshop.shop.jpa.model</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>org.myshop.shop - JPA Model</name>
   <url>http://maven.apache.org</url>
   <properties>

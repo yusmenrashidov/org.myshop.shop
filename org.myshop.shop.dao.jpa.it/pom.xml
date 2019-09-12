@@ -12,8 +12,6 @@
  
   <artifactId>org.myshop.shop.dao.jpa.it</artifactId>
  
-  <version>1.0-SNAPSHOT</version>
- 
   <name>org.myshop.shop - JPA Integration Test</name>
  
   <url>http://maven.apache.org</url>
