@@ -8,12 +8,8 @@ import com.google.gson.Gson;
 
 public class Serializer<T> implements ISerializer<T>{
 
-	private Type typeOfT; 
-	
 	public Serializer(Type typeOfT) {
-		this.typeOfT = typeOfT;
 	}
-	
 	
 	public String serializeList(List<T> listToSerialize) {
 		
