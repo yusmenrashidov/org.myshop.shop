@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNull;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.isA;
 
 import java.util.List;
 
@@ -78,9 +79,11 @@ public class JpaCustomerDaoTest {
 	
 	@Test
 	public void testCreate() {
+		
 		customerDaoMock.create(customerMock);
 		
 		verify(entityTransactionMock).begin();
+		verify(entityManagerMock).persist(isA(CustomerEntity.class));
 		verify(entityTransactionMock).commit();
 	}
 	
@@ -119,6 +122,7 @@ public class JpaCustomerDaoTest {
 		customerDaoMock.delete(customerMock);
 		
 		verify(entityTransactionMock).begin();
+		verify(entityManagerMock).remove(isA(CustomerEntity.class));
 		verify(entityTransactionMock).commit();
 	}
 	
