@@ -7,7 +7,6 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.doReturn;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ import javax.persistence.Query;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -84,8 +83,15 @@ public class JpaCustomerDaoTest {
 		customerDaoMock.create(customerMock);
 		
 		verify(entityTransactionMock).begin();
-		verify(entityManagerMock).persist(customerEntityMock);
 		verify(entityTransactionMock).commit();
+		
+		ArgumentCaptor<CustomerEntity> customerEntityArgumentCaptor = ArgumentCaptor.forClass(CustomerEntity.class);
+		verify(entityManagerMock).persist(customerEntityArgumentCaptor.capture());
+		
+		CustomerEntity capturedCustomerEntity = customerEntityArgumentCaptor.getValue();
+		
+		assertEquals(TEST_CUSTOMER_ID, capturedCustomerEntity.getId());
+		assertEquals(TEST_CUSTOMER_NAME, capturedCustomerEntity.getName());
 	}
 	
 	@Test
