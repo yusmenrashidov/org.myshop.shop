@@ -34,7 +34,7 @@ public class JdbcCustomerDaoTest {
     private Customer customerMock;
 
     @Mock
-    private ResultSet rsMock;
+    private ResultSet resultSetMock;
 
     @Mock
     private PreparedStatement createPreparedStatementMock;
@@ -64,16 +64,16 @@ public class JdbcCustomerDaoTest {
         when(sqlConnectionMock.prepareStatement(JdbcCustomerDao.UPDATE_QUERY)).thenReturn(updatePreparedStatementMock);
         when(sqlConnectionMock.prepareStatement(JdbcCustomerDao.DELETE_QUERY)).thenReturn(deletePreparedStatementMock);
 
-        when(readPreparedStatementMock.executeQuery()).thenReturn(rsMock);
-        when(getPreparedStatementMock.executeQuery()).thenReturn(rsMock);
+        when(readPreparedStatementMock.executeQuery()).thenReturn(resultSetMock);
+        when(getPreparedStatementMock.executeQuery()).thenReturn(resultSetMock);
 
-        when(rsMock.next()).thenReturn(Boolean.TRUE).thenReturn(Boolean.TRUE).thenReturn(Boolean.FALSE);
+        when(resultSetMock.next()).thenReturn(Boolean.TRUE).thenReturn(Boolean.TRUE).thenReturn(Boolean.FALSE);
 
         when(customerMock.getId()).thenReturn(TEST_CUSTOMER_1_ID);
         when(customerMock.getName()).thenReturn(TEST_CUSTOMER_1_NAME);
 
-        when(rsMock.getString("id")).thenReturn(TEST_CUSTOMER_1_ID).thenReturn(TEST_CUSTOMER_2_ID);
-        when(rsMock.getString("name")).thenReturn(TEST_CUSTOMER_1_NAME).thenReturn(TEST_CUSTOMER_2_NAME);
+        when(resultSetMock.getString("id")).thenReturn(TEST_CUSTOMER_1_ID).thenReturn(TEST_CUSTOMER_2_ID);
+        when(resultSetMock.getString("name")).thenReturn(TEST_CUSTOMER_1_NAME).thenReturn(TEST_CUSTOMER_2_NAME);
 
         customerDaoMock = new JdbcCustomerDao(sqlConnectionMock);
     }
@@ -95,7 +95,7 @@ public class JdbcCustomerDaoTest {
 
         verify(sqlConnectionMock).prepareStatement(JdbcCustomerDao.READ_QUERY);
         verify(readPreparedStatementMock).executeQuery();
-        verify(rsMock, times(3)).next();
+        verify(resultSetMock, times(3)).next();
 
         assertNotNull(listMock);
         assertEquals(2, listMock.size());
@@ -118,7 +118,7 @@ public class JdbcCustomerDaoTest {
         verify(sqlConnectionMock).prepareStatement(JdbcCustomerDao.GET_QUERY);
         verify(getPreparedStatementMock).setString(1, TEST_CUSTOMER_1_ID);
         verify(getPreparedStatementMock).executeQuery();
-        verify(rsMock).next();
+        verify(resultSetMock).next();
 
         assertNotNull(customer);
 
