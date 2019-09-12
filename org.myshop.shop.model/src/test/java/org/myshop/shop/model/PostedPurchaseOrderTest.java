@@ -11,15 +11,15 @@ public class PostedPurchaseOrderTest {
 	@Test
 	public void PostedPurchaseOrderFieldsNotNull() {
 		PostedPurchaseOrder purchaseOrder = new PostedPurchaseOrder();
-		
+
 		assertNotNull("Id shoud not be null on new PostedPurchaseOrder", purchaseOrder.getId());
 		assertEquals("Id shoudl be empty on new PostedPurchaseOrder", "", purchaseOrder.getId());
-		
+
 		assertNotNull("Number should not be null on new PostedPurchaseOrder", purchaseOrder.getNumber());
 		assertEquals("Number should be empty on new PostedPurchaseOrder", "", purchaseOrder.getNumber());
-		
+
 		assertNull("Date created should be null on new PostedPurchaseOrder", purchaseOrder.getCreated());
-	
+
 	}
-	
+
 }
