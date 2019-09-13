@@ -17,6 +17,8 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 	private EntityManager entityManager;
 	private EntityManagerFactory factory;
 	
+	protected final static String READ_QUERY = "SELECT * FROM postedPurchaseOrderLine";
+	
 	public JpaPostedPurchaseOrderLineDao(EntityManagerFactory factory) {
 		this.factory = factory;
 		entityManager = factory.createEntityManager();
@@ -36,7 +38,7 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 		List<PostedPurchaseOrderLine> lineList = new ArrayList<PostedPurchaseOrderLine>();	
 		
 		@SuppressWarnings("unchecked")
-		List<PostedPurchaseOrderLineEntity> entityList = entityManager.createNativeQuery("SELECT * FROM postedPurchaseOrderLine", PostedPurchaseOrderLineEntity.class).getResultList();
+		List<PostedPurchaseOrderLineEntity> entityList = entityManager.createNativeQuery(READ_QUERY, PostedPurchaseOrderLineEntity.class).getResultList();
 		
 		for(int i=0; i<entityList.size(); i++) {
 			lineList.add(entityList.get(i).toPostedPurchaseOrderLine());
