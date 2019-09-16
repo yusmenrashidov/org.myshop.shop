@@ -19,7 +19,7 @@ import org.myshop.shop.model.Item;
 import org.myshop.shop.model.ItemCategory;
 import org.myshop.shop.model.ProductGroup;
 
-public class JpaItemDaoIntegrationITT {
+public class JpaItemDaoIntegrationIT {
 
 	private JpaProductGroupDao productGroupDao;
 	private JpaItemCategoryDao itemCategoryDao;
