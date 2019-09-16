@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.myshop.shop.dao.jpa.JpaItemCategoryDao;
@@ -31,6 +32,24 @@ public class JpaItemDaoIntegrationIT {
 		productGroupDao = new JpaProductGroupDao(factory);
 		itemCategoryDao = new JpaItemCategoryDao(factory);
 		itemDao = new JpaItemDao(factory);
+	}
+	
+	@After
+	public void cleanup() {
+		List<Item> itemList = itemDao.read();
+		for (Item item : itemList) {
+			itemDao.delete(item);
+		}
+		
+		List<ProductGroup> productGroupList = productGroupDao.read();
+		for (ProductGroup productGroup : productGroupList) {
+			productGroupDao.delete(productGroup);
+		}
+		
+		List<ItemCategory> itemCategoryList = itemCategoryDao.read();
+		for (ItemCategory itemCategory : itemCategoryList) {
+			itemCategoryDao.delete(itemCategory);
+		}
 	}
 	
 	@Test

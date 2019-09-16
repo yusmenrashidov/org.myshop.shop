@@ -6,26 +6,20 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.myshop.shop.dao.jpa.JpaItemDao;
 import org.myshop.shop.dao.jpa.JpaPostedSalesOrderLineDao;
 import org.myshop.shop.model.Item;
 import org.myshop.shop.model.PostedSalesOrderLine;
 
-public class JpaPostedSalesOrderLineDaoIntegrationIT {
+public class JpaPostedSalesOrderLineDaoIntegrationIT extends BaseItemAwareIntegrationTest{
 
-	private JpaItemDao itemDao;
 	private JpaPostedSalesOrderLineDao postedSalesOrderLineDao;
-	private EntityManagerFactory factory;
 	
 	@Before
 	public void setup() {
-		factory = Persistence.createEntityManagerFactory("myshopDB");
-		itemDao = new JpaItemDao(factory);
+		super.setup();
+		
 		postedSalesOrderLineDao = new JpaPostedSalesOrderLineDao(factory);
 	}
 	
@@ -107,7 +101,7 @@ public class JpaPostedSalesOrderLineDaoIntegrationIT {
 	public void testUpdate() {
 		
 		Item item = itemDao.get("test_item_id");
-		Item itemToUpdate = itemDao.get("item_id_get");
+		Item itemToUpdate = itemDao.get("test_item_id_2");
 		
 		PostedSalesOrderLine line = new PostedSalesOrderLine();
 		
@@ -129,7 +123,7 @@ public class JpaPostedSalesOrderLineDaoIntegrationIT {
 		line = postedSalesOrderLineDao.update(line);
 		
 		assertEquals(line.getId(), "test_id_update");
-		assertEquals(line.getItem().getId(), "item_id_get");
+		assertEquals(line.getItem().getId(), "test_item_id_2");
 		assertEquals(line.getLineNumber(), 321);
 		assertEquals(0f, line.getPrice(), 123.789f);
 		assertEquals(line.getQuantity(), 321);

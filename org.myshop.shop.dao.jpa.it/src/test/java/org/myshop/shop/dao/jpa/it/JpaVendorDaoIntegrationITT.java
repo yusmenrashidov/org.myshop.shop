@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.myshop.shop.dao.jpa.JpaVendorDao;
 import org.myshop.shop.model.Vendor;
 
-public class JpaVendorDaoIntegrationIT {
+public class JpaVendorDaoIntegrationITT {
 
 	private JpaVendorDao vendorDao;
 	private EntityManagerFactory factory;
