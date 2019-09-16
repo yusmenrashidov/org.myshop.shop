@@ -6,33 +6,27 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.myshop.shop.dao.jpa.JpaItemDao;
 import org.myshop.shop.dao.jpa.JpaPostedPurchaseOrderLineDao;
 import org.myshop.shop.model.Item;
 import org.myshop.shop.model.PostedPurchaseOrderLine;
 
-public class JpaPostedPurchaseOrderLineDaoIntegrationIT {
+public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareIntegrationTest {
 
-	private JpaItemDao itemDao;
 	private JpaPostedPurchaseOrderLineDao postedPurchaseOrderLineDao;
-	private EntityManagerFactory factory;
 	
 	@Before
 	public void setup() {
-		factory = Persistence.createEntityManagerFactory("myshopDB");
-		itemDao = new JpaItemDao(factory);
+		super.setup();
+		
 		postedPurchaseOrderLineDao = new JpaPostedPurchaseOrderLineDao(factory);
 	}
 	
 	@Test
 	public void testCreate() {
 		
-		Item item = itemDao.get("test_item_id"); 	
+		Item item = itemDao.get(TEST_ITEM_ID); 	
 		
 		PostedPurchaseOrderLine line = new PostedPurchaseOrderLine();
 		
@@ -49,7 +43,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT {
 	@Test
 	public void testRead() {
 		
-		Item item = itemDao.get("test_item_id");
+		Item item = itemDao.get(TEST_ITEM_ID);
 		
 		PostedPurchaseOrderLine line = new PostedPurchaseOrderLine();
 		
@@ -79,7 +73,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT {
 	@Test
 	public void testGet() {
 		
-		Item item = itemDao.get("test_item_id");
+		Item item = itemDao.get(TEST_ITEM_ID);
 		
 		PostedPurchaseOrderLine line = new PostedPurchaseOrderLine();
 		
@@ -96,7 +90,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT {
 		
 		assertNotNull(line);
 		assertEquals(line.getId(), "test_id_get");
-		assertEquals(line.getItem().getId(), "test_item_id");
+		assertEquals(line.getItem().getId(), TEST_ITEM_ID);
 		assertEquals(line.getLineNumber(), 123);
 		assertEquals(0f, line.getPrice(), 123.456f);
 		assertEquals(line.getQuantity(), 123);
@@ -106,8 +100,9 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT {
 	@Test
 	public void testUpdate() {
 		
-		Item item = itemDao.get("test_item_id");
-		Item itemToUpdate = itemDao.get("item_id_get");
+		Item item = itemDao.get(TEST_ITEM_ID);
+		
+		Item itemToUpdate = itemDao.get(TEST_ITEM_ID_2);
 		
 		PostedPurchaseOrderLine line = new PostedPurchaseOrderLine();
 		
@@ -129,7 +124,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT {
 		line = postedPurchaseOrderLineDao.update(line);
 		
 		assertEquals(line.getId(), "test_id_update");
-		assertEquals(line.getItem().getId(), "item_id_get");
+		assertEquals(line.getItem().getId(), TEST_ITEM_ID_2);
 		assertEquals(line.getLineNumber(), 321);
 		assertEquals(0f, line.getPrice(), 123.789f);
 		assertEquals(line.getQuantity(), 321);
@@ -139,7 +134,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT {
 	@Test
 	public void testDelete() {
 		
-		Item item = itemDao.get("test_item_id");
+		Item item = itemDao.get(TEST_ITEM_ID);
 		
 		PostedPurchaseOrderLine line = new PostedPurchaseOrderLine();
 		
@@ -158,4 +153,5 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT {
 		
 		assertNull(line);
 	}
+	
 }

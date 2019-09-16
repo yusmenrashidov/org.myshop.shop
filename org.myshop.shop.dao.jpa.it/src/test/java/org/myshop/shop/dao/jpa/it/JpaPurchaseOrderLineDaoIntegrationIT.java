@@ -6,31 +6,27 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.myshop.shop.dao.jpa.JpaItemDao;
 import org.myshop.shop.dao.jpa.JpaPurchaseOrderLineDao;
 import org.myshop.shop.model.Item;
 import org.myshop.shop.model.PurchaseOrderLine;
 
-public class JpaPurchaseOrderLineDaoIntegrationIT {
+public class JpaPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareIntegrationTest {
 
-	private JpaItemDao itemDao;
 	private JpaPurchaseOrderLineDao purchaseOrderLineDao;
-	private EntityManagerFactory factory;
 	
 	@Before
 	public void setup() {
-		factory = Persistence.createEntityManagerFactory("myshopDB");
-		itemDao = new JpaItemDao(factory);
+		super.setup();
+		
 		purchaseOrderLineDao = new JpaPurchaseOrderLineDao(factory);
 	}
 	
 	@Test
 	public void testCreate() {
+		
+		System.out.println("testCreate, begin");
 		
 		Item item = itemDao.get("test_item_id"); 	
 		
@@ -44,6 +40,8 @@ public class JpaPurchaseOrderLineDaoIntegrationIT {
 		line.setAmmount(123);
 		
 		purchaseOrderLineDao.create(line);
+		
+		System.out.println("testCreate, end");
 	}
 	
 	@Test
@@ -106,8 +104,13 @@ public class JpaPurchaseOrderLineDaoIntegrationIT {
 	@Test
 	public void testUpdate() {
 		
+		List<Item> itemList = itemDao.read();
+		
+		System.out.println("===============================================================================================================================================");
+		System.out.println("item list before update test: " + itemList.size());
+		
 		Item item = itemDao.get("test_item_id");
-		Item itemToUpdate = itemDao.get("item_id_get");
+		Item itemToUpdate = itemDao.get("test_item_id_2");
 		
 		PurchaseOrderLine line = new PurchaseOrderLine();
 		
@@ -129,7 +132,7 @@ public class JpaPurchaseOrderLineDaoIntegrationIT {
 		line = purchaseOrderLineDao.update(line);
 		
 		assertEquals(line.getId(), "test_id_update");
-		assertEquals(line.getItem().getId(), "item_id_get");
+		assertEquals(line.getItem().getId(), "test_item_id_2");
 		assertEquals(line.getLineNumber(), 321);
 		assertEquals(0f, line.getPrice(), 123.789f);
 		assertEquals(line.getQuantity(), 321);

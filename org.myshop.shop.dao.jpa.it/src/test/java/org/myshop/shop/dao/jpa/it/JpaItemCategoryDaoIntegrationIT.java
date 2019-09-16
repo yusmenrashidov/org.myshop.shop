@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.myshop.shop.dao.jpa.JpaItemCategoryDao;
@@ -24,6 +25,15 @@ public class JpaItemCategoryDaoIntegrationIT {
 	public void setup() {	
 		factory = Persistence.createEntityManagerFactory("myshopDB");
 		itemCategoryDao = new JpaItemCategoryDao(factory);
+	}
+	
+	@After
+	public void cleanup() {
+		List<ItemCategory> itemCategoryList = itemCategoryDao.read();
+		
+		for (ItemCategory itemCategory : itemCategoryList) {
+			itemCategoryDao.delete(itemCategory);
+		}
 	}
 	
 	@Test
