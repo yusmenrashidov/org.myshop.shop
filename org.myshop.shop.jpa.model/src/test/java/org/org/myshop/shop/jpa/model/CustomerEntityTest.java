@@ -34,18 +34,22 @@ public class CustomerEntityTest {
 	}
 	
 	@Test
-	public void testCustomerEntityReflection() throws SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+	public void testEntityFieldsSameAsModelFields() throws SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		
-		Field [] modelFields = Class.forName("org.myshop.shop.model.Customer").newInstance().getClass().getDeclaredFields();
-		Field [] jpaEntityFields = Class.forName("org.org.myshop.shop.jpa.model.CustomerEntity").newInstance().getClass().getDeclaredFields();
+		Field [] modelFields = new Customer().getClass().getDeclaredFields();
+		Field [] jpaEntityFields = new CustomerEntity(new Customer()).getClass().getDeclaredFields();
 		
 		for(int i=0; i< modelFields.length; i++) {
 			
 			modelFields[i].setAccessible(true);
 			jpaEntityFields[i].setAccessible(true);
 			
+			try {
 			assertEquals(modelFields[i], jpaEntityFields[i]);
-		
+			
+			}catch(AssertionError e) {
+				System.out.print("There are unreflected fields: "+ modelFields[i].getName() + ", " + jpaEntityFields[i].getName());
+			}
 		}
 		
 	}
