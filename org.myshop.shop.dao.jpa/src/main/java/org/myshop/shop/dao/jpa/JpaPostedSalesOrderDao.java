@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import org.myshop.shop.dao.PostedSalesOrderDao;
 import org.myshop.shop.model.PostedSalesOrder;
@@ -33,12 +34,18 @@ public class JpaPostedSalesOrderDao implements PostedSalesOrderDao{
 		entityManager.getTransaction().commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<PostedSalesOrder> read() {
 		
 		List<PostedSalesOrder> salesOrderList = new ArrayList<PostedSalesOrder>();
+		List<PostedSalesOrderEntity> entityList;
 		
-		@SuppressWarnings("unchecked")
-		List<PostedSalesOrderEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		try {
+			entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		
+		}catch(PersistenceException e) {
+			return null;
+		}
 		
 		for(int i=0; i<entityList.size(); i++) {
 			salesOrderList.add(entityList.get(i).toPostedSalesOrder());

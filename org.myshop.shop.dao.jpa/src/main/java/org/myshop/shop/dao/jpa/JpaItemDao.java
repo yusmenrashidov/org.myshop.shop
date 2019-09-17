@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import org.myshop.shop.dao.ItemDao;
 import org.myshop.shop.model.Item;
@@ -33,14 +34,20 @@ public class JpaItemDao implements ItemDao{
 		entityManager.persist(itemEntity);
 		entityManager.getTransaction().commit();
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	public List<Item> read() {
 		
 		List<Item> itemList = new ArrayList<Item>();
+		List<ItemEntity> entityList;
 		
-		@SuppressWarnings("unchecked")
-		List<ItemEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		try {
+		 entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
 		
+		}catch(PersistenceException e) {
+			return null;
+		}
+		 
 		for(int i=0; i < entityList.size(); i++) {
 			itemList.add(entityList.get(i).toItem());
 		}
@@ -65,6 +72,7 @@ public class JpaItemDao implements ItemDao{
 		
 		ItemEntity itemEntity = entityManager.find(ItemEntity.class, item.getId());
 		
+		try {
 		entityManager.getTransaction().begin();
 		itemEntity.setName(item.getName());
 		itemEntity.setDescription(item.getDescription());
@@ -74,6 +82,10 @@ public class JpaItemDao implements ItemDao{
 		itemEntity.setSalesPrice(item.getSalesPrice());
 		
 		entityManager.getTransaction().commit();
+		
+		}catch(Exception e) {
+			return null;
+		}
 		
 		itemEntity = entityManager.find(ItemEntity.class, item.getId());
 		

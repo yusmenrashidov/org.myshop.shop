@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.junit.Before;
@@ -149,4 +150,21 @@ public class JpaPostedPurchaseOrderDaoTest {
 		assertNull(orderMock);
 	}
 	
+	@Test
+	public void testRead_failed() {
+		when(queryMock.getResultList()).thenThrow(new PersistenceException());
+		
+		List<PostedPurchaseOrder> orderList = postedPurchaseOrderDaoMock.read();
+		
+		assertNull(orderList);
+	}
+	
+	@Test
+	public void testUpdate_failed() {
+		when(postedPurchaseOrderDaoMock.update(orderMock)).thenReturn(null);
+		
+		orderMock = postedPurchaseOrderDaoMock.update(orderMock);
+		
+		assertNull(orderMock);
+	}
 }

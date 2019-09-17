@@ -3,6 +3,7 @@ package org.myshop.shop.dao.jpa;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.junit.Before;
@@ -64,7 +65,7 @@ public class JpaPostedSalesOrderLineDaoTest {
 	private Query queryMock;
 	
 	@Mock
-	private JpaPostedSalesOrderLineDao salesOrderLineDaoMock;
+	private JpaPostedSalesOrderLineDao postedSalesOrderLineDaoMock;
 	
 	@Mock
 	private PostedSalesOrderLine lineMock;
@@ -151,12 +152,12 @@ public class JpaPostedSalesOrderLineDaoTest {
 		when(entityMock.getPrice()).thenReturn(TEST_POSTED_SALES_ORDER_LINE_PRICE);
 		when(entityMock.getAmmount()).thenReturn(TEST_POSTED_SALES_ORDER_LINE_AMMOUNT);
 		
-		salesOrderLineDaoMock = new JpaPostedSalesOrderLineDao(factoryMock);
+		postedSalesOrderLineDaoMock = new JpaPostedSalesOrderLineDao(factoryMock);
 	}
 	
 	@Test
 	public void testCreate() {
-		salesOrderLineDaoMock.create(lineMock);
+		postedSalesOrderLineDaoMock.create(lineMock);
 		
 		verify(entityTransactionMock).begin();
 		
@@ -177,7 +178,7 @@ public class JpaPostedSalesOrderLineDaoTest {
 	
 	@Test
 	public void testRead() {
-		List<PostedSalesOrderLine> lineList = salesOrderLineDaoMock.read();
+		List<PostedSalesOrderLine> lineList = postedSalesOrderLineDaoMock.read();
 		
 		verify(entityManagerMock).createNamedQuery(JpaPostedSalesOrderLineDao.READ_QUERY_NAME);
 		verify(queryMock).getResultList();
@@ -187,7 +188,7 @@ public class JpaPostedSalesOrderLineDaoTest {
 	
 	@Test
 	public void testGet() {
-		lineMock = salesOrderLineDaoMock.get(TEST_POSTED_SALES_ORDER_LINE_ID);
+		lineMock = postedSalesOrderLineDaoMock.get(TEST_POSTED_SALES_ORDER_LINE_ID);
 		
 		verify(entityManagerMock).find(PostedSalesOrderLineEntity.class, TEST_POSTED_SALES_ORDER_LINE_ID);
 		
@@ -203,7 +204,7 @@ public class JpaPostedSalesOrderLineDaoTest {
 	
 	@Test
 	public void testUpdate() {
-		lineMock = salesOrderLineDaoMock.update(lineMock);
+		lineMock = postedSalesOrderLineDaoMock.update(lineMock);
 		
 		verify(entityTransactionMock).begin();
 		verify(entityTransactionMock).commit();
@@ -211,7 +212,7 @@ public class JpaPostedSalesOrderLineDaoTest {
 	
 	@Test
 	public void testDelete() {
-		salesOrderLineDaoMock.delete(lineMock);
+		postedSalesOrderLineDaoMock.delete(lineMock);
 		
 		verify(entityTransactionMock).begin();
 		
@@ -225,7 +226,25 @@ public class JpaPostedSalesOrderLineDaoTest {
 	public void testGet_failed() {
 		when(entityManagerMock.find(PostedSalesOrderLineEntity.class, TEST_POSTED_SALES_ORDER_LINE_ID)).thenThrow(new NullPointerException());
 		
-		lineMock = salesOrderLineDaoMock.get(TEST_POSTED_SALES_ORDER_LINE_ID);
+		lineMock = postedSalesOrderLineDaoMock.get(TEST_POSTED_SALES_ORDER_LINE_ID);
+		
+		assertNull(lineMock);
+	}
+	
+	@Test
+	public void testRead_failed() {
+		when(queryMock.getResultList()).thenThrow(new PersistenceException());
+		
+		List<PostedSalesOrderLine> lineList = postedSalesOrderLineDaoMock.read();
+		
+		assertNull(lineList);
+	}
+	
+	@Test
+	public void testUpdate_failed() {
+		when(postedSalesOrderLineDaoMock.update(lineMock)).thenReturn(null);
+		
+		lineMock = postedSalesOrderLineDaoMock.update(lineMock);
 		
 		assertNull(lineMock);
 	}

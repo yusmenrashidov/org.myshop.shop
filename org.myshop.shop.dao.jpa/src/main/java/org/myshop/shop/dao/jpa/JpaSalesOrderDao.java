@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import org.myshop.shop.dao.SalesOrderDao;
 import org.myshop.shop.model.SalesOrder;
@@ -32,13 +33,19 @@ public class JpaSalesOrderDao implements SalesOrderDao{
 		entityManager.persist(entity);
 		entityManager.getTransaction().commit();
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	public List<SalesOrder> read() {
 		
 		List<SalesOrder> salesOrderList = new ArrayList<SalesOrder>();
+		List<SalesOrderEntity> entityList;
 		
-		@SuppressWarnings("unchecked")
-		List<SalesOrderEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		try {
+		entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		
+		}catch(PersistenceException e) {
+			return null;
+		}
 		
 		for(int i=0; i<entityList.size(); i++) {
 			salesOrderList.add(entityList.get(i).toSalesOrder());
@@ -64,10 +71,15 @@ public class JpaSalesOrderDao implements SalesOrderDao{
 				
 		SalesOrderEntity entity = entityManager.find(SalesOrderEntity.class, order.getId());
 		
+		try {
 		entityManager.getTransaction().begin();
 		entity.setCustomer(new CustomerEntity(order.getCustomer()));
 		entity.setCreated(order.getCreated());
 		entityManager.getTransaction().commit();
+		
+		}catch(Exception e) {
+			return null;
+		}
 		
 		entity = entityManager.find(SalesOrderEntity.class, order.getId());
 		

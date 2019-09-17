@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.junit.Before;
@@ -140,6 +141,24 @@ public class JpaVendorDaoTest {
 		when(entityManagerMock.find(VendorEntity.class, TEST_VENDOR_ID)).thenThrow(new NullPointerException());
 		
 		vendorMock = vendorDaoMock.get(TEST_VENDOR_ID);
+		
+		assertNull(vendorMock);
+	}
+	
+	@Test
+	public void testRead_failed() {
+		when(queryMock.getResultList()).thenThrow(new PersistenceException());
+		
+		List<Vendor> vendorList = vendorDaoMock.read();
+		
+		assertNull(vendorList);
+	}
+	
+	@Test
+	public void testUpdate_failed() {
+		when(vendorDaoMock.update(vendorMock)).thenReturn(null);
+		
+		vendorMock = vendorDaoMock.update(vendorMock);
 		
 		assertNull(vendorMock);
 	}

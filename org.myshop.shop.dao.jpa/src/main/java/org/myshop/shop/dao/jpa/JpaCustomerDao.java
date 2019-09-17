@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import org.myshop.shop.dao.CustomerDao;
 import org.myshop.shop.model.Customer;
@@ -31,13 +32,18 @@ public class JpaCustomerDao implements CustomerDao{
 		entityManager.getTransaction().commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Customer> read() {
 		
 		List<Customer> customerList = new ArrayList<Customer>();
-				
-		@SuppressWarnings("unchecked")
-		List<CustomerEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		List<CustomerEntity> entityList;
 		
+		try{
+		entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		
+		}catch(PersistenceException e) {
+			return null;
+		}
 			for(int i=0; i < entityList.size(); i++) {
 			
 			customerList.add(entityList.get(i).toCustomer());
@@ -63,10 +69,14 @@ public class JpaCustomerDao implements CustomerDao{
 		
 		CustomerEntity customerEntity = entityManager.find(CustomerEntity.class, customer.getId());
 		
+		try {
 		entityManager.getTransaction().begin();
 		customerEntity.setName(customer.getName());
 		entityManager.getTransaction().commit();
 		
+		}catch(Exception e) {
+			return null;
+		}
 		customerEntity = entityManager.find(CustomerEntity.class, customer.getId());
 		
 		return customerEntity.toCustomer();

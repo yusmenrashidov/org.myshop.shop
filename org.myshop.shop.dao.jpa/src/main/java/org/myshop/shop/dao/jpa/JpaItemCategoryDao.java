@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import org.myshop.shop.dao.ItemCategoryDao;
 import org.myshop.shop.model.ItemCategory;
@@ -32,12 +33,18 @@ public class JpaItemCategoryDao implements ItemCategoryDao{
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<ItemCategory> read() {
 		
 		List<ItemCategory> itemCategoryList = new ArrayList<ItemCategory>();
+		List<ItemCategoryEntity> entityList;
 		
-		@SuppressWarnings("unchecked")
-		List<ItemCategoryEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		try {
+		 entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		
+		}catch(PersistenceException e) {
+			return null;
+		}
 		
 		for(int i=0; i < entityList.size(); i++) {
 			itemCategoryList.add(entityList.get(i).toItemCategory());
@@ -63,10 +70,15 @@ public class JpaItemCategoryDao implements ItemCategoryDao{
 		
 		ItemCategoryEntity entity = entityManager.find(ItemCategoryEntity.class, category.getId());
 		
+		try {
 		entityManager.getTransaction().begin();
 		entity.setDescription(category.getDescription());
 		entity.setName(category.getName());
 		entityManager.getTransaction().commit();
+		
+		}catch(Exception e) {
+			return null;
+		}
 		
 		entity = entityManager.find(ItemCategoryEntity.class, category.getId());
 		
