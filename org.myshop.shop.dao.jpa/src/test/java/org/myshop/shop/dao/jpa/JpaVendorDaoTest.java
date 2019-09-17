@@ -60,7 +60,7 @@ public class JpaVendorDaoTest {
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 		
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
-		when(entityManagerMock.createNativeQuery(JpaVendorDao.READ_QUERY, VendorEntity.class)).thenReturn(queryMock);
+		when(entityManagerMock.createNamedQuery(JpaVendorDao.READ_QUERY_NAME)).thenReturn(queryMock);
 		when(queryMock.getResultList()).thenReturn(entityListMock);
 		
 		when(entityManagerMock.find(VendorEntity.class, TEST_VENDOR_ID)).thenReturn(vendorEntityMock);
@@ -97,7 +97,7 @@ public class JpaVendorDaoTest {
 	public void testRead() {
 		List<Vendor> vendorList = vendorDaoMock.read();
 		
-		verify(entityManagerMock).createNativeQuery(JpaVendorDao.READ_QUERY, VendorEntity.class);
+		verify(entityManagerMock).createNamedQuery(JpaVendorDao.READ_QUERY_NAME);
 		verify(queryMock).getResultList();
 		
 		assertNotNull(vendorList);

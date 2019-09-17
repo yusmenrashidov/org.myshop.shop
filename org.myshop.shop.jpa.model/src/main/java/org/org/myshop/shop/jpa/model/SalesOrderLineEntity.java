@@ -2,6 +2,8 @@ package org.org.myshop.shop.jpa.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -9,6 +11,9 @@ import org.myshop.shop.model.SalesOrderLine;
 
 @Entity
 @Table(name = "salesOrderLine")
+@NamedQueries({
+	@NamedQuery(name="salesOrderLine.read", query="SELECT salesOrderLine FROM SalesOrderLineEntity salesOrderLine")	
+})
 public class SalesOrderLineEntity {
 
 	@Id

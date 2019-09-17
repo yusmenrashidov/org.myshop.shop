@@ -71,7 +71,7 @@ public class JpaSalesOrderDaoTest {
 		
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
-		when(entityManagerMock.createNativeQuery(JpaSalesOrderDao.READ_QUERY, SalesOrderEntity.class)).thenReturn(queryMock);
+		when(entityManagerMock.createNamedQuery(JpaSalesOrderDao.READ_QUERY_NAME)).thenReturn(queryMock);
 		when(queryMock.getResultList()).thenReturn(entityListMock);
 		
 		when(entityManagerMock.find(SalesOrderEntity.class, TEST_SALES_ORDER_ID)).thenReturn(orderEntityMock);
@@ -118,7 +118,7 @@ public class JpaSalesOrderDaoTest {
 	public void testRead() {
 		List<SalesOrder> orderList = salesOrderDaoMock.read();
 		
-		verify(entityManagerMock).createNativeQuery(JpaSalesOrderDao.READ_QUERY, SalesOrderEntity.class);
+		verify(entityManagerMock).createNamedQuery(JpaSalesOrderDao.READ_QUERY_NAME);
 		verify(queryMock).getResultList();
 		
 		assertNotNull(orderList);

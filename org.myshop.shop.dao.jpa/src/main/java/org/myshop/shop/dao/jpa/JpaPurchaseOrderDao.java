@@ -16,7 +16,7 @@ public class JpaPurchaseOrderDao implements PurchaseOrderDao{
 	private EntityManager entityManager;
 	private EntityManagerFactory factory;
 	
-	protected final static String READ_QUERY = "SELECT * FROM purchaseOrder";
+	public final static String READ_QUERY_NAME = "purchaseOrder.read";
 	
 	public JpaPurchaseOrderDao(EntityManagerFactory factory) {
 		this.factory = factory;
@@ -37,7 +37,7 @@ public class JpaPurchaseOrderDao implements PurchaseOrderDao{
 		List<PurchaseOrder> purchaseOrderList = new ArrayList<PurchaseOrder>();
 		
 		@SuppressWarnings("unchecked")
-		List<PurchaseOrderEntity> entityList = entityManager.createNativeQuery(READ_QUERY, PurchaseOrderEntity.class).getResultList();
+		List<PurchaseOrderEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
 		
 		for(int i=0; i<entityList.size(); i++) {
 			purchaseOrderList.add(entityList.get(i).toPurchaseOrder());

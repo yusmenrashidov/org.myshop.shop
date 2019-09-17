@@ -16,7 +16,7 @@ public class JpaVendorDao implements VendorDao{
 	private EntityManager entityManager;
 	private EntityManagerFactory factory;
 	
-	protected final static String READ_QUERY = "SELECT * FROM vendor";
+	public final static String READ_QUERY_NAME = "vendor.read";
 	
 	public JpaVendorDao(EntityManagerFactory factory) {
 		this.factory = factory;
@@ -37,7 +37,7 @@ public class JpaVendorDao implements VendorDao{
 		List<Vendor> vendorList = new ArrayList<Vendor>();
 		
 		@SuppressWarnings("unchecked")
-		List<VendorEntity> entityList = entityManager.createNativeQuery(READ_QUERY, VendorEntity.class).getResultList();
+		List<VendorEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
 		
 		for(int i=0; i < entityList.size();i++) {
 			vendorList.add(entityList.get(i).toVendor());
