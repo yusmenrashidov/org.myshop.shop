@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.myshop.shop.model.Customer;
 
+import java.lang.reflect.Field;;
+
 public class CustomerEntityTest {
 
 	
@@ -31,4 +33,24 @@ public class CustomerEntityTest {
 		assertEquals(customer.getName(), "test_name");
 	}
 	
+	@Test
+	public void testEntityFieldsSameAsModelFields() throws SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		
+		Field [] modelFields = new Customer().getClass().getDeclaredFields();
+		Field [] jpaEntityFields = new CustomerEntity(new Customer()).getClass().getDeclaredFields();
+		
+		for(int i=0; i< modelFields.length; i++) {
+			
+			modelFields[i].setAccessible(true);
+			jpaEntityFields[i].setAccessible(true);
+			
+			try {
+			assertEquals(modelFields[i], jpaEntityFields[i]);
+			
+			}catch(AssertionError e) {
+				System.out.print("There are unreflected fields: "+ modelFields[i].getName() + ", " + jpaEntityFields[i].getName());
+			}
+		}
+		
+	}
 }
