@@ -14,7 +14,7 @@ import org.myshop.shop.model.SalesOrder;
 @Entity
 @Table(name = "salesOrder")
 @NamedQueries({
-	@NamedQuery(name="salesOrder.read", query="SELECT salesOrder FROM SalesOrderEntity postedPurchaseOrder")	
+	@NamedQuery(name="salesOrder.read", query="SELECT salesOrder FROM SalesOrderEntity salesOrder")	
 })
 public class SalesOrderEntity {
 

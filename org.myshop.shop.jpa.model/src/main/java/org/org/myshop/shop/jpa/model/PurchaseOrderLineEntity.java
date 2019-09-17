@@ -12,7 +12,7 @@ import org.myshop.shop.model.PurchaseOrderLine;
 @Entity
 @Table(name = "purchaseOrderLine")
 @NamedQueries({
-	@NamedQuery(name="purchaseOrderLine.read", query="SELECT purchaseOrderLine FROM PurchaseOrderLine purchaseOrderLine")	
+	@NamedQuery(name="purchaseOrderLine.read", query="SELECT purchaseOrderLine FROM PurchaseOrderLineEntity purchaseOrderLine")	
 })
 public class PurchaseOrderLineEntity {
 
