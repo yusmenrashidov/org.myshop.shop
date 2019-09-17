@@ -2,12 +2,17 @@ package org.org.myshop.shop.jpa.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.myshop.shop.model.ItemCategory;
 
 @Entity
 @Table(name = "itemCategory")
+@NamedQueries({
+	@NamedQuery(name="itemCategory.read", query="SELECT itemCategory FROM ItemCategoryEntity itemCategory")	
+})
 public class ItemCategoryEntity {
 
 	@Id

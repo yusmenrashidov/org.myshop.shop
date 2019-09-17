@@ -15,7 +15,7 @@ public class JpaItemCategoryDao implements ItemCategoryDao{
 	private EntityManager entityManager;
 	private EntityManagerFactory factory;
 	
-	protected final static String READ_QUERY = "SELECT * FROM itemCategory";
+	public final static String READ_QUERY_NAME = "itemCategory.read";
 	
 	public JpaItemCategoryDao(EntityManagerFactory factory) {
 		this.factory = factory;
@@ -37,7 +37,7 @@ public class JpaItemCategoryDao implements ItemCategoryDao{
 		List<ItemCategory> itemCategoryList = new ArrayList<ItemCategory>();
 		
 		@SuppressWarnings("unchecked")
-		List<ItemCategoryEntity> entityList = entityManager.createNativeQuery(READ_QUERY, ItemCategoryEntity.class).getResultList();
+		List<ItemCategoryEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
 		
 		for(int i=0; i < entityList.size(); i++) {
 			itemCategoryList.add(entityList.get(i).toItemCategory());
