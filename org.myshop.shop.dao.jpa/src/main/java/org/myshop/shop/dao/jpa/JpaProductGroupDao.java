@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import org.myshop.shop.dao.ProductGroupDao;
 import org.myshop.shop.model.ProductGroup;
@@ -31,13 +32,19 @@ public class JpaProductGroupDao implements ProductGroupDao{
 		entityManager.persist(entity);
 		entityManager.getTransaction().commit();	
 	}
-
+	
+	@SuppressWarnings("unchecked")
 	public List<ProductGroup> read() {
 		
 		List<ProductGroup> productGroupList = new ArrayList<ProductGroup>();
+		List<ProductGroupEntity> entityList;
 		
-		@SuppressWarnings("unchecked")
-		List<ProductGroupEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		try {
+		entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		
+		}catch(PersistenceException e) {
+			return null;
+		}
 		
 		for(int i=0; i<entityList.size(); i++) {
 			productGroupList.add(entityList.get(i).toProductGroup());
@@ -63,10 +70,15 @@ public class JpaProductGroupDao implements ProductGroupDao{
 		
 		ProductGroupEntity entity = entityManager.find(ProductGroupEntity.class, productGroup.getId());
 		
+		try {
 		entityManager.getTransaction().begin();
 		entity.setDescription(productGroup.getDescription());
 		entity.setItemCategory(new ItemCategoryEntity(productGroup.getItemCategory()));
 		entityManager.getTransaction().commit();
+		
+		}catch(Exception e) {
+			return null;
+		}
 		
 		entity = entityManager.find(ProductGroupEntity.class, productGroup.getId());
 		

@@ -3,6 +3,7 @@ package org.myshop.shop.dao.jpa;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.junit.Before;
@@ -226,6 +227,24 @@ public class JpaPostedPurchaseOrderLineDaoTest {
 		when(entityManagerMock.find(PostedPurchaseOrderLineEntity.class, TEST_POSTED_PURCHASE_ORDER_LINE_ID)).thenThrow(new NullPointerException());
 		
 		lineMock = postedPurchaseOrderLineDaoMock.get(TEST_POSTED_PURCHASE_ORDER_LINE_ID);
+		
+		assertNull(lineMock);
+	}
+	
+	@Test
+	public void testRead_failed() {
+		when(queryMock.getResultList()).thenThrow(new PersistenceException());
+		
+		List<PostedPurchaseOrderLine> lineList = postedPurchaseOrderLineDaoMock.read();
+		
+		assertNull(lineList);
+	}
+	
+	@Test
+	public void testUpdate_failed() {
+		when(postedPurchaseOrderLineDaoMock.update(lineMock)).thenReturn(null);
+		
+		lineMock = postedPurchaseOrderLineDaoMock.update(lineMock);
 		
 		assertNull(lineMock);
 	}

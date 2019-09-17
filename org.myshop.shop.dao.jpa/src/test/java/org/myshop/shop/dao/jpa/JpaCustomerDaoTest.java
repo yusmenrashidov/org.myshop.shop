@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.junit.Before;
@@ -141,6 +142,24 @@ public class JpaCustomerDaoTest {
 		when(entityManagerMock.find(CustomerEntity.class, TEST_CUSTOMER_ID)).thenThrow(new NullPointerException());
 		
 		customerMock = customerDaoMock.get(TEST_CUSTOMER_ID);
+		
+		assertNull(customerMock);
+	}
+	
+	@Test
+	public void testRead_failed() {
+		when(queryMock.getResultList()).thenThrow(new PersistenceException());
+		
+		List<Customer> customerList = customerDaoMock.read();
+		
+		assertNull(customerList);
+	}
+	
+	@Test
+	public void testUpdate_failed() {
+		when(customerDaoMock.update(customerMock)).thenReturn(null);
+		
+		customerMock = customerDaoMock.update(customerMock);
 		
 		assertNull(customerMock);
 	}

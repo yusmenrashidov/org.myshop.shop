@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import org.myshop.shop.dao.PostedSalesOrderLineDao;
 import org.myshop.shop.model.PostedSalesOrderLine;
@@ -33,12 +34,19 @@ public class JpaPostedSalesOrderLineDao implements PostedSalesOrderLineDao{
 		entityManager.getTransaction().commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<PostedSalesOrderLine> read() {
 		
 		List<PostedSalesOrderLine> lineList = new ArrayList<PostedSalesOrderLine>();
+		List<PostedSalesOrderLineEntity> entityList;
 		
-		@SuppressWarnings("unchecked")
-		List<PostedSalesOrderLineEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		try {
+		entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		
+		}catch(PersistenceException e) {
+			return null;
+		}
+		
 		
 		for(int i=0; i<entityList.size(); i++) {
 			lineList.add(entityList.get(i).toPostedSalesOrderLine());
@@ -65,6 +73,7 @@ public class JpaPostedSalesOrderLineDao implements PostedSalesOrderLineDao{
 		
 		PostedSalesOrderLineEntity entity = entityManager.find(PostedSalesOrderLineEntity.class, line.getId());
 		
+		try {
 		entityManager.getTransaction().begin();
 		entity.setItem(new ItemEntity(line.getItem()));
 		entity.setAmmount(line.getAmmount());
@@ -72,6 +81,10 @@ public class JpaPostedSalesOrderLineDao implements PostedSalesOrderLineDao{
 		entity.setPrice(line.getPrice());
 		entity.setQuantity(line.getLineNumber());
 		entityManager.getTransaction().commit();
+	
+		}catch(Exception e) {
+			return null;
+		}
 		
 		entity = entityManager.find(PostedSalesOrderLineEntity.class, line.getId());
 		

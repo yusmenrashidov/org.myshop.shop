@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
 
 import org.myshop.shop.dao.PostedPurchaseOrderLineDao;
 import org.myshop.shop.model.PostedPurchaseOrderLine;
@@ -33,12 +34,17 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 		entityManager.getTransaction().commit();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<PostedPurchaseOrderLine> read() {
 		
 		List<PostedPurchaseOrderLine> lineList = new ArrayList<PostedPurchaseOrderLine>();	
+		List<PostedPurchaseOrderLineEntity> entityList;
 		
-		@SuppressWarnings("unchecked")
-		List<PostedPurchaseOrderLineEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		try {
+		entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
+		}catch(PersistenceException e) {
+			return null;
+		}
 		
 		for(int i=0; i<entityList.size(); i++) {
 			lineList.add(entityList.get(i).toPostedPurchaseOrderLine());
@@ -51,7 +57,7 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 	
 		try {
 			PostedPurchaseOrderLineEntity entity = entityManager.find(PostedPurchaseOrderLineEntity.class, id);
-		return entity.toPostedPurchaseOrderLine();
+			return entity.toPostedPurchaseOrderLine();
 		
 		}catch(NullPointerException e) {
 		return null;
@@ -64,6 +70,7 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 		
 		PostedPurchaseOrderLineEntity entity = entityManager.find(PostedPurchaseOrderLineEntity.class, line.getId());
 		
+		try {
 		entityManager.getTransaction().begin();
 		entity.setItem(new ItemEntity(line.getItem()));
 		entity.setLineNumber(line.getLineNumber());
@@ -72,6 +79,10 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 		entity.setPrice(line.getPrice());
 		entity.setAmmount(line.getAmmount());
 		entityManager.getTransaction().commit();
+		
+		}catch(Exception e) {
+			return null;
+		}
 		
 		entity = entityManager.find(PostedPurchaseOrderLineEntity.class, line.getId());
 		

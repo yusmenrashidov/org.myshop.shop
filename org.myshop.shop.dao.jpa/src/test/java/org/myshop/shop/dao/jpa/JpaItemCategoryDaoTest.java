@@ -3,6 +3,7 @@ package org.myshop.shop.dao.jpa;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import org.junit.Before;
@@ -150,5 +151,14 @@ public class JpaItemCategoryDaoTest {
 		itemCategoryMock = itemCategoryDaoMock.get(TEST_ITEM_CATEGORY_ID);
 		
 		assertNull(itemCategoryMock);
+	}
+	
+	@Test
+	public void testRead_failed() {
+		when(queryMock.getResultList()).thenThrow(new PersistenceException());
+		
+		List<ItemCategory> itemCategoryList = itemCategoryDaoMock.read();
+		
+		assertNull(itemCategoryList);
 	}
 }
