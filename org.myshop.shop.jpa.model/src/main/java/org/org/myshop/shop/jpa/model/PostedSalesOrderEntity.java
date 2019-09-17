@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -11,6 +13,9 @@ import org.myshop.shop.model.PostedSalesOrder;
 
 @Entity
 @Table(name = "postedSalesOrder")
+@NamedQueries({
+	@NamedQuery(name="postedSalesOrder.read", query="SELECT postedSalesOrder FROM PostedSalesOrderEntity postedSalesOrder")	
+})
 public class PostedSalesOrderEntity {
 
 	@Id

@@ -71,7 +71,7 @@ public class JpaProductGroupDaoTest {
 		
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
-		when(entityManagerMock.createNativeQuery(JpaProductGroupDao.READ_QUERY, ProductGroupEntity.class)).thenReturn(queryMock);
+		when(entityManagerMock.createNamedQuery(JpaProductGroupDao.READ_QUERY_NAME)).thenReturn(queryMock);
 		when(queryMock.getResultList()).thenReturn(groupListMock);
 		
 		when(entityManagerMock.find(ProductGroupEntity.class, TEST_PRODUCT_GROUP_ID)).thenReturn(productGroupEntityMock);
@@ -124,7 +124,7 @@ public class JpaProductGroupDaoTest {
 	public void testRead() {
 		List<ProductGroup> productGroupList = productGroupDaoMock.read();
 		
-		verify(entityManagerMock).createNativeQuery(JpaProductGroupDao.READ_QUERY, ProductGroupEntity.class);
+		verify(entityManagerMock).createNamedQuery(JpaProductGroupDao.READ_QUERY_NAME);
 		verify(queryMock).getResultList();
 		
 		assertNotNull(productGroupList);

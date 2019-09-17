@@ -2,12 +2,17 @@ package org.org.myshop.shop.jpa.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.myshop.shop.model.Vendor;
 
 @Entity
 @Table(name = "vendor")
+@NamedQueries({
+	@NamedQuery(name="vendor.read", query="SELECT vendor FROM VendorEntity vendor")	
+})
 public class VendorEntity {
 
 	

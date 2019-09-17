@@ -15,7 +15,7 @@ public class JpaCustomerDao implements CustomerDao{
 	private EntityManager entityManager;
 	private EntityManagerFactory factory;
 	
-	protected static final String READ_QUERY = "SELECT * FROM customer";
+	public final static String READ_QUERY_NAME = "customer.read";
 	
 	public JpaCustomerDao(EntityManagerFactory factory) {
 		this.factory = factory;
@@ -36,7 +36,7 @@ public class JpaCustomerDao implements CustomerDao{
 		List<Customer> customerList = new ArrayList<Customer>();
 				
 		@SuppressWarnings("unchecked")
-		List<CustomerEntity> entityList = entityManager.createNativeQuery(READ_QUERY, CustomerEntity.class).getResultList();
+		List<CustomerEntity> entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
 		
 			for(int i=0; i < entityList.size(); i++) {
 			

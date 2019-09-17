@@ -61,7 +61,7 @@ public class JpaCustomerDaoTest {
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 		
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
-		when(entityManagerMock.createNativeQuery(JpaCustomerDao.READ_QUERY, CustomerEntity.class)).thenReturn(queryMock);
+		when(entityManagerMock.createNamedQuery(JpaCustomerDao.READ_QUERY_NAME)).thenReturn(queryMock);
 		when(queryMock.getResultList()).thenReturn(entityListMock);
 		
 		when(entityManagerMock.find(CustomerEntity.class, TEST_CUSTOMER_ID)).thenReturn(customerEntityMock);
@@ -98,7 +98,7 @@ public class JpaCustomerDaoTest {
 	public void testRead() {
 		List<Customer> customerList = customerDaoMock.read();
 		
-		verify(entityManagerMock).createNativeQuery(JpaCustomerDao.READ_QUERY, CustomerEntity.class);
+		verify(entityManagerMock).createNamedQuery(JpaCustomerDao.READ_QUERY_NAME);
 		verify(queryMock).getResultList();
 		
 		assertNotNull(customerList);
