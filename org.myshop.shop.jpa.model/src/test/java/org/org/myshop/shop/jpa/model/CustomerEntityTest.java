@@ -36,8 +36,8 @@ public class CustomerEntityTest {
 	@Test
 	public void testEntityFieldsSameAsModelFields() throws SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		
-		Field [] modelFields = new Customer().getClass().getDeclaredFields();
-		Field [] jpaEntityFields = new CustomerEntity(new Customer()).getClass().getDeclaredFields();
+		Field [] modelFields = Customer.class.getDeclaredFields();
+		Field [] jpaEntityFields = CustomerEntity.class.getDeclaredFields();
 		
 		for(int i=0; i< modelFields.length; i++) {
 			
