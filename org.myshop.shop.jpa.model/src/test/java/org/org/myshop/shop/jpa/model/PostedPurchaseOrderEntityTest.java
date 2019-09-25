@@ -3,6 +3,7 @@ package org.org.myshop.shop.jpa.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 
 import org.junit.Test;
@@ -29,4 +30,23 @@ public class PostedPurchaseOrderEntityTest {
 	
 	}
 	
+	@Test
+	public void testEntityFieldsSameAsModelFields() throws SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		
+		Field [] modelFields = PostedPurchaseOrder.class.getFields();
+		Field [] jpaEntityFields = PostedPurchaseOrderEntity.class.getFields();
+		
+		for(int i = 0; i < modelFields.length; i++) {
+			
+			modelFields[i].setAccessible(true);
+			jpaEntityFields[i].setAccessible(true);
+			
+			try {		
+				assertEquals(modelFields[i], jpaEntityFields[i]);
+			
+			}catch(AssertionError e) {
+				System.out.print("There are unreflected fields: "+ modelFields[i].getName() + ", " + jpaEntityFields[i].getName());
+			}
+		}
+	}
 }

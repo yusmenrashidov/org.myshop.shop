@@ -3,6 +3,8 @@ package org.org.myshop.shop.jpa.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.lang.reflect.Field;
+
 import org.junit.Test;
 import org.myshop.shop.model.Item;
 import org.myshop.shop.model.ItemCategory;
@@ -47,5 +49,25 @@ public class PurchaseOrderLineEntityTest {
 		assertEquals(entity.getLineNumber(), line.getLineNumber());
 		assertEquals(0f, entity.getPrice(), line.getPrice());
 		assertEquals(entity.getQuantity(), line.getQuantity());
+	}
+	
+	@Test
+	public void testEntityFieldsSameAsModelFields() throws SecurityException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		
+		Field [] modelFields = PurchaseOrderLine.class.getFields();
+		Field [] jpaEntityFields = PurchaseOrderLineEntity.class.getFields();
+		
+		for(int i = 0; i < modelFields.length; i++) {
+			
+			modelFields[i].setAccessible(true);
+			jpaEntityFields[i].setAccessible(true);
+			
+			try {		
+				assertEquals(modelFields[i], jpaEntityFields[i]);
+			
+			}catch(AssertionError e) {
+				System.out.print("There are unreflected fields: "+ modelFields[i].getName() + ", " + jpaEntityFields[i].getName());
+			}
+		}
 	}
 }
