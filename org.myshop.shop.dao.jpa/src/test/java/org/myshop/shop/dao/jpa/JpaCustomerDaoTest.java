@@ -1,5 +1,6 @@
 package org.myshop.shop.dao.jpa;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -7,6 +8,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -97,6 +99,8 @@ public class JpaCustomerDaoTest {
 	
 	@Test
 	public void testRead() {
+		when(queryMock.getResultList()).thenReturn(EMPTY_LIST);
+
 		List<Customer> customerList = customerDaoMock.read();
 		
 		verify(entityManagerMock).createNamedQuery(JpaCustomerDao.READ_QUERY_NAME);

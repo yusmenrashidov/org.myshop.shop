@@ -40,7 +40,6 @@ public class JdbcCustomerDao implements CustomerDao {
 	}
 
 	public List<Customer> read() {
-
 		List<Customer> list = new ArrayList<Customer>();
 
 		try {
@@ -67,9 +66,7 @@ public class JdbcCustomerDao implements CustomerDao {
 
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(GET_QUERY);
-
 			stmt.setString(1, id);
-
 			ResultSet rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -85,9 +82,7 @@ public class JdbcCustomerDao implements CustomerDao {
 	}
 
 	public Customer update(Customer customer) {
-
 		try {
-
 			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 
 			stmt.setString(1, customer.getId());
@@ -102,7 +97,6 @@ public class JdbcCustomerDao implements CustomerDao {
 	}
 
 	public void delete(Customer customer) {
-
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			stmt.setString(1, customer.getId());
@@ -112,5 +106,4 @@ public class JdbcCustomerDao implements CustomerDao {
 			e.printStackTrace();
 		}
 	}
-
 }

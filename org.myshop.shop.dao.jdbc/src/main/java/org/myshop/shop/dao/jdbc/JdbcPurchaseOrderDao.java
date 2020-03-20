@@ -14,13 +14,13 @@ import java.util.ArrayList;
 public class JdbcPurchaseOrderDao implements PurchaseOrderDao {
 	
 	private Connection sqlConnection;
+
 	protected final static String CREATE_QUERY = "INSERT INTO purchaseOrders VALUES(?, ?, ?)";
 	protected final static String READ_QUERY = "SELECT * FROM purchaseOrders";
 	protected final static String GET_QUERY = "SELECT * FROM purchaseOrders WHERE id = ?";
 	protected final static String UPDATE_QUERY = "UPDATE purchaseOrders SET id = ?, number = ?, created = ? WHERE id = ?";
 	protected final static String DELETE_QUERY = "DELETE FROM purchaseOrders WHERE id = ?";
-	
-	
+
 	public JdbcPurchaseOrderDao(Connection sqlConnection) {
 		this.sqlConnection = sqlConnection;
 	}
@@ -69,7 +69,6 @@ public class JdbcPurchaseOrderDao implements PurchaseOrderDao {
 	}
 
 	public PurchaseOrder get(String id) {
-		
 		PurchaseOrder purchaseOrder = new PurchaseOrder();
 		
 		try {
@@ -83,16 +82,13 @@ public class JdbcPurchaseOrderDao implements PurchaseOrderDao {
 				purchaseOrder.setNumber(resultSet.getString("number"));
 				purchaseOrder.setCreated( (java.util.Date) resultSet.getDate("created"));
 			}
-			
 		} catch (SQLException e) {
 			return null;		
 		}
-		
 		return purchaseOrder;
 	}
 
 	public PurchaseOrder update(PurchaseOrder order) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			stmt.setString(1, order.getId());
@@ -100,27 +96,20 @@ public class JdbcPurchaseOrderDao implements PurchaseOrderDao {
 			stmt.setDate(3, (java.sql.Date) order.getCreated());
 			
 			stmt.executeUpdate();
-		
 		} catch (SQLException e) {
 			return null;
 		}
-		
 		return order;
 	}
 
 	public void delete(PurchaseOrder order) {
-			
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			stmt.setString(1, order.getId());	
 			
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
-	
 			e.printStackTrace();
 		}
 	}
-	
-
 }

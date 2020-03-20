@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,6 +12,8 @@ import org.myshop.shop.dao.ProductGroupDao;
 import org.myshop.shop.model.ProductGroup;
 import org.org.myshop.shop.jpa.model.ItemCategoryEntity;
 import org.org.myshop.shop.jpa.model.ProductGroupEntity;
+
+import static java.util.stream.Collectors.*;
 
 public class JpaProductGroupDao implements ProductGroupDao{
 
@@ -25,7 +28,6 @@ public class JpaProductGroupDao implements ProductGroupDao{
 	}
 	
 	public void create(ProductGroup productGroup) {
-	
 		ProductGroupEntity entity = new ProductGroupEntity(productGroup);
 		
 		entityManager.getTransaction().begin();
@@ -35,37 +37,26 @@ public class JpaProductGroupDao implements ProductGroupDao{
 	
 	@SuppressWarnings("unchecked")
 	public List<ProductGroup> read() {
-		
-		List<ProductGroup> productGroupList = new ArrayList<ProductGroup>();
 		List<ProductGroupEntity> entityList;
-		
 		try {
 		entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
-		
 		}catch(PersistenceException e) {
 			return null;
 		}
-		
-		for(int i=0; i<entityList.size(); i++) {
-			productGroupList.add(entityList.get(i).toProductGroup());
-		}
-		
-		return productGroupList;
+		return entityList.stream()
+						 .map(productGroupEntity -> productGroupEntity.toProductGroup())
+						 .collect(toList());
 	}
 
 	public ProductGroup get(String id) {
-		
 		try {
-		ProductGroupEntity entity = entityManager.find(ProductGroupEntity.class, id);
-		return entity.toProductGroup();
-		
+		return entityManager.find(ProductGroupEntity.class, id).toProductGroup();
 		}catch(NullPointerException e) {
 		return null;
 		}
 	}
 
 	public ProductGroup update(ProductGroup productGroup) {
-		
 		entityManager = factory.createEntityManager();
 		
 		ProductGroupEntity entity = entityManager.find(ProductGroupEntity.class, productGroup.getId());
@@ -79,14 +70,12 @@ public class JpaProductGroupDao implements ProductGroupDao{
 		}catch(Exception e) {
 			return null;
 		}
-		
 		entity = entityManager.find(ProductGroupEntity.class, productGroup.getId());
 		
 		return entity.toProductGroup();
 	}
 
 	public void delete(ProductGroup productGroup) {
-		
 		entityManager = factory.createEntityManager();
 		
 		ProductGroupEntity entity = entityManager.find(ProductGroupEntity.class, productGroup.getId());
@@ -95,5 +84,4 @@ public class JpaProductGroupDao implements ProductGroupDao{
 		entityManager.remove(entity);
 		entityManager.getTransaction().commit();
 	}
-
 }

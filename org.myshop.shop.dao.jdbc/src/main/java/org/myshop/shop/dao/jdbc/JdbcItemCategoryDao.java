@@ -22,13 +22,10 @@ public class JdbcItemCategoryDao implements ItemCategoryDao{
 	protected static final String DELETE_QUERY = "DELETE FROM itemCategory WHERE id = ?";
 	
 	public JdbcItemCategoryDao(Connection sqlConnection) {
-		 
 		this.sqlConnection = sqlConnection;
 	}
 	
-	
 	public void create(ItemCategory category) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(CREATE_QUERY);
 			

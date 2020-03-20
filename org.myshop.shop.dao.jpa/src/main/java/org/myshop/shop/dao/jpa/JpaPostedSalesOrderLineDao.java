@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,6 +13,8 @@ import org.myshop.shop.model.PostedSalesOrderLine;
 
 import org.org.myshop.shop.jpa.model.ItemEntity;
 import org.org.myshop.shop.jpa.model.PostedSalesOrderLineEntity;
+
+import static java.util.stream.Collectors.*;
 
 public class JpaPostedSalesOrderLineDao implements PostedSalesOrderLineDao{
 
@@ -26,7 +29,6 @@ public class JpaPostedSalesOrderLineDao implements PostedSalesOrderLineDao{
 	}
 	
 	public void create(PostedSalesOrderLine line) {
-		
 		PostedSalesOrderLineEntity entity = new PostedSalesOrderLineEntity(line);
 		
 		entityManager.getTransaction().begin();
@@ -36,39 +38,28 @@ public class JpaPostedSalesOrderLineDao implements PostedSalesOrderLineDao{
 
 	@SuppressWarnings("unchecked")
 	public List<PostedSalesOrderLine> read() {
-		
-		List<PostedSalesOrderLine> lineList = new ArrayList<PostedSalesOrderLine>();
 		List<PostedSalesOrderLineEntity> entityList;
-		
 		try {
 		entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
 		
 		}catch(PersistenceException e) {
 			return null;
 		}
-		
-		
-		for(int i=0; i<entityList.size(); i++) {
-			lineList.add(entityList.get(i).toPostedSalesOrderLine());
-		}
-		
-		return lineList;
+
+		return entityList.stream()
+						 .map(postedSalesOrderLineEntity -> postedSalesOrderLineEntity.toPostedSalesOrderLine())
+						 .collect(toList());
 	}
 
 	public PostedSalesOrderLine get(String id) {
-		
 		try {
-			PostedSalesOrderLineEntity entity = entityManager.find(PostedSalesOrderLineEntity.class, id);
-		return entity.toPostedSalesOrderLine();
-		
+		return entityManager.find(PostedSalesOrderLineEntity.class, id).toPostedSalesOrderLine();
 		}catch(NullPointerException e) {
 			return null;
 		}
-		
 	}
 
 	public PostedSalesOrderLine update(PostedSalesOrderLine line) {
-		
 		entityManager = factory.createEntityManager();
 		
 		PostedSalesOrderLineEntity entity = entityManager.find(PostedSalesOrderLineEntity.class, line.getId());
@@ -92,7 +83,6 @@ public class JpaPostedSalesOrderLineDao implements PostedSalesOrderLineDao{
 	}
 
 	public void delete(PostedSalesOrderLine line) {
-		
 		PostedSalesOrderLineEntity entity = entityManager.find(PostedSalesOrderLineEntity.class, line.getId());
 		
 		entityManager.getTransaction().begin();

@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +26,6 @@ public class JpaVendorDao implements VendorDao{
 	}
 	
 	public void create(Vendor vendor) {
-		
 		VendorEntity vendorEntity = new VendorEntity(vendor);
 		
 		entityManager.getTransaction().begin();
@@ -35,36 +35,28 @@ public class JpaVendorDao implements VendorDao{
 
 	@SuppressWarnings("unchecked")
 	public List<Vendor> read() {
-
-		List<Vendor> vendorList = new ArrayList<Vendor>();
 		List<VendorEntity> entityList;
-		
+
 		try {
 		entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
-		
 		}catch(PersistenceException e) {
 			return null;
 		}
-		
-		for(int i=0; i < entityList.size();i++) {
-			vendorList.add(entityList.get(i).toVendor());
-		}
-		
-		return vendorList;
+
+		return entityList.stream()
+						.map(vendorEntity -> vendorEntity.toVendor())
+						.collect(Collectors.toList());
 	}
 
 	public Vendor get(String id) {
 		try {
-		VendorEntity entity = entityManager.find(VendorEntity.class, id);
-		return entity.toVendor();
-		
+		return entityManager.find(VendorEntity.class, id).toVendor();
 		}catch(NullPointerException e) {
 		return null;
 		}
 	}
 
 	public Vendor update(Vendor vendor) {
-		
 		entityManager = factory.createEntityManager();
 		
 		VendorEntity vendorEntity = entityManager.find(VendorEntity.class, vendor.getId());
@@ -79,7 +71,6 @@ public class JpaVendorDao implements VendorDao{
 	}
 
 	public void delete(Vendor vendor) {
-		
 		entityManager = factory.createEntityManager();
 		
 		VendorEntity vendorEntity = entityManager.find(VendorEntity.class, vendor.getId());

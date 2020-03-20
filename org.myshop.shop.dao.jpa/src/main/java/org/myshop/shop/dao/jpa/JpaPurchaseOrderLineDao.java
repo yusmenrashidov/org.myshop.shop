@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,7 +27,6 @@ public class JpaPurchaseOrderLineDao implements PurchaseOrderLineDao{
 	}
 	
 	public void create(PurchaseOrderLine line) {
-		
 		PurchaseOrderLineEntity entity = new PurchaseOrderLineEntity(line);
 		
 		entityManager.getTransaction().begin();
@@ -36,8 +36,6 @@ public class JpaPurchaseOrderLineDao implements PurchaseOrderLineDao{
 	
 	@SuppressWarnings("unchecked")
 	public List<PurchaseOrderLine> read() {
-		
-		List<PurchaseOrderLine> lineList = new ArrayList<PurchaseOrderLine>();	
 		List<PurchaseOrderLineEntity> entityList;
 		
 		try {
@@ -46,27 +44,21 @@ public class JpaPurchaseOrderLineDao implements PurchaseOrderLineDao{
 		}catch(PersistenceException e) {
 			return null;
 		}
-		
-		for(int i=0; i<entityList.size(); i++) {
-			lineList.add(entityList.get(i).toPurchaseOrderLine());
-		}
-		
-		return lineList;
+
+		return entityList.stream()
+						.map(purchaseOrderLineEntity -> purchaseOrderLineEntity.toPurchaseOrderLine())
+						.collect(Collectors.toList());
 	}
 
 	public PurchaseOrderLine get(String id) {
-	
 		try {
-		PurchaseOrderLineEntity entity = entityManager.find(PurchaseOrderLineEntity.class, id);
-		return entity.toPurchaseOrderLine();
-		
+		return entityManager.find(PurchaseOrderLineEntity.class, id).toPurchaseOrderLine();
 		}catch(NullPointerException e) {
 		return null;
 		}
 	}
 
 	public PurchaseOrderLine update(PurchaseOrderLine line) {
-		
 		entityManager = factory.createEntityManager();
 		
 		PurchaseOrderLineEntity entity = entityManager.find(PurchaseOrderLineEntity.class, line.getId());
@@ -91,7 +83,6 @@ public class JpaPurchaseOrderLineDao implements PurchaseOrderLineDao{
 	}
 
 	public void delete(PurchaseOrderLine line) {
-		
 		entityManager = factory.createEntityManager();
 		
 		PurchaseOrderLineEntity entity = entityManager.find(PurchaseOrderLineEntity.class, line.getId());

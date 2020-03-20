@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,6 +14,8 @@ import org.myshop.shop.model.Item;
 import org.org.myshop.shop.jpa.model.ItemCategoryEntity;
 import org.org.myshop.shop.jpa.model.ItemEntity;
 import org.org.myshop.shop.jpa.model.ProductGroupEntity;
+
+import static java.util.stream.Collectors.*;
 
 public class JpaItemDao implements ItemDao{
 
@@ -27,7 +30,6 @@ public class JpaItemDao implements ItemDao{
 	}
 	
 	public void create(Item item) {
-		
 		ItemEntity itemEntity = new ItemEntity(item);
 		
 		entityManager.getTransaction().begin();
@@ -37,37 +39,27 @@ public class JpaItemDao implements ItemDao{
 	
 	@SuppressWarnings("unchecked")
 	public List<Item> read() {
-		
-		List<Item> itemList = new ArrayList<Item>();
 		List<ItemEntity> entityList;
 		
 		try {
 		 entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
-		
 		}catch(PersistenceException e) {
 			return null;
 		}
-		 
-		for(int i=0; i < entityList.size(); i++) {
-			itemList.add(entityList.get(i).toItem());
-		}
-		
-		return itemList;
+		return entityList.stream()
+					     .map(itemEntity -> itemEntity.toItem())
+						 .collect(toList());
 	}
 
 	public Item get(String id) {
-		
-		try {
-			ItemEntity itemEntity = entityManager.find(ItemEntity.class, id);
-			return itemEntity.toItem();
-			
+		try{
+			return entityManager.find(ItemEntity.class, id).toItem();
 		}catch(NullPointerException e) {
 			return null;
 		}
 	}
 
 	public Item update(Item item) {
-		
 		entityManager = factory.createEntityManager();
 		
 		ItemEntity itemEntity = entityManager.find(ItemEntity.class, item.getId());
@@ -86,14 +78,12 @@ public class JpaItemDao implements ItemDao{
 		}catch(Exception e) {
 			return null;
 		}
-		
 		itemEntity = entityManager.find(ItemEntity.class, item.getId());
 		
 		return itemEntity.toItem();
 	}
 
 	public void delete(Item item) {
-		
 		entityManager = factory.createEntityManager();
 		
 		ItemEntity itemEntity = entityManager.find(ItemEntity.class, item.getId());

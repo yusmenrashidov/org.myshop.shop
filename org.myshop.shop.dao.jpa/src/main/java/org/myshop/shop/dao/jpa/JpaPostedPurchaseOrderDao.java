@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,6 +12,8 @@ import org.myshop.shop.dao.PostedPurchaseOrderDao;
 import org.myshop.shop.model.PostedPurchaseOrder;
 
 import org.org.myshop.shop.jpa.model.PostedPurchaseOrderEntity;
+
+import static java.util.stream.Collectors.*;
 
 public class JpaPostedPurchaseOrderDao implements PostedPurchaseOrderDao{
 
@@ -25,7 +28,6 @@ public class JpaPostedPurchaseOrderDao implements PostedPurchaseOrderDao{
 	}
 	
 	public void create(PostedPurchaseOrder order) {
-		
 		PostedPurchaseOrderEntity entity = new PostedPurchaseOrderEntity(order);
 		
 		entityManager.getTransaction().begin();
@@ -35,8 +37,6 @@ public class JpaPostedPurchaseOrderDao implements PostedPurchaseOrderDao{
 
 	@SuppressWarnings("unchecked")
 	public List<PostedPurchaseOrder> read() {
-		
-		List<PostedPurchaseOrder> purchaseOrderList = new ArrayList<PostedPurchaseOrder>();
 		List<PostedPurchaseOrderEntity> entityList;
 		
 		try {
@@ -44,30 +44,22 @@ public class JpaPostedPurchaseOrderDao implements PostedPurchaseOrderDao{
 		}catch(PersistenceException e) {
 			return null;
 		}
-		
-		
-		for(int i=0; i<entityList.size(); i++) {
-			purchaseOrderList.add(entityList.get(i).toPostedPurchaseOrder());
-		}
-		
-		return purchaseOrderList;
+
+		return entityList.stream()
+						 .map(postedPurchaseOrderEntity -> postedPurchaseOrderEntity.toPostedPurchaseOrder())
+						 .collect(toList());
 	}
 
 	public PostedPurchaseOrder get(String id) {
-		
 		try {
-			PostedPurchaseOrderEntity entity = entityManager.find(PostedPurchaseOrderEntity.class, id);
-			return entity.toPostedPurchaseOrder();
-		
+			return entityManager.find(PostedPurchaseOrderEntity.class, id).toPostedPurchaseOrder();
 		}catch(NullPointerException e) {
 		return null;
 		}
 	}
 
 	public PostedPurchaseOrder update(PostedPurchaseOrder order) {
-		
 		entityManager = factory.createEntityManager();
-		
 		PostedPurchaseOrderEntity entity = entityManager.find(PostedPurchaseOrderEntity.class, order.getId());
 		
 		try {
@@ -86,7 +78,6 @@ public class JpaPostedPurchaseOrderDao implements PostedPurchaseOrderDao{
 	}
 
 	public void delete(PostedPurchaseOrder order) {
-		
 		entityManager = factory.createEntityManager();
 		
 		PostedPurchaseOrderEntity entity = entityManager.find(PostedPurchaseOrderEntity.class, order.getId());

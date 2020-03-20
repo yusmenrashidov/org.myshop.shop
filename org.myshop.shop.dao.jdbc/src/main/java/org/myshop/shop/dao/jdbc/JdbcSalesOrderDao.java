@@ -24,10 +24,8 @@ public class JdbcSalesOrderDao implements SalesOrderDao{
 	public JdbcSalesOrderDao(Connection sqlConnection) {
 		this.sqlConnection = sqlConnection;
 	}
-	
-	
+
 	public void create(SalesOrder order) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(CREATE_QUERY);
 			
@@ -43,9 +41,7 @@ public class JdbcSalesOrderDao implements SalesOrderDao{
 	}
 
 	public List<SalesOrder> read() {
-		
 		List<SalesOrder> salesOrderList = new ArrayList<SalesOrder>();
-		
 		JdbcCustomerDao customerDao = new JdbcCustomerDao(sqlConnection);
 		
 		try {
@@ -61,7 +57,6 @@ public class JdbcSalesOrderDao implements SalesOrderDao{
 				
 				salesOrderList.add(salesOrder);
 			}
-		
 		} catch (SQLException e) {
 			return null;
 		}
@@ -70,7 +65,6 @@ public class JdbcSalesOrderDao implements SalesOrderDao{
 	}
 
 	public SalesOrder get(String id) {
-		
 		SalesOrder salesOrder = null;
 		JdbcCustomerDao customerDao = new JdbcCustomerDao(sqlConnection);
 		
@@ -87,17 +81,13 @@ public class JdbcSalesOrderDao implements SalesOrderDao{
 				salesOrder.setCreated((java.util.Date)rs.getDate("created"));
 				salesOrder.setCustomer(customerDao.get(rs.getString("customer_id")));
 			}
-			
 		} catch (SQLException e) {
-
 			return null;
 		}
-		
 		return salesOrder;
 	}
 
 	public SalesOrder update(SalesOrder order) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			
@@ -109,21 +99,17 @@ public class JdbcSalesOrderDao implements SalesOrderDao{
 			stmt.executeUpdate();
 			
 		} catch (SQLException e) {
-			
 			return null;
 		}	
 		return order;
 	}
 
 	public void delete(SalesOrder order) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			
 			stmt.setString(1, order.getId());
-			
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

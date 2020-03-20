@@ -26,7 +26,6 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 	}
 	
 	public void create(PurchaseOrderLine line) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(CREATE_QUERY);
 			stmt.setString(1, line.getId());
@@ -37,15 +36,12 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 			stmt.setInt(6, line.getAmmount());
 			
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
 	}
 
 	public List<PurchaseOrderLine> read() {
-		
 		List<PurchaseOrderLine> list = new ArrayList<PurchaseOrderLine>();
 		
 		JdbcItemDao itemDao = new JdbcItemDao(sqlConnection);
@@ -66,7 +62,6 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 				
 				list.add(line);
 			}
-			
 		} catch (SQLException e) {
 			return null;
 		}
@@ -74,7 +69,6 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 	}
 
 	public PurchaseOrderLine get(String id) {
-		
 		PurchaseOrderLine line = null;
 		JdbcItemDao itemDao = new JdbcItemDao(sqlConnection);
 		
@@ -97,12 +91,10 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 		} catch (SQLException e) {
 			return null;
 		}
-		
 		return line;
 	}
 
 	public PurchaseOrderLine update(PurchaseOrderLine line) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			stmt.setString(1, line.getId());
@@ -122,17 +114,13 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 	}
 
 	public void delete(PurchaseOrderLine line) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			stmt.setString(1, line.getId());
 			
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
 	}
-
 }

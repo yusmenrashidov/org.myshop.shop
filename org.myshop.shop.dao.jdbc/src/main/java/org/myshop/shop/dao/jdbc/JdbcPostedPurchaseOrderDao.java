@@ -26,7 +26,6 @@ public class JdbcPostedPurchaseOrderDao implements PostedPurchaseOrderDao{
 	}
 
 	public void create(PostedPurchaseOrder order) {
-		
 		PreparedStatement stmt;
 		try {
 		
@@ -100,11 +99,9 @@ public class JdbcPostedPurchaseOrderDao implements PostedPurchaseOrderDao{
 			stmt.setDate(3, (java.sql.Date) order.getCreated());
 			
 			stmt.executeUpdate();
-		
 		} catch (SQLException e) {
 			return null;
 		}
-		
 		return order;
 	}
 
@@ -115,7 +112,6 @@ public class JdbcPostedPurchaseOrderDao implements PostedPurchaseOrderDao{
 			stmt.setString(1, order.getId());	
 			
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
 	
 			e.printStackTrace();

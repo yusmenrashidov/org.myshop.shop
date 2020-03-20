@@ -122,13 +122,11 @@ public class JdbcPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDa
 	}
 
 	public void delete(PostedPurchaseOrderLine line) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			stmt.setString(1, line.getId());
 			
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			
 			e.printStackTrace();

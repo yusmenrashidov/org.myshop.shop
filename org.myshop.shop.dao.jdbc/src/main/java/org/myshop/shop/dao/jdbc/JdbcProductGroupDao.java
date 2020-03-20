@@ -50,11 +50,9 @@ public class JdbcProductGroupDao implements ProductGroupDao{
 		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(READ_QUERY);
-		
 			ResultSet rs = stmt.executeQuery();
 			
 			while(rs.next()) {
-				
 				list.add(this.get(rs.getString("id")));
 			}
 			

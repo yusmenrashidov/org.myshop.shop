@@ -56,7 +56,6 @@ public class JdbcVendorDao implements VendorDao {
         } catch (SQLException e) {
             return null;
         }
-
         return list;
     }
 
@@ -100,7 +99,6 @@ public class JdbcVendorDao implements VendorDao {
             stmt.setString(1, vendor.getId());
 
             stmt.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

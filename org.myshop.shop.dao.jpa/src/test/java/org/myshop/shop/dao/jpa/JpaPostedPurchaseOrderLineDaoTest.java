@@ -12,6 +12,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -90,9 +91,7 @@ public class JpaPostedPurchaseOrderLineDaoTest {
 	
 	@Mock
 	private ItemCategoryEntity categoryEntityMock;
-	
-	@Mock
-	private List<ItemEntity> entityListMock;
+
 	
 	@Before
 	public void setup() {
@@ -101,7 +100,6 @@ public class JpaPostedPurchaseOrderLineDaoTest {
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
 		when(entityManagerMock.createNamedQuery(JpaPostedPurchaseOrderLineDao.READ_QUERY_NAME)).thenReturn(queryMock);
-		when(queryMock.getResultList()).thenReturn(entityListMock);
 		
 		when(entityManagerMock.find(PostedPurchaseOrderLineEntity.class, TEST_POSTED_PURCHASE_ORDER_LINE_ID)).thenReturn(entityMock);
 		when(entityMock.toPostedPurchaseOrderLine()).thenReturn(lineMock);
@@ -178,6 +176,8 @@ public class JpaPostedPurchaseOrderLineDaoTest {
 	
 	@Test
 	public void testRead() {
+		when(queryMock.getResultList()).thenReturn(EMPTY_LIST);
+
 		List<PostedPurchaseOrderLine> lineList = postedPurchaseOrderLineDaoMock.read();
 		
 		verify(entityManagerMock).createNamedQuery(JpaPostedPurchaseOrderLineDao.READ_QUERY_NAME);

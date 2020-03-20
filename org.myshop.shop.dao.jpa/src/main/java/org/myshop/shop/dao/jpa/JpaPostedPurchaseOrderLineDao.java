@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,6 +13,8 @@ import org.myshop.shop.model.PostedPurchaseOrderLine;
 
 import org.org.myshop.shop.jpa.model.ItemEntity;
 import org.org.myshop.shop.jpa.model.PostedPurchaseOrderLineEntity;
+
+import static java.util.stream.Collectors.*;
 
 public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao{
 
@@ -26,7 +29,6 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 	}
 	
 	public void create(PostedPurchaseOrderLine line) {
-		
 		PostedPurchaseOrderLineEntity entity = new PostedPurchaseOrderLineEntity(line);
 		
 		entityManager.getTransaction().begin();
@@ -36,8 +38,6 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 
 	@SuppressWarnings("unchecked")
 	public List<PostedPurchaseOrderLine> read() {
-		
-		List<PostedPurchaseOrderLine> lineList = new ArrayList<PostedPurchaseOrderLine>();	
 		List<PostedPurchaseOrderLineEntity> entityList;
 		
 		try {
@@ -45,27 +45,22 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 		}catch(PersistenceException e) {
 			return null;
 		}
-		
-		for(int i=0; i<entityList.size(); i++) {
-			lineList.add(entityList.get(i).toPostedPurchaseOrderLine());
-		}
-		
-		return lineList;
+
+		return entityList.stream()
+						.map(postedPurchaseOrderLineEntity -> postedPurchaseOrderLineEntity.toPostedPurchaseOrderLine())
+						.collect(toList());
 	}
 
 	public PostedPurchaseOrderLine get(String id) {
 	
 		try {
-			PostedPurchaseOrderLineEntity entity = entityManager.find(PostedPurchaseOrderLineEntity.class, id);
-			return entity.toPostedPurchaseOrderLine();
-		
+			return entityManager.find(PostedPurchaseOrderLineEntity.class, id).toPostedPurchaseOrderLine();
 		}catch(NullPointerException e) {
 		return null;
 		}
 	}
 
 	public PostedPurchaseOrderLine update(PostedPurchaseOrderLine line) {
-		
 		entityManager = factory.createEntityManager();
 		
 		PostedPurchaseOrderLineEntity entity = entityManager.find(PostedPurchaseOrderLineEntity.class, line.getId());
@@ -83,14 +78,12 @@ public class JpaPostedPurchaseOrderLineDao implements PostedPurchaseOrderLineDao
 		}catch(Exception e) {
 			return null;
 		}
-		
 		entity = entityManager.find(PostedPurchaseOrderLineEntity.class, line.getId());
 		
 		return entity.toPostedPurchaseOrderLine();
 	}
 
 	public void delete(PostedPurchaseOrderLine line) {
-		
 		entityManager = factory.createEntityManager();
 		
 		PostedPurchaseOrderLineEntity entity = entityManager.find(PostedPurchaseOrderLineEntity.class, line.getId());

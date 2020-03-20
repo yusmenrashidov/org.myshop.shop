@@ -44,9 +44,7 @@ private Connection sqlConnection;
 	}
 
 	public List<PostedSalesOrderLine> read() {
-		
 		List<PostedSalesOrderLine> list = new ArrayList<PostedSalesOrderLine>();
-		
 		JdbcItemDao itemDao = new JdbcItemDao(sqlConnection);
 		
 		try {
@@ -65,7 +63,6 @@ private Connection sqlConnection;
 				
 				list.add(line);
 			}
-			
 		} catch (SQLException e) {
 			return null;
 		}
@@ -73,7 +70,6 @@ private Connection sqlConnection;
 	}
 
 	public PostedSalesOrderLine get(String id) {
-		
 		PostedSalesOrderLine line = null;
 		JdbcItemDao itemDao = new JdbcItemDao(sqlConnection);
 		
@@ -101,7 +97,6 @@ private Connection sqlConnection;
 	}
 
 	public PostedSalesOrderLine update(PostedSalesOrderLine line) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			stmt.setString(1, line.getId());
@@ -121,17 +116,13 @@ private Connection sqlConnection;
 	}
 
 	public void delete(PostedSalesOrderLine line) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			stmt.setString(1, line.getId());
 			
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
 	}
-	
 }

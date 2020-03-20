@@ -118,7 +118,6 @@ public class JdbcItemDao implements ItemDao {
 			stmt.setString(8, item.getId());
 			
 			stmt.executeUpdate();
-			
     	} catch (SQLException e) {
 			
 			return null;
@@ -128,14 +127,11 @@ public class JdbcItemDao implements ItemDao {
     }
 
     public void delete(Item item) {
-    	
     	try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			
 			stmt.setString(1, item.getId());
-			
 			stmt.executeUpdate();
-    	
     	} catch (SQLException e) {
 			
 			e.printStackTrace();

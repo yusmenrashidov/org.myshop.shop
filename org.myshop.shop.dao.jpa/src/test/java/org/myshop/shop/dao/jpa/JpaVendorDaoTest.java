@@ -1,5 +1,6 @@
 package org.myshop.shop.dao.jpa;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -46,13 +47,9 @@ public class JpaVendorDaoTest {
 	
 	@Mock
 	private Query queryMock;
-	
-	@Mock
-	private List<VendorEntity> entityListMock;
-	
+
 	@Mock
 	private EntityTransaction entityTransactionMock;
-	
 	
 	@Before
 	public void setup() {
@@ -62,8 +59,7 @@ public class JpaVendorDaoTest {
 		
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
 		when(entityManagerMock.createNamedQuery(JpaVendorDao.READ_QUERY_NAME)).thenReturn(queryMock);
-		when(queryMock.getResultList()).thenReturn(entityListMock);
-		
+
 		when(entityManagerMock.find(VendorEntity.class, TEST_VENDOR_ID)).thenReturn(vendorEntityMock);
 		when(vendorEntityMock.toVendor()).thenReturn(vendorMock);
 		
@@ -96,6 +92,8 @@ public class JpaVendorDaoTest {
 	
 	@Test
 	public void testRead() {
+		when(queryMock.getResultList()).thenReturn(EMPTY_LIST);
+
 		List<Vendor> vendorList = vendorDaoMock.read();
 		
 		verify(entityManagerMock).createNamedQuery(JpaVendorDao.READ_QUERY_NAME);

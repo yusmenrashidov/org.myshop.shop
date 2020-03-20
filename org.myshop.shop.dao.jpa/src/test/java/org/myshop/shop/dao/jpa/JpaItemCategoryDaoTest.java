@@ -12,6 +12,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -50,10 +51,7 @@ public class JpaItemCategoryDaoTest {
 	
 	@Mock
 	private ItemCategoryEntity itemCategoryEntityMock;
-	
-	@Mock
-	private List<ItemEntity> entityListMock;
-	
+
 	@Mock
 	private Query queryMock;
 	
@@ -63,8 +61,7 @@ public class JpaItemCategoryDaoTest {
 		
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
-		when(entityManagerMock.createNamedQuery(JpaItemCategoryDao.READ_QUERY_NAME)).thenReturn(queryMock);
-		when(queryMock.getResultList()).thenReturn(entityListMock);
+		when(entityManagerMock.createNamedQuery(JpaItemCategoryDao.READ_QUERY_NAME)).thenReturn(queryMock);;
 		
 		when(entityManagerMock.find(ItemCategoryEntity.class, TEST_ITEM_CATEGORY_ID)).thenReturn(itemCategoryEntityMock);
 		when(itemCategoryEntityMock.toItemCategory()).thenReturn(itemCategoryMock);
@@ -102,6 +99,8 @@ public class JpaItemCategoryDaoTest {
 	
 	@Test
 	public void testRead() {
+		when(queryMock.getResultList()).thenReturn(EMPTY_LIST);
+
 		List<ItemCategory> itemCategoryListMock = itemCategoryDaoMock.read();
 		
 		verify(entityManagerMock).createNamedQuery(JpaItemCategoryDao.READ_QUERY_NAME);

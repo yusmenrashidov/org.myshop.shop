@@ -12,6 +12,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -63,9 +64,6 @@ public class JpaSalesOrderDaoTest {
 	@Mock
 	private JpaSalesOrderDao salesOrderDaoMock;
 	
-	@Mock
-	private List<SalesOrderEntity> entityListMock;
-	
 	@Before
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
@@ -73,7 +71,6 @@ public class JpaSalesOrderDaoTest {
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 		when(entityManagerMock.createNamedQuery(JpaSalesOrderDao.READ_QUERY_NAME)).thenReturn(queryMock);
-		when(queryMock.getResultList()).thenReturn(entityListMock);
 		
 		when(entityManagerMock.find(SalesOrderEntity.class, TEST_SALES_ORDER_ID)).thenReturn(orderEntityMock);
 		when(orderEntityMock.toSalesOrder()).thenReturn(orderMock);
@@ -117,6 +114,8 @@ public class JpaSalesOrderDaoTest {
 	
 	@Test
 	public void testRead() {
+		when(queryMock.getResultList()).thenReturn(EMPTY_LIST);
+
 		List<SalesOrder> orderList = salesOrderDaoMock.read();
 		
 		verify(entityManagerMock).createNamedQuery(JpaSalesOrderDao.READ_QUERY_NAME);

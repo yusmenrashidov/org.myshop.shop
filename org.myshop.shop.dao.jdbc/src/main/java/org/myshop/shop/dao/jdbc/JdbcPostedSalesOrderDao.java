@@ -44,9 +44,7 @@ public class JdbcPostedSalesOrderDao implements PostedSalesOrderDao {
 	}
 
 	public List<PostedSalesOrder> read() {
-		
 		List<PostedSalesOrder> salesOrderList = new ArrayList<PostedSalesOrder>();
-		
 		JdbcCustomerDao customerDao = new JdbcCustomerDao(sqlConnection);
 		
 		try {
@@ -62,11 +60,9 @@ public class JdbcPostedSalesOrderDao implements PostedSalesOrderDao {
 				
 				salesOrderList.add(salesOrder);
 			}
-		
 		} catch (SQLException e) {
 			return null;
 		}
-		
 		return salesOrderList;
 	}
 
@@ -88,9 +84,7 @@ public class JdbcPostedSalesOrderDao implements PostedSalesOrderDao {
 				salesOrder.setCreated((java.util.Date)rs.getDate("created"));
 				salesOrder.setCustomer(customerDao.get(rs.getString("customer_id")));
 			}
-			
 		} catch (SQLException e) {
-
 			return null;
 		}
 		
@@ -98,7 +92,6 @@ public class JdbcPostedSalesOrderDao implements PostedSalesOrderDao {
 	}
 
 	public PostedSalesOrder update(PostedSalesOrder order) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(UPDATE_QUERY);
 			
@@ -108,7 +101,6 @@ public class JdbcPostedSalesOrderDao implements PostedSalesOrderDao {
 			stmt.setString(4, order.getId());
 			
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			
 			return null;
@@ -117,14 +109,11 @@ public class JdbcPostedSalesOrderDao implements PostedSalesOrderDao {
 	}
 
 	public void delete(PostedSalesOrder order) {
-		
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
 			
 			stmt.setString(1, order.getId());
-			
 			stmt.executeUpdate();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

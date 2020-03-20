@@ -2,6 +2,7 @@ package org.myshop.shop.dao.jpa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,7 +27,6 @@ public class JpaSalesOrderDao implements SalesOrderDao{
 	}
 	
 	public void create(SalesOrder order) {
-		
 		SalesOrderEntity entity = new SalesOrderEntity(order);
 		
 		entityManager.getTransaction().begin();
@@ -36,37 +36,28 @@ public class JpaSalesOrderDao implements SalesOrderDao{
 	
 	@SuppressWarnings("unchecked")
 	public List<SalesOrder> read() {
-		
-		List<SalesOrder> salesOrderList = new ArrayList<SalesOrder>();
 		List<SalesOrderEntity> entityList;
 		
 		try {
 		entityList = entityManager.createNamedQuery(READ_QUERY_NAME).getResultList();
-		
 		}catch(PersistenceException e) {
 			return null;
 		}
-		
-		for(int i=0; i<entityList.size(); i++) {
-			salesOrderList.add(entityList.get(i).toSalesOrder());
-		}
-		
-		return salesOrderList;
+
+		return entityList.stream()
+						.map(salesOrderEntity -> salesOrderEntity.toSalesOrder())
+						.collect(Collectors.toList());
 	}
 
 	public SalesOrder get(String id) {
-		
 		try {
-		SalesOrderEntity entity = entityManager.find(SalesOrderEntity.class, id);
-		return entity.toSalesOrder();
-		
+		return entityManager.find(SalesOrderEntity.class, id).toSalesOrder();
 		}catch(NullPointerException e) {
 			return null;
 		}
 	}
 
 	public SalesOrder update(SalesOrder order) {
-		
 		entityManager = factory.createEntityManager();
 				
 		SalesOrderEntity entity = entityManager.find(SalesOrderEntity.class, order.getId());
@@ -87,7 +78,6 @@ public class JpaSalesOrderDao implements SalesOrderDao{
 	}
 
 	public void delete(SalesOrder order) {
-		
 		entityManager = factory.createEntityManager();
 		
 		SalesOrderEntity entity = entityManager.find(SalesOrderEntity.class, order.getId());

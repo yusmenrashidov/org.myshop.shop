@@ -12,6 +12,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import static java.util.Collections.EMPTY_LIST;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -49,9 +50,6 @@ public class JpaProductGroupDaoTest {
 	private Query queryMock;
 	
 	@Mock
-	private List<ProductGroup> groupListMock;
-	
-	@Mock
 	private ProductGroupEntity productGroupEntityMock;
 	
 	@Mock
@@ -73,7 +71,6 @@ public class JpaProductGroupDaoTest {
 		when(factoryMock.createEntityManager()).thenReturn(entityManagerMock);
 		when(entityManagerMock.getTransaction()).thenReturn(entityTransactionMock);
 		when(entityManagerMock.createNamedQuery(JpaProductGroupDao.READ_QUERY_NAME)).thenReturn(queryMock);
-		when(queryMock.getResultList()).thenReturn(groupListMock);
 		
 		when(entityManagerMock.find(ProductGroupEntity.class, TEST_PRODUCT_GROUP_ID)).thenReturn(productGroupEntityMock);
 		when(productGroupEntityMock.toProductGroup()).thenReturn(productGroupMock);
@@ -123,6 +120,8 @@ public class JpaProductGroupDaoTest {
 	
 	@Test
 	public void testRead() {
+		when(queryMock.getResultList()).thenReturn(EMPTY_LIST);
+
 		List<ProductGroup> productGroupList = productGroupDaoMock.read();
 		
 		verify(entityManagerMock).createNamedQuery(JpaProductGroupDao.READ_QUERY_NAME);
