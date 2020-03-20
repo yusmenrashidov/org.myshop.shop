@@ -3,4 +3,6 @@
 /target/
 .settings/
 .idea/
-.iml
+*.iws
+*.iml
+*.ipr
