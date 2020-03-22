@@ -105,8 +105,7 @@ public class JdbcPurchaseOrderDao implements PurchaseOrderDao {
 	public void delete(PurchaseOrder order) {
 		try {
 			PreparedStatement stmt = sqlConnection.prepareStatement(DELETE_QUERY);
-			stmt.setString(1, order.getId());	
-			
+			stmt.setString(1, order.getId());
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
