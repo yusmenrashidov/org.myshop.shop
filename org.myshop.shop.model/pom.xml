@@ -9,11 +9,8 @@
 	<artifactId>org.myshop.shop.model</artifactId>
 
 	<packaging>jar</packaging>
-
 	<version>1.0-SNAPSHOT</version>
-
 	<name>org.myshop.shop - Domain Model</name>
-
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
@@ -28,6 +25,5 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.2.11</version>
 		</dependency>
-
 	</dependencies>
 </project>
