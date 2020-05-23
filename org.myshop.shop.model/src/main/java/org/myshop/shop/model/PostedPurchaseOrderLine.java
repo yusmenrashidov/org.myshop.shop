@@ -7,7 +7,18 @@ public class PostedPurchaseOrderLine {
 	private Item item;
 	private int quantity;
 	private float price;
-	private int ammount;
+	private int amount;
+
+	public PostedPurchaseOrderLine(){}
+
+	public PostedPurchaseOrderLine(String id, int lineNumber, Item item, int quantity, float price, int amount) {
+		this.id = id;
+		this.lineNumber = lineNumber;
+		this.item = item;
+		this.quantity = quantity;
+		this.price = price;
+		this.amount = amount;
+	}
 
 	public String getId() {
 		return id;
@@ -49,12 +60,12 @@ public class PostedPurchaseOrderLine {
 		this.price = price;
 	}
 
-	public int getAmmount() {
-		return ammount;
+	public int getAmount() {
+		return amount;
 	}
 
-	public void setAmmount(int ammount) {
-		this.ammount = ammount;
+	public void setAmount(int amount) {
+		this.amount = amount;
 	}
 
 }

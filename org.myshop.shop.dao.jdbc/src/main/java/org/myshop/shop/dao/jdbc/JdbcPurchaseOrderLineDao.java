@@ -33,7 +33,7 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 			stmt.setString(3, line.getItem().getId());
 			stmt.setInt(4, line.getQuantity());
 			stmt.setFloat(5, line.getPrice());
-			stmt.setInt(6, line.getAmmount());
+			stmt.setInt(6, line.getAmount());
 			
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -58,7 +58,7 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 				line.setItem(itemDao.get(resultSet.getString("item_id")));
 				line.setQuantity(resultSet.getInt("quantity"));
 				line.setPrice(resultSet.getFloat("price"));
-				line.setAmmount(resultSet.getInt("ammount"));
+				line.setAmount(resultSet.getInt("ammount"));
 				
 				list.add(line);
 			}
@@ -85,7 +85,7 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 				line.setItem(itemDao.get(resultSet.getString("item_id")));
 				line.setQuantity(resultSet.getInt("quantity"));
 				line.setPrice(resultSet.getFloat("price"));
-				line.setAmmount(resultSet.getInt("ammount"));
+				line.setAmount(resultSet.getInt("ammount"));
 			}
 			
 		} catch (SQLException e) {
@@ -102,7 +102,7 @@ public class JdbcPurchaseOrderLineDao implements PurchaseOrderLineDao{
 			stmt.setString(3, line.getItem().getId());
 			stmt.setInt(4, line.getQuantity());
 			stmt.setFloat(5, line.getPrice());
-			stmt.setInt(6, line.getAmmount());
+			stmt.setInt(6, line.getAmount());
 			stmt.setString(7, line.getId());
 			
 			stmt.executeUpdate();

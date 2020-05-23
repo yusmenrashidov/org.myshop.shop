@@ -10,6 +10,18 @@ public class Item {
 	private float purchasePrice;
 	private float salesPrice;
 
+	public Item() {}
+
+	public Item(String id, String name, String description, ProductGroup productGroup, ItemCategory itemCategory, float purchasePrice, float salesPrice) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.productGroup = productGroup;
+		this.itemCategory = itemCategory;
+		this.purchasePrice = purchasePrice;
+		this.salesPrice = salesPrice;
+	}
+
 	public String getId() {
 		return id;
 	}

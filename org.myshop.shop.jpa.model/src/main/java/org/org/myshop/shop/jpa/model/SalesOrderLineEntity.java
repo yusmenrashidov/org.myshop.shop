@@ -36,7 +36,7 @@ public class SalesOrderLineEntity {
 		this.item = new ItemEntity(line.getItem());
 		this.quantity = line.getQuantity();
 		this.price = line.getPrice();
-		this.ammount = line.getAmmount();
+		this.ammount = line.getAmount();
 	}
 
 	public String getId() {
@@ -96,7 +96,7 @@ public class SalesOrderLineEntity {
 		line.setItem(getItem().toItem());
 		line.setQuantity(getQuantity());
 		line.setPrice(getPrice());
-		line.setAmmount(getAmmount());
+		line.setAmount(getAmmount());
 		
 		return line;
 	}	

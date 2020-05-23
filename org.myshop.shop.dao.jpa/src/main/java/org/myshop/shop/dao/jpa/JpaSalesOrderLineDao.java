@@ -1,6 +1,5 @@
 package org.myshop.shop.dao.jpa;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +65,7 @@ public class JpaSalesOrderLineDao implements SalesOrderLineDao{
 		try {
 		entityManager.getTransaction().begin();
 		entity.setItem(new ItemEntity(line.getItem()));
-		entity.setAmmount(line.getAmmount());
+		entity.setAmmount(line.getAmount());
 		entity.setLineNumber(line.getLineNumber());
 		entity.setPrice(line.getPrice());
 		entity.setQuantity(line.getLineNumber());

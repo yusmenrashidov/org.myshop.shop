@@ -159,7 +159,7 @@ public class JdbcPurchaseOrderLineDaoTest {
         when(purchaseOrderLineMock.getItem()).thenReturn(itemMock);
         when(purchaseOrderLineMock.getQuantity()).thenReturn(TEST_PURCHASE_ORDER_LINE_QUANTITY);
         when(purchaseOrderLineMock.getPrice()).thenReturn(TEST_PURCHASE_ORDER_LINE_PRICE);
-        when(purchaseOrderLineMock.getAmmount()).thenReturn(TEST_PURCHASE_ORDER_LINE_AMMOUNT);
+        when(purchaseOrderLineMock.getAmount()).thenReturn(TEST_PURCHASE_ORDER_LINE_AMMOUNT);
         
         
         purchaseOrderLineDaoMock = new JdbcPurchaseOrderLineDao(sqlConnectionMock);
@@ -176,7 +176,7 @@ public class JdbcPurchaseOrderLineDaoTest {
 		verify(createPreparedStatementMock).setString(3, purchaseOrderLineMock.getItem().getId());
 		verify(createPreparedStatementMock).setInt(4, purchaseOrderLineMock.getQuantity());
 		verify(createPreparedStatementMock).setFloat(5, purchaseOrderLineMock.getPrice());
-		verify(createPreparedStatementMock).setInt(6, purchaseOrderLineMock.getAmmount());
+		verify(createPreparedStatementMock).setInt(6, purchaseOrderLineMock.getAmount());
 		
 		verify(createPreparedStatementMock).executeUpdate();
 	}
@@ -200,7 +200,7 @@ public class JdbcPurchaseOrderLineDaoTest {
 		assertEquals(TEST_ITEM_ID, line.getItem().getId());
 		assertEquals(TEST_PURCHASE_ORDER_LINE_QUANTITY, line.getQuantity());
 		assertEquals(TEST_PURCHASE_ORDER_LINE_PRICE, line.getPrice(), 0f);
-		assertEquals(TEST_PURCHASE_ORDER_LINE_AMMOUNT, line.getAmmount());
+		assertEquals(TEST_PURCHASE_ORDER_LINE_AMMOUNT, line.getAmount());
 		
 	}
 	
@@ -220,7 +220,7 @@ public class JdbcPurchaseOrderLineDaoTest {
 		assertEquals(TEST_ITEM_ID, line.getItem().getId());
 		assertEquals(TEST_PURCHASE_ORDER_LINE_QUANTITY, line.getQuantity());
 		assertEquals(TEST_PURCHASE_ORDER_LINE_PRICE, line.getPrice(), 0f);
-		assertEquals(TEST_PURCHASE_ORDER_LINE_AMMOUNT, line.getAmmount());
+		assertEquals(TEST_PURCHASE_ORDER_LINE_AMMOUNT, line.getAmount());
 		
 	}
 	
@@ -234,7 +234,7 @@ public class JdbcPurchaseOrderLineDaoTest {
 		verify(updatePreparedStatementMock).setString(3, purchaseOrderLineMock.getItem().getId());
 		verify(updatePreparedStatementMock).setInt(4, purchaseOrderLineMock.getQuantity());
 		verify(updatePreparedStatementMock).setFloat(5, purchaseOrderLineMock.getPrice());
-		verify(updatePreparedStatementMock).setInt(6, purchaseOrderLineMock.getAmmount());
+		verify(updatePreparedStatementMock).setInt(6, purchaseOrderLineMock.getAmount());
 		verify(updatePreparedStatementMock).setString(7, purchaseOrderLineMock.getId());
 		
 		verify(updatePreparedStatementMock).executeUpdate();

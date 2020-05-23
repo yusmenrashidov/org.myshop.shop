@@ -8,6 +8,15 @@ public class PostedSalesOrder {
 	private Date created;
 	private Customer customer;
 
+	public PostedSalesOrder() {
+	}
+
+	public PostedSalesOrder(String id, Date created, Customer customer) {
+		this.id = id;
+		this.created = created;
+		this.customer = customer;
+	}
+
 	public String getId() {
 		return id;
 	}

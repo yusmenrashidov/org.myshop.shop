@@ -8,6 +8,15 @@ public class SalesOrder {
 	private Date created;
 	private Customer customer;
 
+	public SalesOrder() {
+	}
+
+	public SalesOrder(String id, Date created, Customer customer) {
+		this.id = id;
+		this.created = created;
+		this.customer = customer;
+	}
+
 	public String getId() {
 		return id;
 	}

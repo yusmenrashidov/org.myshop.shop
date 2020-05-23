@@ -6,6 +6,15 @@ public class ProductGroup {
 	private String description;
 	private ItemCategory itemCategory;
 
+	public ProductGroup() {
+	}
+
+	public ProductGroup(String id, String description, ItemCategory itemCategory) {
+		this.id = id;
+		this.description = description;
+		this.itemCategory = itemCategory;
+	}
+
 	public String getId() {
 		return id;
 	}
