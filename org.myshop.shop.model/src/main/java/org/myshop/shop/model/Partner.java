@@ -8,6 +8,11 @@ public class Partner {
 	public Partner() {
 	}
 
+	public Partner(String id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
 	public String getId() {
 		return id;
 	}

@@ -158,7 +158,7 @@ public class JdbcPostedSalesOrderLineDaoTest {
         when(postedSalesOrderLineMock.getItem()).thenReturn(itemMock);
         when(postedSalesOrderLineMock.getQuantity()).thenReturn(TEST_POSTED_SALES_ORDER_LINE_QUANTITY);
         when(postedSalesOrderLineMock.getPrice()).thenReturn(TEST__POSTED_SALES_ORDER_LINE_PRICE);
-        when(postedSalesOrderLineMock.getAmmount()).thenReturn(TEST_POSTED_SALES_ORDER_LINE_AMMOUNT);
+        when(postedSalesOrderLineMock.getAmount()).thenReturn(TEST_POSTED_SALES_ORDER_LINE_AMMOUNT);
         
         
         postedSalesOrderLineDaoMock = new JdbcPostedSalesOrderLineDao(sqlConnectionMock);
@@ -175,7 +175,7 @@ public class JdbcPostedSalesOrderLineDaoTest {
 		verify(createPreparedStatementMock).setString(3, postedSalesOrderLineMock.getItem().getId());
 		verify(createPreparedStatementMock).setInt(4, postedSalesOrderLineMock.getQuantity());
 		verify(createPreparedStatementMock).setFloat(5, postedSalesOrderLineMock.getPrice());
-		verify(createPreparedStatementMock).setInt(6, postedSalesOrderLineMock.getAmmount());
+		verify(createPreparedStatementMock).setInt(6, postedSalesOrderLineMock.getAmount());
 		
 		verify(createPreparedStatementMock).executeUpdate();
 	}
@@ -199,7 +199,7 @@ public class JdbcPostedSalesOrderLineDaoTest {
 		assertEquals(TEST_ITEM_ID, line.getItem().getId());
 		assertEquals(TEST_POSTED_SALES_ORDER_LINE_QUANTITY, line.getQuantity());
 		assertEquals(TEST__POSTED_SALES_ORDER_LINE_PRICE, line.getPrice(), 0f);
-		assertEquals(TEST_POSTED_SALES_ORDER_LINE_AMMOUNT, line.getAmmount());
+		assertEquals(TEST_POSTED_SALES_ORDER_LINE_AMMOUNT, line.getAmount());
 		
 	}
 	
@@ -219,7 +219,7 @@ public class JdbcPostedSalesOrderLineDaoTest {
 		assertEquals(TEST_ITEM_ID, line.getItem().getId());
 		assertEquals(TEST_POSTED_SALES_ORDER_LINE_QUANTITY, line.getQuantity());
 		assertEquals(TEST__POSTED_SALES_ORDER_LINE_PRICE, line.getPrice(), 0f);
-		assertEquals(TEST_POSTED_SALES_ORDER_LINE_AMMOUNT, line.getAmmount());
+		assertEquals(TEST_POSTED_SALES_ORDER_LINE_AMMOUNT, line.getAmount());
 		
 	}
 	
@@ -233,7 +233,7 @@ public class JdbcPostedSalesOrderLineDaoTest {
 		verify(updatePreparedStatementMock).setString(3, postedSalesOrderLineMock.getItem().getId());
 		verify(updatePreparedStatementMock).setInt(4, postedSalesOrderLineMock.getQuantity());
 		verify(updatePreparedStatementMock).setFloat(5, postedSalesOrderLineMock.getPrice());
-		verify(updatePreparedStatementMock).setInt(6, postedSalesOrderLineMock.getAmmount());
+		verify(updatePreparedStatementMock).setInt(6, postedSalesOrderLineMock.getAmount());
 		verify(updatePreparedStatementMock).setString(7, postedSalesOrderLineMock.getId());
 		
 		verify(updatePreparedStatementMock).executeUpdate();

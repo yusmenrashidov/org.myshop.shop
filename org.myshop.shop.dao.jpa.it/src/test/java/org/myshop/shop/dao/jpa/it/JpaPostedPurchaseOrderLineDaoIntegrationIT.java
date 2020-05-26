@@ -35,7 +35,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareInt
 		line.setLineNumber(123);
 		line.setPrice(123.456f);
 		line.setQuantity(123);
-		line.setAmmount(123);
+		line.setAmount(123);
 		
 		postedPurchaseOrderLineDao.create(line);
 	}
@@ -52,7 +52,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareInt
 		line.setLineNumber(123);
 		line.setPrice(123.456f);
 		line.setQuantity(123);
-		line.setAmmount(123);
+		line.setAmount(123);
 		
 		postedPurchaseOrderLineDao.create(line);
 		
@@ -61,7 +61,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareInt
 		line.setLineNumber(321);
 		line.setPrice(123.789f);
 		line.setQuantity(321);
-		line.setAmmount(321);
+		line.setAmount(321);
 		
 		postedPurchaseOrderLineDao.create(line);
 		
@@ -82,7 +82,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareInt
 		line.setLineNumber(123);
 		line.setPrice(123.456f);
 		line.setQuantity(123);
-		line.setAmmount(123);
+		line.setAmount(123);
 		
 		postedPurchaseOrderLineDao.create(line);
 		
@@ -94,7 +94,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareInt
 		assertEquals(line.getLineNumber(), 123);
 		assertEquals(0f, line.getPrice(), 123.456f);
 		assertEquals(line.getQuantity(), 123);
-		assertEquals(line.getAmmount(), 123);
+		assertEquals(line.getAmount(), 123);
 	}
 	
 	@Test
@@ -111,7 +111,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareInt
 		line.setLineNumber(123);
 		line.setPrice(123.456f);
 		line.setQuantity(123);
-		line.setAmmount(123);
+		line.setAmount(123);
 		
 		postedPurchaseOrderLineDao.create(line);
 		
@@ -119,7 +119,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareInt
 		line.setLineNumber(321);
 		line.setPrice(123.789f);
 		line.setQuantity(321);
-		line.setAmmount(321);
+		line.setAmount(321);
 		
 		line = postedPurchaseOrderLineDao.update(line);
 		
@@ -128,7 +128,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareInt
 		assertEquals(line.getLineNumber(), 321);
 		assertEquals(0f, line.getPrice(), 123.789f);
 		assertEquals(line.getQuantity(), 321);
-		assertEquals(line.getAmmount(), 321);
+		assertEquals(line.getAmount(), 321);
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ public class JpaPostedPurchaseOrderLineDaoIntegrationIT extends BaseItemAwareInt
 		line.setLineNumber(123);
 		line.setPrice(123.456f);
 		line.setQuantity(123);
-		line.setAmmount(123);
+		line.setAmount(123);
 		
 		postedPurchaseOrderLineDao.create(line);
 		

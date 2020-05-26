@@ -1,6 +1,5 @@
 package org.myshop.shop.dao.jpa;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,7 +69,7 @@ public class JpaPurchaseOrderLineDao implements PurchaseOrderLineDao{
 		entity.setPrice(line.getPrice());
 		entity.setQuantity(line.getQuantity());
 		entity.setPrice(line.getPrice());
-		entity.setAmmount(line.getAmmount());
+		entity.setAmmount(line.getAmount());
 		entityManager.getTransaction().commit();
 		
 		}catch(Exception e) {

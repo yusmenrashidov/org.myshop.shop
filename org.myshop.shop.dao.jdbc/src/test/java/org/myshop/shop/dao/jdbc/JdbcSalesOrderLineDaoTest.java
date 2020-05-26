@@ -156,7 +156,7 @@ public class JdbcSalesOrderLineDaoTest {
         when(salesOrderLineMock.getItem()).thenReturn(itemMock);
         when(salesOrderLineMock.getQuantity()).thenReturn(TEST_SALES_ORDER_LINE_QUANTITY);
         when(salesOrderLineMock.getPrice()).thenReturn(TEST_SALES_ORDER_LINE_PRICE);
-        when(salesOrderLineMock.getAmmount()).thenReturn(TEST_SALES_ORDER_LINE_AMMOUNT);
+        when(salesOrderLineMock.getAmount()).thenReturn(TEST_SALES_ORDER_LINE_AMMOUNT);
         
         
         salesOrderLineDaoMock = new JdbcSalesOrderLineDao(sqlConnectionMock);
@@ -173,7 +173,7 @@ public class JdbcSalesOrderLineDaoTest {
 		verify(createPreparedStatementMock).setString(3, salesOrderLineMock.getItem().getId());
 		verify(createPreparedStatementMock).setInt(4, salesOrderLineMock.getQuantity());
 		verify(createPreparedStatementMock).setFloat(5, salesOrderLineMock.getPrice());
-		verify(createPreparedStatementMock).setInt(6, salesOrderLineMock.getAmmount());
+		verify(createPreparedStatementMock).setInt(6, salesOrderLineMock.getAmount());
 		
 		verify(createPreparedStatementMock).executeUpdate();
 	}
@@ -197,7 +197,7 @@ public class JdbcSalesOrderLineDaoTest {
 		assertEquals(TEST_ITEM_ID, line.getItem().getId());
 		assertEquals(TEST_SALES_ORDER_LINE_QUANTITY, line.getQuantity());
 		assertEquals(TEST_SALES_ORDER_LINE_PRICE, line.getPrice(), 0f);
-		assertEquals(TEST_SALES_ORDER_LINE_AMMOUNT, line.getAmmount());
+		assertEquals(TEST_SALES_ORDER_LINE_AMMOUNT, line.getAmount());
 		
 	}
 	
@@ -217,7 +217,7 @@ public class JdbcSalesOrderLineDaoTest {
 		assertEquals(TEST_ITEM_ID, line.getItem().getId());
 		assertEquals(TEST_SALES_ORDER_LINE_QUANTITY, line.getQuantity());
 		assertEquals(TEST_SALES_ORDER_LINE_PRICE, line.getPrice(), 0f);
-		assertEquals(TEST_SALES_ORDER_LINE_AMMOUNT, line.getAmmount());
+		assertEquals(TEST_SALES_ORDER_LINE_AMMOUNT, line.getAmount());
 		
 	}
 	
@@ -231,7 +231,7 @@ public class JdbcSalesOrderLineDaoTest {
 		verify(updatePreparedStatementMock).setString(3, salesOrderLineMock.getItem().getId());
 		verify(updatePreparedStatementMock).setInt(4, salesOrderLineMock.getQuantity());
 		verify(updatePreparedStatementMock).setFloat(5, salesOrderLineMock.getPrice());
-		verify(updatePreparedStatementMock).setInt(6, salesOrderLineMock.getAmmount());
+		verify(updatePreparedStatementMock).setInt(6, salesOrderLineMock.getAmount());
 		verify(updatePreparedStatementMock).setString(7, salesOrderLineMock.getId());
 		
 		verify(updatePreparedStatementMock).executeUpdate();

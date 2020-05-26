@@ -1,6 +1,5 @@
 package org.myshop.shop.model;
 
-import org.myshop.shop.model.PurchaseOrderLine;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -20,7 +19,7 @@ public class PurchaseOrderLineTest {
 
 		assertNull("Item should be null on new PurchaseOrderLine", purchaseOrderLine.getItem());
 
-		assertEquals("Ammount should be zero on new PurchaseOrderLine", 0d, purchaseOrderLine.getAmmount(), 0);
+		assertEquals("Ammount should be zero on new PurchaseOrderLine", 0d, purchaseOrderLine.getAmount(), 0);
 
 		assertEquals("Price should be zero on new PurchaseOrderLine", 0f, purchaseOrderLine.getPrice(), 0);
 

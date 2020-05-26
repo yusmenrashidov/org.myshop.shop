@@ -30,7 +30,6 @@ import org.myshop.shop.model.PurchaseOrderLine;
 import org.org.myshop.shop.jpa.model.ItemCategoryEntity;
 import org.org.myshop.shop.jpa.model.ItemEntity;
 import org.org.myshop.shop.jpa.model.ProductGroupEntity;
-import org.org.myshop.shop.jpa.model.PurchaseOrderEntity;
 import org.org.myshop.shop.jpa.model.PurchaseOrderLineEntity;
 
 public class JpaPurchaseOrderLineDaoTest {
@@ -141,7 +140,7 @@ public class JpaPurchaseOrderLineDaoTest {
 		when(lineMock.getItem()).thenReturn(itemMock);
 		when(lineMock.getQuantity()).thenReturn(TEST_PURCHASE_ORDER_LINE_QUANTITY);
 		when(lineMock.getPrice()).thenReturn(TEST_PURCHASE_ORDER_LINE_PRICE);
-		when(lineMock.getAmmount()).thenReturn(TEST_PURCHASE_ORDER_LINE_AMMOUNT);
+		when(lineMock.getAmount()).thenReturn(TEST_PURCHASE_ORDER_LINE_AMMOUNT);
 		
 		when(entityMock.getId()).thenReturn(TEST_PURCHASE_ORDER_LINE_ID);
 		when(entityMock.getLineNumber()).thenReturn(TEST_PURCHASE_ORDER_LINE_LINE_NUMBER);
@@ -199,7 +198,7 @@ public class JpaPurchaseOrderLineDaoTest {
 		assertEquals(lineMock.getLineNumber(), TEST_PURCHASE_ORDER_LINE_LINE_NUMBER);
 		assertEquals(0f, lineMock.getPrice(), TEST_PURCHASE_ORDER_LINE_PRICE);
 		assertEquals(lineMock.getQuantity(), TEST_PURCHASE_ORDER_LINE_QUANTITY);
-		assertEquals(lineMock.getAmmount(), TEST_PURCHASE_ORDER_LINE_AMMOUNT);
+		assertEquals(lineMock.getAmount(), TEST_PURCHASE_ORDER_LINE_AMMOUNT);
 	}
 	
 	@Test
